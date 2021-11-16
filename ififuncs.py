@@ -728,13 +728,13 @@ def get_user():
     Asks user who they are. Returns a string with their name
     '''
     user = ''
-    if user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'):
+    if user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'):
         user = input(
-            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10,11\n\n1. Aoife Fitzmaurice\n2. Gavin Martin\n3. Kieran O\'Leary\n4. Raelene Casey\n5. Noelia Romero\n6. Ana Truchanova\n7. Eoin O\'Donohoe\n8. Yujing Huang\n9. Colm Connolly\n10. Yazhou He\n11. Aoife McGrath\n'
+            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10,11,12\n\n 1. Aoife Fitzmaurice\n 2. Gavin Martin\n 3. Kieran O\'Leary\n 4. Raelene Casey\n 5. Noelia Romero\n 6. Ana Truchanova\n 7. Eoin O\'Donohoe\n 8. Yujing Huang\n 9. Colm Connolly\n10. Raven Cooke\n11. Yazhou He\n12. Aoife McGrath\n'
         )
-        while user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'):
+        while user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'):
             user = input(
-                '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10,11\n\n1. Aoife Fitzmaurice\n2. Gavin Martin\n3. Kieran O\'Leary\n4. Raelene Casey\n5. Noelia Romero\n6. Ana Truchanova\n7. Eoin O\'Donohoe\n8. Yujing Huang\n9. Colm Connolly\n10. Yazhou He\n11. Aoife McGrath\n'
+                '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10,11,12\n\n1. Aoife Fitzmaurice\n2. Gavin Martin\n3. Kieran O\'Leary\n4. Raelene Casey\n5. Noelia Romero\n6. Ana Truchanova\n7. Eoin O\'Donohoe\n8. Yujing Huang\n9. Colm Connolly\n10. Raven Cooke\n11. Yazhou He\n12. Aoife McGrath\'
             )
     if user == '1':
         user = 'Aoife Fitzmaurice'
@@ -764,9 +764,12 @@ def get_user():
         user = 'Colm Connolly'
         time.sleep(1)
     elif user == '10':
-        user = 'Yazhou He'
+        user = 'Raven Cooke'
         time.sleep(1)
     elif user == '11':
+        user = 'Yazhou He'
+        time.sleep(1)
+    elif user == '12':
         user = 'Aoife McGrath'
         time.sleep(1)
     return user
