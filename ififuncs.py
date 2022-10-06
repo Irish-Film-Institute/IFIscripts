@@ -728,25 +728,25 @@ def get_user():
     Asks user who they are. Returns a string with their name
     '''
     user = ''
-    if user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'):
+    if user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'):
         user = input(
-            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10,11,12\n\n1.\tAoife Fitzmaurice\n2.\tGavin Martin\n3.\tKieran O\'Leary\n4.\tRaelene Casey\n5.\tNoelia Romero\n6.\tAna Truchanova\n7.\tEoin O\'Donohoe\n8.\tYujing Huang\n9.\tColm Connolly\n10.\tRaven Cooke\n11.\tYazhou He\n12.\tAoife McGrath\n'
+            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10,11,12,13,14\n\n1.\tKieran O\'Learye\n2.\tRaelene Caseyn\n3.\tAoife Fitzmaurice\n4.\tYujing Huang\n5.\tNoelia Romero\n6.\tAna Truchanova\n7.\tEoin O\'Donohoe\n8.\tGavin Martin\n9.\tNiamh Murphy\n10.\tRaven Cooke\n11.\tNiall Anderson\n12.\tYazhou He\n13.\tCaroline Crowther\n14.\tMark Keleghan\n'
         )
-        while user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'):
+        while user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'):
             user = input(
-                '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10,11,12\n\n1.\tAoife Fitzmaurice\n2.\tGavin Martin\n3.\tKieran O\'Leary\n4.\tRaelene Casey\n5.\tNoelia Romero\n6.\tAna Truchanova\n7.\tEoin O\'Donohoe\n8.\tYujing Huang\n9.\tColm Connolly\n10.\tRaven Cooke\n11.\tYazhou He\n12.\tAoife McGrath\n'
+                '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10,11,12,13,14\n\n1.\tKieran O\'Leary\n2.\tRaelene Casey\n3.\tAoife Fitzmaurice\n4.\tYujing Huang\n5.\tNoelia Romero\n6.\tAna Truchanova\n7.\tEoin O\'Donohoe\n8.\tGavin Martin\n9.\tNiamh Murphy\n10.\tRaven Cooke\n11.\tNiall Anderson\n12.\tYazhou He\n13.\tCaroline Crowther\n14.\tMark Keleghan\n'
             )
     if user == '1':
-        user = 'Aoife Fitzmaurice'
-        time.sleep(1)
-    elif user == '2':
-        user = 'Gavin Martin'
-        time.sleep(1)
-    elif user == '3':
         user = 'Kieran O\'Leary'
         time.sleep(1)
-    elif user == '4':
+    elif user == '2':
         user = 'Raelene Casey'
+        time.sleep(1)
+    elif user == '3':
+        user = 'Aoife Fitzmaurice'
+        time.sleep(1)
+    elif user == '4':
+        user = 'Yujing Huang'
         time.sleep(1)
     elif user == '5':
         user = 'Noelia Romero'
@@ -758,19 +758,25 @@ def get_user():
         user = 'Eoin O\'Donohoe'
         time.sleep(1)
     elif user == '8':
-        user = 'Yujing Huang'
+        user = 'Gavin Martin'
         time.sleep(1)
     elif user == '9':
-        user = 'Colm Connolly'
+        user = 'Niamh Murphy'
         time.sleep(1)
     elif user == '10':
         user = 'Raven Cooke'
         time.sleep(1)
     elif user == '11':
-        user = 'Yazhou He'
+        user = 'Niall Anderson'
         time.sleep(1)
     elif user == '12':
-        user = 'Aoife McGrath'
+        user = 'Yazhou He'
+        time.sleep(1)
+    elif user == '13':
+        user = 'Caroline Crowther'
+        time.sleep(1)
+    elif user == '14':
+        user = 'Mark Keleghan'
         time.sleep(1)
     return user
 
