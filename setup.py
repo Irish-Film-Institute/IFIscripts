@@ -36,6 +36,7 @@ NOTE: Objects.py has been copied from https://github.com/simsong/dfxml. walk_to_
         'framemd5.py',
         'ififuncs.py',
         'loopline_repackage.py',
+        'make_mediaconch.py'
         'makedfxml.py',
         'makedip.py',
         'makeffv1.py',
@@ -71,6 +72,6 @@ NOTE: Objects.py has been copied from https://github.com/simsong/dfxml. walk_to_
     data_files=[('', ['film_scan_aip_documentation.txt', '26_XYZ-22_Rec709.cube'])],
     include_package_data=True,
     name='ifiscripts',
-    version='v2022.10.05.1',
+    version='v2022.10.05.3',
     python_requires='>=3.8'
 )
