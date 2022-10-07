@@ -36,7 +36,7 @@ NOTE: Objects.py has been copied from https://github.com/simsong/dfxml. walk_to_
         'framemd5.py',
         'ififuncs.py',
         'loopline_repackage.py',
-        'make_mediaconch.py'
+        'make_mediaconch.py',
         'makedfxml.py',
         'makedip.py',
         'makeffv1.py',
