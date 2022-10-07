@@ -899,7 +899,22 @@ def get_script_version(scriptname):
     current_dir = os.getcwd()
     home = os.path.expanduser("~/")
     os.chdir(home)
-    if os.path.isdir('ifigit/ifiscripts'):
+    pypi = ''
+    try:
+        if platform.system() == 'Windows':
+            pypi_cmd = ['pip', 'show', 'ifiscripts']
+        else:
+            pypi_cmd = ['pip3', 'show', 'ifiscripts']
+        pypi = subprocess.check_output(pypi_cmd)
+        pypi = pypi.decode()
+    except Exception as e:
+        print(e)
+    if pypi:
+        v = 'Version'
+        v_end = 'Summary'
+        script_version = "ifiscripts installed from pypi - " + pypi[pypi.index(v):pypi.index(v_end)].replace('\n', '').replace('\r', '')
+        print("pypi ifiscripts %s" % script_version)
+    elif os.path.isdir('ifigit/ifiscripts'):
         os.chdir('ifigit/ifiscripts')
         print("Changing directory to %s to extract script version`" % os.getcwd())
         script_version = subprocess.check_output([
