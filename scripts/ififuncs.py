@@ -912,8 +912,8 @@ def get_script_version(scriptname):
     if pypi:
         v = 'Version'
         v_end = 'Summary'
-        script_version = "ifiscripts installed from pypi - " + pypi[pypi.index(v):pypi.index(v_end)].replace('\n', '').replace('\r', '')
-        print("pypi ifiscripts %s" % script_version)
+        script_version = pypi[pypi.index(v):pypi.index(v_end)].replace('\n', '').replace('\r', '')
+        print("ifiscripts installed from pypi - %s" % script_version)
     elif os.path.isdir('ifigit/ifiscripts/scripts'):
         os.chdir('ifigit/ifiscripts/scripts')
         print("Changing directory to %s to extract script version`" % os.getcwd())
