@@ -59,7 +59,7 @@ def main():
                         print("\n---copy files---")
                         for afile in afiles:
                             afile_full = os.path.join(aroot, afile)
-                            afile_paste_full = os.path.join(output, aip_paste, dir_path, afile) #?
+                            afile_paste_full = os.path.join(output, aip_paste, dir_path, afile)
                             if "objects" in afile_full:
                                 print("Skip content inside objects/")
                             else:
