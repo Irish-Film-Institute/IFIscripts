@@ -733,7 +733,7 @@ def main(args_):
     print(metadata_error)
     tc = ififuncs.convert_millis(ms)
     instantiationDuratio = ififuncs.convert_timecode(25, tc)
-    print("\ninstantiationDuratio = %s\n" % instantiationDuratio)
+    #print("\ninstantiationDuration = %s\n" % instantiationDuratio)
     if args.donor:
         Donor = args.donor
     else:
