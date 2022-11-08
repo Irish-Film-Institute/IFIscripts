@@ -554,14 +554,22 @@ def main(args_):
             "//ns:FileSize",
             new_root, mediainfo_namespace
         ))
-        instantDataRate = round(float(ififuncs.get_mediainfo(
-            'OverallBitRate', '--inform=General;%OverallBitRate%', source
-        ))  / 1000 / 1000, 2)
+        # add try/except only for DVD/ISO which does not have BitRate option
+        instantDataRate = 'n/a'
+        try:
+            instantDataRate = round(float(ififuncs.get_mediainfo(
+                'OverallBitRate', '--inform=General;%OverallBitRate%', source
+            ))  / 1000 / 1000, 2)
+        except Exception as e:
+            print("\ninstantDataRate ERROR\n\t-> get_mediainfo(OverallBitRate) not support\n\t-> %s\n\t-> makepbcore.py line: 560\n\t\t-> ififuncs.py line: 200" % e)
         instantTracks = ififuncs.get_number_of_tracks(source)
         track_count_list.append(instantTracks)
         if stl is True:
             track_count_list.append('STL sidecar')
-        ms += ififuncs.get_milliseconds(source)
+        try:
+            ms += ififuncs.get_milliseconds(source)
+        except Exception as e:
+            print("\nms ERROR\n\t-> get_mediainfo(miliseconds) not support\n\t-> %s\n\t-> makepbcore.py line 570\n\t\t-> ififuncs.py line: 219" % e)
         ColorSpace = ififuncs.get_metadata(
             "//ns:ColorSpace",
             new_root, mediainfo_namespace
@@ -725,6 +733,7 @@ def main(args_):
     print(metadata_error)
     tc = ififuncs.convert_millis(ms)
     instantiationDuratio = ififuncs.convert_timecode(25, tc)
+    print("\ninstantiationDuratio = %s\n" % instantiationDuratio)
     if args.donor:
         Donor = args.donor
     else:
