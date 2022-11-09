@@ -225,7 +225,10 @@ def get_milliseconds(filename):
         '--inform=General;%Duration%',
         filename
     )
-    return float(milliseconds)
+    try:
+        return float(milliseconds)
+    except Exception as e:
+            print("\nDuration ERROR\n\t-> get_mediainfo(miliseconds) not support\n\t-> %s\n\t-> ififuncs.py line: 219" % e)
 
 def convert_millis(milli):
     '''
@@ -1471,7 +1474,7 @@ def recursive_file_list(video_files):
     recursive_list = []
     for root, _, filenames in os.walk(video_files):
         for filename in filenames:
-            if filename.endswith(('.MP4', '.mp4', '.mov', '.mkv', '.mxf', '.MXF', '.WAV', '.wav', '.aiff', '.AIFF', 'mp3', 'MP3', 'm2t', '.dv', '.DV')):
+            if filename.endswith(('.MP4', '.mp4', '.mov', '.mkv', '.mxf', '.MXF', '.WAV', '.wav', '.aiff', '.AIFF', 'mp3', 'MP3', 'm2t', '.dv', '.DV', '.iso', '.ISO')):
                 recursive_list.append(os.path.join(root, filename))
     return recursive_list
 
@@ -1485,7 +1488,7 @@ def get_video_files(source):
         folder_list = os.listdir(source)
         for filename in folder_list:
             if not filename[0] == '.':
-                if filename.lower().endswith(('.mov', 'MP4', '.mp4', '.mkv', '.MXF', '.mxf', '.dv', '.DV', '.3gp', '.webm', '.swf', '.avi', '.m2t')):
+                if filename.lower().endswith(('.mov', 'MP4', '.mp4', '.mkv', '.MXF', '.mxf', '.dv', '.DV', '.3gp', '.webm', '.swf', '.avi', '.m2t', '.iso', '.ISO')):
                     file_list.append(os.path.join(source, filename))
     elif os.path.isfile(source):
         file_list = [source]
