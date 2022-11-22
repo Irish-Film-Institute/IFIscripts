@@ -42,7 +42,7 @@ def diff_manifests(manifest, strongbox_list):
     '''
     print('\nStrongbox_fixity - IFIscripts')
     print('Analysing %s\n' % manifest)
-    with open(manifest, 'r') as original_manifest:
+    with open(manifest, 'r', encoding='utf-8') as original_manifest:
         aip_manifest = original_manifest.read().splitlines()
     # A list of items in strongbox, that are different in aip sha512 manifest
     strongbox_check = [item for item in strongbox_list if unicodedata.normalize('NFD', item) not in aip_manifest]
