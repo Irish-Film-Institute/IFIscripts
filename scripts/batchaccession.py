@@ -47,7 +47,7 @@ def gather_metadata(source):
     for root, _, filenames in sorted(os.walk(source)):
         for filename in filenames:
             if filename.endswith('pbcore.csv'):
-                with open(os.path.join(root,filename), 'r') as csv_file:
+                with open(os.path.join(root,filename), 'r', encoding='utf-8') as csv_file:
                     csv_rows = csv_file.readlines()
                 if metadata:
                     metadata.append([csv_rows[1]])
