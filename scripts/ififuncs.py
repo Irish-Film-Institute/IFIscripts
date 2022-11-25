@@ -617,7 +617,7 @@ def check_multi_reel(directory):
     for dirs in os.listdir(directory):
         full_path = (os.path.join(directory, dirs))
         if os.path.isdir(full_path):
-            if get_image_sequence_files(full_path) is not 'none':
+            if get_image_sequence_files(full_path) != 'none':
                 image_sequences.append(full_path)
     return sorted (image_sequences)
 
@@ -964,7 +964,7 @@ def ask_question(question):
     Asks user a question. Return answer.
     '''
     answer = ''
-    while answer is '':
+    while answer == '':
         answer = input(
             '\n\n**** %s\n\n'
          % question)
@@ -1515,7 +1515,7 @@ def check_dependencies(dependencies):
             a = subprocess.check_output([dependency, '-h'], stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
             # Currently this is just a workaround for Siegfried.
-            if e.returncode is 2:
+            if e.returncode == 2:
                 continue
         except OSError:
             print('%s is not installed, so this script can not run!' % dependency)
@@ -1831,7 +1831,7 @@ def get_metadata(xpath_path, root, pbcore_namespace):
             '''
             value_list.append(i.text)
         # Checks if values in the list are the same(1) or different (2)
-        if len(set(value_list)) is 1:
+        if len(set(value_list)) == 1:
             value = value[0].text
         else:
             # Return the mixed values with pipe delimiter.
@@ -1893,7 +1893,7 @@ def find_cpl(source):
             subs_confirmation  = input('Y/N')
             return cpl_parse
         return cpl_parse
-    elif len(cpl_list) is 0:
+    elif len(cpl_list) == 0:
         return None
     else:
         return cpl_list[0]
