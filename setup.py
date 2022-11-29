@@ -25,6 +25,7 @@ NOTE: Objects.py has been copied from https://github.com/simsong/dfxml. walk_to_
         'scripts/accession_register.py',
         'scripts/as11fixity.py',
         'scripts/batchaccession.py',
+        'scripts/batchmakeshell.py',
         'scripts/batchsipcreator.py',
         'scripts/bitc.py',
         'scripts/concat.py',
