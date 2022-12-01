@@ -63,7 +63,7 @@ def make_mediainfo(xmlfilename, xmlvariable, inputfilename):
         '--output=OLDXML',
         inputfilename
     ]
-    with open(xmlfilename, "w") as fo:
+    with open(xmlfilename, "w", encoding='utf-8') as fo:
         # https://stackoverflow.com/a/21486747
         try:
             xmlvariable = subprocess.check_output(mediainfo_cmd).decode(sys.stdout.encoding)
@@ -80,7 +80,7 @@ def make_exiftool(xmlfilename, inputfilename):
         '-j',
         inputfilename
     ]
-    with open(xmlfilename, "w", encoding='utf8') as fo:
+    with open(xmlfilename, "w", encoding='utf-8') as fo:
         try:
             xmlvariable = subprocess.check_output(exiftool_cmd).decode(sys.stdout.encoding)
         # exiftool has difficulties with unicode support on windows.
@@ -505,7 +505,7 @@ def make_mediatrace(tracefilename, xmlvariable, inputfilename):
             '--output=XML',
             inputfilename
         ]
-    with open(tracefilename, "w") as fo:
+    with open(tracefilename, "w", encoding='utf-8') as fo:
         # https://stackoverflow.com/a/21486747
         try:
             xmlvariable = subprocess.check_output(mediatrace_cmd).decode(sys.stdout.encoding)
@@ -1951,7 +1951,7 @@ def get_technical_metadata(path, new_log_textfile):
                         'mediatracexmlinput',
                         os.path.join(root, av_file)
                     )
-                    with open(inputtracexml, 'r') as fo:
+                    with open(inputtracexml, 'r', encoding='utf-8') as fo:
                         none_test = fo.read()
                     if none_test == 'None':
                         os.remove(inputtracexml)
