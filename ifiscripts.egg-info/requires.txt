@@ -1,0 +1,5 @@
+lxml
+bagit
+dicttoxml
+future
+clairmeta
