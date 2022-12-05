@@ -299,7 +299,6 @@ def main(args_):
                         writer.writerow(i)
     if not to_accession:
         print('`/*** Exiting as there is no data to process. This is usually because:\n* Your OE register does not match the values\n* OR your "representation of: " values in the Object entry do not match to values in your filmographic CSV\n* OR your filmographic CSV does not contain values that match to the representation of values in the Object Entry CSV')
-
         sys.exit()
     filmographic_dict, headers = ififuncs.extract_metadata(args.filmo_csv)
     for package in to_accession:
