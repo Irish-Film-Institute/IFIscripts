@@ -262,10 +262,13 @@ def main(args_):
         to_accession = initial_check(args, accession_digits, oe_list, reference_number)
     else:
         to_accession = {}
+        print('\nIngested Info: Please check below if any info and characters are correct')
         for oe_record in oe_dicts:
+            print(oe_record)
             if os.path.isdir(oe_record['source_path']):
                 to_accession[oe_record['source_path']] = ['aaa' + str(accession_digits).zfill(4), oe_record['reference number'], oe_record['parent'], oe_record['donation_date']]
                 accession_digits += 1
+        print('\n')
     for success in sorted(to_accession.keys()):
         print('%s will be accessioned as %s' %  (success, to_accession[success]))
     register = accession.make_register()
