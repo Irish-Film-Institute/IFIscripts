@@ -262,10 +262,13 @@ def main(args_):
         to_accession = initial_check(args, accession_digits, oe_list, reference_number)
     else:
         to_accession = {}
+        print('\nIngested Info: Please check if any info and characters correct')
         for oe_record in oe_dicts:
+            print(oe_record)
             if os.path.isdir(oe_record['source_path']):
                 to_accession[oe_record['source_path']] = ['aaa' + str(accession_digits).zfill(4), oe_record['reference number'], oe_record['parent'], oe_record['donation_date']]
                 accession_digits += 1
+        print('\n')
     for success in sorted(to_accession.keys()):
         print('%s will be accessioned as %s' %  (success, to_accession[success]))
     register = accession.make_register()
@@ -296,6 +299,7 @@ def main(args_):
                         writer.writerow(i)
     if not to_accession:
         print('`/*** Exiting as there is no data to process. This is usually because:\n* Your OE register does not match the values\n* OR your "representation of: " values in the Object entry do not match to values in your filmographic CSV\n* OR your filmographic CSV does not contain values that match to the representation of values in the Object Entry CSV')
+
         sys.exit()
     filmographic_dict, headers = ififuncs.extract_metadata(args.filmo_csv)
     for package in to_accession:
