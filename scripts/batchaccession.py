@@ -262,7 +262,7 @@ def main(args_):
         to_accession = initial_check(args, accession_digits, oe_list, reference_number)
     else:
         to_accession = {}
-        print('\nIngested Info: Please check below if any info and characters are correct')
+        print('\nIngested info from CSVs: Please check the following if an error occurs')
         for oe_record in oe_dicts:
             print(oe_record)
             if os.path.isdir(oe_record['source_path']):
