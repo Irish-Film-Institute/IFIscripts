@@ -1270,10 +1270,10 @@ def get_ffmpeg_fmt(path, file_type):
     except subprocess.CalledProcessError as grepexc:
         print(grepexc)
         man_ffprobe = input("\n !!!\n %s\n Cannot recognize the value to pixel format of this %s file.\n Manually input needed:\n" % (path, file_type))
-        man_ffprobe_yn = input("\n -\n Are you really sure the pixel format of this file is %s?\n enter [y] or [n] " % man_ffprobe)
+        man_ffprobe_yn = input("\n -\n Are you really sure the pixel format of this file is %s?\n enter [y] or [n]\n" % man_ffprobe)
         while man_ffprobe_yn not in ('y', 'Y'):
             man_ffprobe = input("\n !!!\n %s\n Cannot recognize the value to pixel format of this %s file.\n Manually input needed:\n" % (path, file_type))
-            man_ffprobe_yn = input("\n -\n Are you really sure the pixel format of this file is %s?\n enter [y] or [n] " % man_ffprobe)
+            man_ffprobe_yn = input("\n -\n Are you really sure the pixel format of this file is %s?\n enter [y] or [n]\n" % man_ffprobe)
         pix_fmt = man_ffprobe_yn
     return pix_fmt
 
