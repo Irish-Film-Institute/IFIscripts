@@ -1269,12 +1269,8 @@ def get_ffmpeg_fmt(path, file_type):
         pix_fmt = subprocess.check_output(ffprobe_cmd).rstrip().decode(sys.stdout.encoding).replace("\n", '|').replace("\r", '')
     except subprocess.CalledProcessError as grepexc:
         print(grepexc)
-        man_ffprobe = input("\n !!!\n %s\n Cannot recognize the value to pixel format of this %s file.\n Manually input needed:\n" % (path, file_type))
-        man_ffprobe_yn = input("\n -\n Are you really sure the pixel format of this file is %s?\n enter [y] or [n]\n" % man_ffprobe)
-        while man_ffprobe_yn not in ('y', 'Y'):
-            man_ffprobe = input("\n !!!\n %s\n Cannot recognize the value to pixel format of this %s file.\n Manually input needed:\n" % (path, file_type))
-            man_ffprobe_yn = input("\n -\n Are you really sure the pixel format of this file is %s?\n enter [y] or [n]\n" % man_ffprobe)
-        pix_fmt = man_ffprobe_yn
+        man_ffprobe = ask_question("!!! %s\n Cannot recognise the value of pixel format of this %s file.\n Need to type it manually:" % (path, file_type))
+        pix_fmt = man_ffprobe
     return pix_fmt
 
 def get_number_of_tracks(path):
@@ -1294,9 +1290,9 @@ def get_number_of_tracks(path):
         type_list = subprocess.check_output(ffprobe_cmd).rstrip().decode(sys.stdout.encoding).splitlines()
     except subprocess.CalledProcessError as grepexc:
         print(grepexc)
-        man_ffprobe = input("\n !!!\n %s\n Cannot recognize this file type is [video] or [audio].\n Manually input needed:\n" % path)
+        man_ffprobe = input("\n !!!\n %s\n Cannot recognise this file type is [video] or [audio].\n Need to type it manually:\n" % path)
         while man_ffprobe not in ('video', 'audio'):
-            man_ffprobe = input("\n %s\n Cannot recognize this file type is [video] or [audio].\n Manually input needed:\n" % path)
+            man_ffprobe = input("\n %s\n Cannot recognise this file type is [video] or [audio].\n Need to type it manually:\n" % path)
         type_list = man_ffprobe
     types = {}
     final_count = ''
