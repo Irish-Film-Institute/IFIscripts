@@ -1265,7 +1265,16 @@ def get_ffmpeg_fmt(path, file_type):
         metadata,
         '-of', 'default=noprint_wrappers=1:nokey=1'
     ]
-    pix_fmt = subprocess.check_output(ffprobe_cmd).rstrip().decode(sys.stdout.encoding).replace("\n", '|').replace("\r", '')
+    try:
+        pix_fmt = subprocess.check_output(ffprobe_cmd).rstrip().decode(sys.stdout.encoding).replace("\n", '|').replace("\r", '')
+    except subprocess.CalledProcessError as grepexc:
+        print(grepexc)
+        man_ffprobe = input("\n !!!\n %s\n Cannot recognize the value to pixel format of this %s file.\n Manually input needed:\n" % (path, file_type))
+        man_ffprobe_yn = input("\n -\n Are you really sure the pixel format of this file is %s?\n enter [y] or [n] " % man_ffprobe)
+        while man_ffprobe_yn not in ('y', 'Y'):
+            man_ffprobe = input("\n !!!\n %s\n Cannot recognize the value to pixel format of this %s file.\n Manually input needed:\n" % (path, file_type))
+            man_ffprobe_yn = input("\n -\n Are you really sure the pixel format of this file is %s?\n enter [y] or [n] " % man_ffprobe)
+        pix_fmt = man_ffprobe_yn
     return pix_fmt
 
 def get_number_of_tracks(path):
@@ -1281,7 +1290,14 @@ def get_number_of_tracks(path):
         'stream=codec_type',
         '-of', 'default=noprint_wrappers=1:nokey=1'
     ]
-    type_list = subprocess.check_output(ffprobe_cmd).rstrip().decode(sys.stdout.encoding).splitlines()
+    try:
+        type_list = subprocess.check_output(ffprobe_cmd).rstrip().decode(sys.stdout.encoding).splitlines()
+    except subprocess.CalledProcessError as grepexc:
+        print(grepexc)
+        man_ffprobe = input("\n !!!\n %s\n Cannot recognize this file type is [video] or [audio].\n Manually input needed:\n" % path)
+        while man_ffprobe not in ('video', 'audio'):
+            man_ffprobe = input("\n %s\n Cannot recognize this file type is [video] or [audio].\n Manually input needed:\n" % path)
+        type_list = man_ffprobe
     types = {}
     final_count = ''
     for i in type_list:
@@ -1474,7 +1490,7 @@ def recursive_file_list(video_files):
     recursive_list = []
     for root, _, filenames in os.walk(video_files):
         for filename in filenames:
-            if filename.endswith(('.MP4', '.mp4', '.MOV', '.mov', '.mkv', '.mxf', '.MXF', '.WAV', '.wav', '.aiff', '.AIFF', 'mp3', 'MP3', 'm2t', '.dv', '.DV', '.iso', '.ISO')):
+            if filename.endswith(('.MP4', '.mp4', '.MOV', '.mov', '.mkv', '.mxf', '.MXF', '.WAV', '.wav', '.aiff', '.AIFF', 'mp3', 'MP3', 'm2t', 'MTS', '.dv', '.DV', '.iso', '.ISO')):
                 recursive_list.append(os.path.join(root, filename))
     return recursive_list
 
