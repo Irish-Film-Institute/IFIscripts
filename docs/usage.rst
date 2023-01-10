@@ -479,6 +479,19 @@ loopline\_repackage.py
    ``makeffv1.py dvsip.py loopline.py``
 -  Usage: ``loopline_repackage``
 
+batchmakeshell.py
+~~~~~~~~~~~~~~~~~
+
+-  Creates accession shells for the AIPs under a batch. This is used for 
+   the accessioning closing steps. The script will recognise all the 
+   folders named with "aaa[0-9]{4}" digital accession number
+   format. Then created their shell folders named "aaa[0-9]{4}_shell"
+   and clone all the subcontent except the content inside the 
+   'objects' folder into them. The shells will be created into the
+   targeted output path.
+-  Usage: ``batchmakeshell.py $input -o $output``
+    
+
 Misc
 ----
 
