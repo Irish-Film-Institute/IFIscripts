@@ -1269,8 +1269,8 @@ def get_ffmpeg_fmt(path, file_type):
         pix_fmt = subprocess.check_output(ffprobe_cmd).rstrip().decode(sys.stdout.encoding).replace("\n", '|').replace("\r", '')
     except subprocess.CalledProcessError as grepexc:
         print(grepexc)
-        man_ffprobe = ask_question("!!! %s\n Cannot recognise the value of pixel format of this %s file.\n Need to type it manually:" % (path, file_type))
-        pix_fmt = man_ffprobe
+        print("***** %s\n\tCannot recognise the value of pixel/audio format of this %s file.\n\tValue is replaced by 'missing_metadata*'.\n\tCheck after script finishes." % (path, file_type))
+        pix_fmt = 'missing_metadata*'
     return pix_fmt
 
 def get_number_of_tracks(path):
@@ -1290,10 +1290,8 @@ def get_number_of_tracks(path):
         type_list = subprocess.check_output(ffprobe_cmd).rstrip().decode(sys.stdout.encoding).splitlines()
     except subprocess.CalledProcessError as grepexc:
         print(grepexc)
-        man_ffprobe = input("\n !!!\n %s\n Cannot recognise this file type is [video] or [audio].\n Need to type it manually:\n" % path)
-        while man_ffprobe not in ('video', 'audio'):
-            man_ffprobe = input("\n %s\n Cannot recognise this file type is [video] or [audio].\n Need to type it manually:\n" % path)
-        type_list = man_ffprobe
+        print("***** %s\n\tCannot recognise this file type is [video] or [audio].\n\tValue is replaced by 'missing_metadata*'.\n\tCheck after script finishes." % path)
+        type_list = ['missing_metadata*']
     types = {}
     final_count = ''
     for i in type_list:
@@ -1306,6 +1304,7 @@ def get_number_of_tracks(path):
             final_count += '%s %s tracks|' % (types[x], x)
         else:
             final_count += '%s %s track|' % (types[x], x)
+    print("final_count:" + final_count)
     return final_count[:-1]
 
 
@@ -1883,6 +1882,7 @@ def find_cpl(source):
                 try:
                     xmlname = etree.parse(full_path)
                 except SyntaxError:
+                    print(full_path)
                     print( 'not a valid CPL!')
                     continue
                 except KeyError:
