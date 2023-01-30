@@ -1269,7 +1269,7 @@ def get_ffmpeg_fmt(path, file_type):
         pix_fmt = subprocess.check_output(ffprobe_cmd).rstrip().decode(sys.stdout.encoding).replace("\n", '|').replace("\r", '')
     except subprocess.CalledProcessError as grepexc:
         print(grepexc)
-        print("***** %s\n\tCannot recognise the value of pixel/audio format of this %s file.\n\tValue is replaced by 'missing_metadata*'.\n\tCheck after script finishes." % (path, file_type))
+        print("***** %s\n\tCannot recognise the value of pixel/audio format of this %s file/track.\n\tValue is replaced by 'missing_metadata*'.\n\tCheck after script finishes." % (path, file_type))
         pix_fmt = 'missing_metadata*'
     return pix_fmt
 
@@ -1290,7 +1290,7 @@ def get_number_of_tracks(path):
         type_list = subprocess.check_output(ffprobe_cmd).rstrip().decode(sys.stdout.encoding).splitlines()
     except subprocess.CalledProcessError as grepexc:
         print(grepexc)
-        print("***** %s\n\tCannot recognise this file type is [video] or [audio].\n\tValue is replaced by 'missing_metadata*'.\n\tCheck after script finishes." % path)
+        print("***** %s\n\tCannot recognise this file/track type is [video] or [audio].\n\tValue is replaced by 'missing_metadata*'.\n\tCheck after script finishes." % path)
         type_list = ['missing_metadata*']
     types = {}
     final_count = ''
@@ -1304,7 +1304,6 @@ def get_number_of_tracks(path):
             final_count += '%s %s tracks|' % (types[x], x)
         else:
             final_count += '%s %s track|' % (types[x], x)
-    print("final_count:" + final_count)
     return final_count[:-1]
 
 
