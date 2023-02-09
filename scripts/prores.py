@@ -123,6 +123,8 @@ def main(args_):
         if args.hq:
             ffmpeg_args.append('-profile:v')
             ffmpeg_args.append('3')
+            ffmpeg_args.append('-pix_fmt')
+            ffmpeg_args.append('yuv422p10le')
         if args.wide:
             ffmpeg_args.append('-aspect')
             ffmpeg_args.append('16:9')
