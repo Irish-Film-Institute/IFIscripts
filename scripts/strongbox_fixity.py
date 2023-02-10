@@ -42,6 +42,8 @@ def diff_manifests(manifest, strongbox_list):
     '''
     print('\nStrongbox_fixity - IFIscripts')
     print('Analysing %s\n' % manifest)
+    # 
+    error_type  = 0
     with open(manifest, 'r', encoding='utf-8') as original_manifest:
         aip_manifest = original_manifest.read().splitlines()
     # A list of items in strongbox, that are different in aip sha512 manifest
@@ -53,23 +55,31 @@ def diff_manifests(manifest, strongbox_list):
     if len(strongbox_list) == 0:
         print('ERROR ***************************************')
         print('ERROR ***************************************The files are not on strongbox!!')
+        error_type = 1
     # checks if everything in the strongbox list is in the aip manifest.
     elif len(strongbox_check) == 0:
         print('All files in the strongbox manifest are present in your AIP manifest and the hashes validate')
     else:
         for i in strongbox_check:
-            print('%s is different from the strongbox_csv to the AIP manifest' % i)
+            print('%s is in the strongbox but NOT in the AIP manifest' % i)
+        error_type = 1
     if len(aip_check) == 0:
         print('All files in the AIP manifest are present in your strongbox manifest and the hashes validate')
     else:
         for i in strongbox_check:
-            print('%s is different from the AIP manifest to the Strongbox manifest' % i)
-    print('Analysis complete\n')
-def find_checksums(csv_file, identifier):
+            print('%s is in the AIP manifest but NOT in the Strongbox manifest' % i)
+        error_type = 1
+    print('\nAnalysis complete\n')
+    return error_type
+
+def get_checksums(csv_file):
+    csv_dict = ififuncs.extract_metadata(csv_file)
+    return csv_dict
+
+def find_checksums(csv_dict, identifier):
     '''
     Finds the relevant entries in the CSV and prints to terminal
     '''
-    csv_dict = ififuncs.extract_metadata(csv_file)
     manifest_lines = []
     for items in csv_dict:
         for x in items:
@@ -94,19 +104,26 @@ def main(args_):
     args = parse_args(args_)
     csv_file = args.csv
     source = args.i
+    csv_dict = get_checksums(csv_file)
+    error_list = []
     package_list = sorted(os.listdir(source))
     for package in package_list:
         full_path = os.path.join(source, package)
         if os.path.isdir(full_path):
             basename = os.path.basename(package)
             if package[:3] == 'aaa':
-                strongbox_list = find_checksums(csv_file, package)
+                strongbox_list = find_checksums(csv_dict, package)
                 manifest = find_manifest(full_path)
-                diff_manifests(manifest, strongbox_list) # manifest needs to be declared here
+                error_type = diff_manifests(manifest, strongbox_list) # manifest needs to be declared here
+                if error_type != 0:
+                    error_list.append(package)
                 '''
                 for i in strongbox_list:
                     print i
                 '''
+    if error_list:
+        print("-----\nStrongbox Fixity Summary:\n Above AIP(s) returns exceptions. Check the details above.")
+        for item in error_list:
+            print(" " + item)
 if __name__ == '__main__':
     main(sys.argv[1:])
-
