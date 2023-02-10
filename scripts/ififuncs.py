@@ -1474,7 +1474,7 @@ def recursive_file_list(video_files):
     recursive_list = []
     for root, _, filenames in os.walk(video_files):
         for filename in filenames:
-            if filename.endswith(('.MP4', '.mp4', '.MOV', '.mov', '.mkv', '.mxf', '.MXF', '.WAV', '.wav', '.aiff', '.AIFF', 'mp3', 'MP3', 'm2t', '.dv', '.DV', '.iso', '.ISO')):
+            if filename.endswith(('.MP4', '.mp4', '.MOV', '.mov', '.mkv', '.mxf', '.MXF', '.WAV', '.wav', '.aiff', '.AIFF', 'mp3', 'MP3', 'm2t', 'MTS', '.dv', '.DV', '.iso', '.ISO')):
                 recursive_list.append(os.path.join(root, filename))
     return recursive_list
 
