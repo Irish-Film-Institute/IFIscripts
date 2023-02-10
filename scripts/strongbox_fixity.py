@@ -43,11 +43,16 @@ def diff_manifests(manifest, strongbox_list):
     print('\nStrongbox_fixity - IFIscripts')
     print('Analysing %s\n' % manifest)
     # 
-    error_type  = 0
+    error_type = 0
+    white_list = ['manifest-sha512.txt', 'manifest.md5']
     with open(manifest, 'r', encoding='utf-8') as original_manifest:
         aip_manifest = original_manifest.read().splitlines()
     # A list of items in strongbox, that are different in aip sha512 manifest
     strongbox_check = [item for item in strongbox_list if item not in aip_manifest]
+    # A list of manifest-sha512.txt and manifest.md5 in strongbox, that are exception for diff
+    strongbox_except = list(filter(lambda file: any([item in file for item in white_list]), strongbox_check))
+    # A list of remaning items in the strongbox_check, that are the items need to be diff'ed
+    strongbox_remain = list(set(strongbox_check).difference(set(strongbox_except)))
     new_manifest = []
     # A list of items in the AIP manifest, that are different in the strongbox manifest
     aip_check =  [item for item in aip_manifest if item not in strongbox_list]
@@ -57,10 +62,11 @@ def diff_manifests(manifest, strongbox_list):
         print('ERROR ***************************************The files are not on strongbox!!')
         error_type = 1
     # checks if everything in the strongbox list is in the aip manifest.
-    elif len(strongbox_check) == 0:
+    elif len(strongbox_check) == 2 and len(strongbox_except) == 2 and len(strongbox_remain) == 0:
         print('All files in the strongbox manifest are present in your AIP manifest and the hashes validate')
     else:
         for i in strongbox_check:
+
             print('%s is in the strongbox but NOT in the AIP manifest' % i)
         error_type = 1
     if len(aip_check) == 0:
