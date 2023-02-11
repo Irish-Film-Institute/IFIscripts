@@ -56,24 +56,34 @@ def diff_manifests(manifest, strongbox_list):
     new_manifest = []
     # A list of items in the AIP manifest, that are different in the strongbox manifest
     aip_check =  [item for item in aip_manifest if item not in strongbox_list]
-    # check if the files are actually on the strongbox
-    if len(strongbox_list) == 0:
-        print('ERROR ***************************************')
-        print('ERROR ***************************************The files are not on strongbox!!')
-        error_type = 1
-    # checks if everything in the strongbox list is in the aip manifest.
-    elif len(strongbox_check) == 2 and len(strongbox_except) == 2 and len(strongbox_remain) == 0:
-        print('All files in the strongbox manifest are present in your AIP manifest and the hashes validate')
+    # Remove sha512 value
+    for i in aip_check:
+        j = aip_check.index(i)
+        aip_check[j] = i[128:]
+    intsec = list(set(strongbox_remain).intersection(set(aip_check)))
+    # check if the files are stuck in the delayed action
+    if len(intsec) == 0:
+        # check if the files are actually on the strongbox
+        if len(strongbox_list) == 0:
+            print('ERROR ***************************************')
+            print('ERROR ***************************************The files are not on strongbox!!')
+            error_type = 1
+        elif len(strongbox_check) == 2 and len(strongbox_except) == 2 and len(strongbox_remain) == 0:
+            print('All files in the strongbox manifest are present in your AIP manifest and the hashes validate')
+        else:
+            for i in strongbox_remain:
+                print('%s is in the strongbox but NOT in the AIP manifest' % i)
+            error_type = 1
+        # checks if everything in the strongbox list is in the aip manifest.
+        if len(aip_check) == 0 and len(intsec) == 0:
+            print('All files in the AIP manifest are present in your strongbox manifest and the hashes validate')
+        else:
+            for i in aip_check:
+                print('%s is in the AIP manifest but NOT in the Strongbox manifest' % i)
+            error_type = 1
     else:
-        for i in strongbox_check:
-
-            print('%s is in the strongbox but NOT in the AIP manifest' % i)
-        error_type = 1
-    if len(aip_check) == 0:
-        print('All files in the AIP manifest are present in your strongbox manifest and the hashes validate')
-    else:
-        for i in strongbox_check:
-            print('%s is in the AIP manifest but NOT in the Strongbox manifest' % i)
+        for i in intsec:
+            print('%s is moved to strongbox but IS NOT WRITTEN TO TAPES' % i)
         error_type = 1
     print('\nAnalysis complete\n')
     return error_type
