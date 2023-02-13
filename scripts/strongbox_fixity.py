@@ -65,11 +65,11 @@ def diff_manifests(manifest, strongbox_list):
         for i in strongbox_check:
             print('%s is different from the AIP manifest to the Strongbox manifest' % i)
     print('Analysis complete\n')
-def find_checksums(csv_file, identifier):
+
+def find_checksums(csv_dict, identifier):
     '''
     Finds the relevant entries in the CSV and prints to terminal
     '''
-    csv_dict = ififuncs.extract_metadata(csv_file)
     manifest_lines = []
     for items in csv_dict:
         for x in items:
@@ -94,13 +94,14 @@ def main(args_):
     args = parse_args(args_)
     csv_file = args.csv
     source = args.i
+    csv_dict = ififuncs.extract_metadata(csv_file)
     package_list = sorted(os.listdir(source))
     for package in package_list:
         full_path = os.path.join(source, package)
         if os.path.isdir(full_path):
             basename = os.path.basename(package)
             if package[:3] == 'aaa':
-                strongbox_list = find_checksums(csv_file, package)
+                strongbox_list = find_checksums(csv_dict, package)
                 manifest = find_manifest(full_path)
                 diff_manifests(manifest, strongbox_list) # manifest needs to be declared here
                 '''
