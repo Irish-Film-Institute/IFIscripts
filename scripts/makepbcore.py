@@ -432,6 +432,7 @@ def main(args_):
     video_codec_profile_list = []
     timecode_list = []
     channels_list = []
+    failed_path = []
     stl = False
     subtitle_check = ififuncs.get_digital_object_descriptor(args.input)
     if 'STL' in subtitle_check:
@@ -563,6 +564,8 @@ def main(args_):
         except Exception as e:
             print("\ninstantDataRate ERROR\n\t-> get_mediainfo(OverallBitRate) not support\n\t-> %s\n\t-> makepbcore.py line: 560\n\t\t-> ififuncs.py line: 200" % e)
         instantTracks = ififuncs.get_number_of_tracks(source)
+        if instantTracks == 'missing_metadata*':
+            failed_path.append(source)
         track_count_list.append(instantTracks)
         if stl is True:
             track_count_list.append('STL sidecar')
@@ -671,8 +674,12 @@ def main(args_):
         instantDate_other = 'n/a'
         instantDate_type = 'n/a'
         pix_fmt = ififuncs.get_ffmpeg_fmt(source, 'video')
+        if pix_fmt == 'missing_metadata*':
+            failed_path.append(source)
         pix_fmt_list.append(pix_fmt)
         audio_fmt = ififuncs.get_ffmpeg_fmt(source, 'audio')
+        if audio_fmt == 'missing_metadata*':
+            failed_path.append(source)
         audio_fmt_list.append(audio_fmt)
         essenceBitDepth_vid = ififuncs.get_mediainfo(
             'duration', '--inform=Video;%BitDepth%', source
@@ -886,6 +893,9 @@ def main(args_):
         ififuncs.sha512_update(sha512_manifest, csv_filename)
         print((' - Updating %s with %s' % (sha512_manifest, csv_filename)))
         print(metadata_error)
+    if failed_path:
+        print("***** [missing_metadata*] Some metadata cannot be recognised by the script.\n\tThe source path(s) shows below.\n\tRepeated locations means multiple missing matadata.")
+        print(*failed_path, sep = "\n")
 if __name__ == '__main__':
     main(sys.argv[1:])
 
