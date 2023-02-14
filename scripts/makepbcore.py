@@ -894,7 +894,7 @@ def main(args_):
         print((' - Updating %s with %s' % (sha512_manifest, csv_filename)))
         print(metadata_error)
     if failed_path:
-        print("***** [missing_metadata*] Some metadata cannot be recognised by the script.\n\tThe source path(s) shows below.\n\tRepeated locations means multiple missing matadata.")
+        print("***** [missing_metadata*] The source path(s) shown below contain corrupted metadata.\n\tRepeated locations mean the absence of metadata in multiple fields.")
         print(*failed_path, sep = "\n")
 if __name__ == '__main__':
     main(sys.argv[1:])
