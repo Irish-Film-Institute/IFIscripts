@@ -733,11 +733,11 @@ def get_user():
     user = ''
     if user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10'):
         user = input(
-            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10\n\n1.\tCaroline Crowther\n2.\tEmma Battlebury\n3.\tGavin Martin\n4.\tMark Keleghan\n5.\tNiall Anderson\n6.\tNiamh Murphy\n7.\tNoelia Romero\n8.\tRaelene Casey\n9.\tRaven Cooke\n10.\tYazhou He\n'
+            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10\n\n1.\tCaroline Crowther\n2.\tEmma Battlebury\n3.\tGavin Martin\n4.\tMark Keleghan\n5.\tNiall Anderson\n6.\tNoelia Romero\n7.\tRaelene Casey\n8.\tRaven Cooke\n9.\tYazhou He\n'
         )
         while user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10'):
             user = input(
-                '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10\n\n1.\tCaroline Crowther\n2.\tEmma Battlebury\n3.\tGavin Martin\n4.\tMark Keleghan\n5.\tNiall Anderson\n6.\tNiamh Murphy\n7.\tNoelia Romero\n8.\tRaelene Casey\n9.\tRaven Cooke\n10.\tYazhou He\n'
+            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10\n\n1.\tCaroline Crowther\n2.\tEmma Battlebury\n3.\tGavin Martin\n4.\tMark Keleghan\n5.\tNiall Anderson\n6.\tNoelia Romero\n7.\tRaelene Casey\n8.\tRaven Cooke\n9.\tYazhou He\n'
             )
     if user == '1':
         user = 'Caroline Crowther'
@@ -755,20 +755,17 @@ def get_user():
         user = 'Niall Anderson'
         time.sleep(1)
     elif user == '6':
-        user = 'Niamh Murphy'
-        time.sleep(1)
-    elif user == '7':
         user = 'Noelia Romero'
         time.sleep(1)
-    elif user == '8':
+    elif user == '7':
         user = 'Raelene Casey'
         time.sleep(1)
-    elif user == '9':
+    elif user == '8':
         user = 'Raven Cooke'
         time.sleep(1)
-    elif user == '10':
+    elif user == '9':
         user = 'Yazhou He'
-        time.sleep(1)     
+        time.sleep(1)
     return user
 
 
