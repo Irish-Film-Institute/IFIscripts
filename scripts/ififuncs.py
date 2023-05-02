@@ -731,11 +731,11 @@ def get_user():
     Asks user who they are. Returns a string with their name
     '''
     user = ''
-    if user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10'):
+    if user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9'):
         user = input(
             '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10\n\n1.\tCaroline Crowther\n2.\tEmma Battlebury\n3.\tGavin Martin\n4.\tMark Keleghan\n5.\tNiall Anderson\n6.\tNoelia Romero\n7.\tRaelene Casey\n8.\tRaven Cooke\n9.\tYazhou He\n'
         )
-        while user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10'):
+        while user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9'):
             user = input(
             '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10\n\n1.\tCaroline Crowther\n2.\tEmma Battlebury\n3.\tGavin Martin\n4.\tMark Keleghan\n5.\tNiall Anderson\n6.\tNoelia Romero\n7.\tRaelene Casey\n8.\tRaven Cooke\n9.\tYazhou He\n'
             )
