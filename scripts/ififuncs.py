@@ -725,61 +725,46 @@ def make_folder_structure(path):
     os.makedirs(data_dir)
     os.makedirs(log_dir)
 
-
+    
 def get_user():
     '''
     Asks user who they are. Returns a string with their name
     '''
     user = ''
-    if user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'):
+    if user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9'):
         user = input(
-            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10,11,12,13,14\n\n1.\tKieran O\'Leary\n2.\tRaelene Casey\n3.\tAoife Fitzmaurice\n4.\tYujing Huang\n5.\tNoelia Romero\n6.\tAna Truchanova\n7.\tEoin O\'Donohoe\n8.\tGavin Martin\n9.\tNiamh Murphy\n10.\tRaven Cooke\n11.\tNiall Anderson\n12.\tYazhou He\n13.\tCaroline Crowther\n14.\tMark Keleghan\n'
+            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10\n\n1.\tCaroline Crowther\n2.\tEmma Battlebury\n3.\tGavin Martin\n4.\tMark Keleghan\n5.\tNiall Anderson\n6.\tNoelia Romero\n7.\tRaelene Casey\n8.\tRaven Cooke\n9.\tYazhou He\n'
         )
-        while user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'):
+        while user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9'):
             user = input(
-                '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10,11,12,13,14\n\n1.\tKieran O\'Leary\n2.\tRaelene Casey\n3.\tAoife Fitzmaurice\n4.\tYujing Huang\n5.\tNoelia Romero\n6.\tAna Truchanova\n7.\tEoin O\'Donohoe\n8.\tGavin Martin\n9.\tNiamh Murphy\n10.\tRaven Cooke\n11.\tNiall Anderson\n12.\tYazhou He\n13.\tCaroline Crowther\n14.\tMark Keleghan\n'
+            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10\n\n1.\tCaroline Crowther\n2.\tEmma Battlebury\n3.\tGavin Martin\n4.\tMark Keleghan\n5.\tNiall Anderson\n6.\tNoelia Romero\n7.\tRaelene Casey\n8.\tRaven Cooke\n9.\tYazhou He\n'
             )
     if user == '1':
-        user = 'Kieran O\'Leary'
-        time.sleep(1)
-    elif user == '2':
-        user = 'Raelene Casey'
-        time.sleep(1)
-    elif user == '3':
-        user = 'Aoife Fitzmaurice'
-        time.sleep(1)
-    elif user == '4':
-        user = 'Yujing Huang'
-        time.sleep(1)
-    elif user == '5':
-        user = 'Noelia Romero'
-        time.sleep(1)
-    elif user == '6':
-        user = 'Ana Truchanova'
-        time.sleep(1)
-    elif user == '7':
-        user = 'Eoin O\'Donohoe'
-        time.sleep(1)
-    elif user == '8':
-        user = 'Gavin Martin'
-        time.sleep(1)
-    elif user == '9':
-        user = 'Niamh Murphy'
-        time.sleep(1)
-    elif user == '10':
-        user = 'Raven Cooke'
-        time.sleep(1)
-    elif user == '11':
-        user = 'Niall Anderson'
-        time.sleep(1)
-    elif user == '12':
-        user = 'Yazhou He'
-        time.sleep(1)
-    elif user == '13':
         user = 'Caroline Crowther'
         time.sleep(1)
-    elif user == '14':
+    elif user == '2':
+        user = 'Emma Battlebury'
+        time.sleep(1)
+    elif user == '3':
+        user = 'Gavin Martin'
+        time.sleep(1)
+    elif user == '4':
         user = 'Mark Keleghan'
+        time.sleep(1)
+    elif user == '5':
+        user = 'Niall Anderson'
+        time.sleep(1)
+    elif user == '6':
+        user = 'Noelia Romero'
+        time.sleep(1)
+    elif user == '7':
+        user = 'Raelene Casey'
+        time.sleep(1)
+    elif user == '8':
+        user = 'Raven Cooke'
+        time.sleep(1)
+    elif user == '9':
+        user = 'Yazhou He'
         time.sleep(1)
     return user
 
