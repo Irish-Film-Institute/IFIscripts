@@ -15,6 +15,16 @@ def set_options():
         'input'
     )
     parser.add_argument(
+        '-as11',
+        action='store_true',
+        help='AS-11 UK DPP requires requires files except .mxf (A&V) files in the objects folder kept.'
+    )
+    parser.add_argument(
+        '-dcp',
+        action='store_true',
+        help='Digital Cinema Package (DCP) requires files except .mxf (A&V) files in the objects folder kept.'
+    )
+    parser.add_argument(
         '-o',
         help='Set output directory.', required=True
     )
@@ -54,16 +64,23 @@ def main():
                         adir_full = os.path.join(aroot, adir)
                         adir_paste = os.path.join(aip_paste, dir_path, adir)
                         adir_paste_full = os.path.join(output, adir_paste)
-                        print(adir_paste_full)
+                        print(adir_full + " ->")
                         os.mkdir(adir_paste_full)
-                        print(adir_paste_full)
+                        print("-> " + adir_paste_full)
                 if afiles:
                     print("\n---copy files---")
                     for afile in afiles:
                         afile_full = os.path.join(aroot, afile)
                         afile_paste_full = os.path.join(output, aip_paste, dir_path, afile)
                         if "objects" in afile_full:
-                            print("Skip content inside objects/")
+                            if args.as11 or args.dcp:
+                                if not afile_paste_full.endswith(".mxf"):
+                                    shutil.copy(afile_full, afile_paste_full)
+                                    print(afile_paste_full)
+                                else:
+                                    print("*Skip " + afile_full)
+                            else:
+                                print("*Skip objects/" + afile)
                         else:
                             shutil.copy(afile_full, afile_paste_full)
                             print(afile_paste_full)
