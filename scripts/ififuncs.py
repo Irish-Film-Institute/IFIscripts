@@ -731,13 +731,13 @@ def get_user():
     Asks user who they are. Returns a string with their name
     '''
     user = ''
-    if user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9'):
+    if user not in ('1', '2', '3', '4', '5', '6', '7', '8'):
         user = input(
-            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10\n\n1.\tCaroline Crowther\n2.\tEmma Battlebury\n3.\tGavin Martin\n4.\tMark Keleghan\n5.\tNiall Anderson\n6.\tNoelia Romero\n7.\tRaelene Casey\n8.\tRaven Cooke\n9.\tYazhou He\n\n(User list was last updated on 2023-05-10)\n'
+            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8\n\n1.\tCaroline Crowther\n2.\tEmma Battlebury\n3.\tGavin Martin\n4.\tMark Keleghan\n5.\tNiall Anderson\n6.\tRaelene Casey\n7.\tRaven Cooke\n8.\tYazhou He\n\n(User list was last updated on 2023-05-19)\n'
         )
-        while user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9'):
+        while user not in ('1', '2', '3', '4', '5', '6', '7', '8'):
             user = input(
-            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10\n\n1.\tCaroline Crowther\n2.\tEmma Battlebury\n3.\tGavin Martin\n4.\tMark Keleghan\n5.\tNiall Anderson\n6.\tNoelia Romero\n7.\tRaelene Casey\n8.\tRaven Cooke\n9.\tYazhou He\n\n(User list was last updated on 2023-05-10)\n'
+            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8\n\n1.\tCaroline Crowther\n2.\tEmma Battlebury\n3.\tGavin Martin\n4.\tMark Keleghan\n5.\tNiall Anderson\n6.\tRaelene Casey\n7.\tRaven Cooke\n8.\tYazhou He\n\n(User list was last updated on 2023-05-19)\n'
             )
     if user == '1':
         user = 'Caroline Crowther'
@@ -755,15 +755,12 @@ def get_user():
         user = 'Niall Anderson'
         time.sleep(1)
     elif user == '6':
-        user = 'Noelia Romero'
-        time.sleep(1)
-    elif user == '7':
         user = 'Raelene Casey'
         time.sleep(1)
-    elif user == '8':
+    elif user == '7':
         user = 'Raven Cooke'
         time.sleep(1)
-    elif user == '9':
+    elif user == '8':
         user = 'Yazhou He'
         time.sleep(1)
     return user
