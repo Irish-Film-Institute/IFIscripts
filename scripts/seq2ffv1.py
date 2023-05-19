@@ -321,13 +321,15 @@ def package(objects, object_entry, uuid, source_abspath, args, log_name_source, 
             sipcreator_manifest,
             os.path.join(logs_dir, os.path.basename(rawcooked_logfile))
         )
+    '''
     metadata_dir = os.path.join(sip_dir, 'metadata')
-    os.chdir(current_dir)
-    shutil.copy(os.path.join(os.path.abspath(os.path.dirname(sys.argv[0])), 'film_scan_aip_documentation.txt'), metadata_dir)
+    shutil.copy(os.path.join(os.path.abspath(os.path.dirname(os.path.dirname(sys.argv[0]))), 'film_scan_aip_documentation.txt'), metadata_dir)
     ififuncs.manifest_update(
         sipcreator_manifest,
         os.path.join(metadata_dir, 'film_scan_aip_documentation.txt')
     )
+    '''
+    os.chdir(current_dir)
     os.remove(dfxml)
     os.remove(inputtracexml)
     os.remove(inputxml)
