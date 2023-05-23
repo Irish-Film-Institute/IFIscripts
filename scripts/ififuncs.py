@@ -741,42 +741,35 @@ def get_user():
     '''
     Asks user who they are. Returns a string with their name
     '''
+    user_list = ['Allison McGrail',
+                'Caroline Crowther',
+                'Emma Battlebury',
+                'Gavin Martin',
+                'Mark Keleghan',
+                'Niall Anderson',
+                'Raelene Casey',
+                'Raven Cooke',
+                'Yazhou He']
     user = ''
-    if user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9'):
-        user = input(
-            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9\n\n1.\tAllison McGrail\n2.\tCaroline Crowther\n3.\tEmma Battlebury\n4.\tGavin Martin\n5.\tMark Keleghan\n6.\tNiall Anderson\n7.\tRaelene Casey\n8.\tRaven Cooke\n9.\tYazhou He\n\n(User list was last updated on 2023-05-23)\n'
-        )
-        while user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9'):
-            user = input(
-            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9\n\n1.\tAllison McGrail\n2.\tCaroline Crowther\n3.\tEmma Battlebury\n4.\tGavin Martin\n5.\tMark Keleghan\n6.\tNiall Anderson\n7.\tRaelene Casey\n8.\tRaven Cooke\n9.\tYazhou He\n\n(User list was last updated on 2023-05-23)\n'
-            )
-    if user == '1':
-        user = 'Allison McGrail'
-        time.sleep(1)
-    elif user == '2':
-        user = 'Caroline Crowther'
-        time.sleep(1)       
-    elif user == '3':
-        user = 'Emma Battlebury'
-        time.sleep(1)
-    elif user == '4':
-        user = 'Gavin Martin'
-        time.sleep(1)
-    elif user == '5':
-        user = 'Mark Keleghan'
-        time.sleep(1)
-    elif user == '6':
-        user = 'Niall Anderson'
-        time.sleep(1)
-    elif user == '7':
-        user = 'Raelene Casey'
-        time.sleep(1)
-    elif user == '8':
-        user = 'Raven Cooke'
-        time.sleep(1)
-    elif user == '9':
-        user = 'Yazhou He'
-        time.sleep(1)
+    if user not in user_list:
+        print('\n\n**** Who are you?\nEnter the number before your name (ie. 1)\n\n')
+        i = 1
+        for user_item in user_list:
+            print(str(i) + '.\t' + user_item)
+            i = i + 1
+        print('\n\n(User list was last updated on 2023-05-23)\n')
+        i = int(input())
+        while i > len(user_list) or i < 1:
+            print('\n\n**** Who are you?\Enter the number before your name (ie. 1)\n\n')
+            i = 1
+            for user_item in user_list:
+                print(str(i) + '.\t' + user_item)
+                i = i + 1
+            print('\n\n(User list was last updated on 2023-05-23)\n')
+            i = int(input())
+    user = user_list[i-1]
+    print('\nUser selected: ' + user)
+    time.sleep(1)
     return user
 
 
