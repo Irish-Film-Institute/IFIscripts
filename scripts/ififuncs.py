@@ -753,7 +753,7 @@ def get_user():
     if user == '1':
         user = 'Allison McGrail'
         time.sleep(1)
-     elif user == '2':
+    elif user == '2':
         user = 'Caroline Crowther'
         time.sleep(1)       
     elif user == '3':
