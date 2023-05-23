@@ -323,6 +323,17 @@ def generate_log(log, what2log):
                      + ' ' + what2log + ' \n')
 
 
+def generate_txt(txt, what2txt):
+    if not os.path.isfile(txt):
+        with open(txt, "w", encoding='utf-8') as fo:
+            fo.write(time.strftime("Text created time: %Y-%m-%d %H:%M:%S \n")
+                     + 'Script User: ' + getpass.getuser() + ' \n'
+                     + what2txt + ' \n')
+    else:
+        with open(txt, "a", encoding='utf-8') as fo:
+            fo.write(what2txt + ' \n')
+
+
 def hashlib_md5(filename):
     '''
     uses hashlib to return an MD5 checksum of an input filename
@@ -725,62 +736,40 @@ def make_folder_structure(path):
     os.makedirs(data_dir)
     os.makedirs(log_dir)
 
-
+    
 def get_user():
     '''
     Asks user who they are. Returns a string with their name
     '''
+    user_list = ['Allison McGrail',
+                'Caroline Crowther',
+                'Emma Battlebury',
+                'Gavin Martin',
+                'Mark Keleghan',
+                'Niall Anderson',
+                'Raelene Casey',
+                'Raven Cooke',
+                'Yazhou He']
     user = ''
-    if user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'):
-        user = input(
-            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10,11,12,13,14\n\n1.\tKieran O\'Leary\n2.\tRaelene Casey\n3.\tAoife Fitzmaurice\n4.\tYujing Huang\n5.\tNoelia Romero\n6.\tAna Truchanova\n7.\tEoin O\'Donohoe\n8.\tGavin Martin\n9.\tNiamh Murphy\n10.\tRaven Cooke\n11.\tNiall Anderson\n12.\tYazhou He\n13.\tCaroline Crowther\n14.\tMark Keleghan\n'
-        )
-        while user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'):
-            user = input(
-                '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9,10,11,12,13,14\n\n1.\tKieran O\'Leary\n2.\tRaelene Casey\n3.\tAoife Fitzmaurice\n4.\tYujing Huang\n5.\tNoelia Romero\n6.\tAna Truchanova\n7.\tEoin O\'Donohoe\n8.\tGavin Martin\n9.\tNiamh Murphy\n10.\tRaven Cooke\n11.\tNiall Anderson\n12.\tYazhou He\n13.\tCaroline Crowther\n14.\tMark Keleghan\n'
-            )
-    if user == '1':
-        user = 'Kieran O\'Leary'
-        time.sleep(1)
-    elif user == '2':
-        user = 'Raelene Casey'
-        time.sleep(1)
-    elif user == '3':
-        user = 'Aoife Fitzmaurice'
-        time.sleep(1)
-    elif user == '4':
-        user = 'Yujing Huang'
-        time.sleep(1)
-    elif user == '5':
-        user = 'Noelia Romero'
-        time.sleep(1)
-    elif user == '6':
-        user = 'Ana Truchanova'
-        time.sleep(1)
-    elif user == '7':
-        user = 'Eoin O\'Donohoe'
-        time.sleep(1)
-    elif user == '8':
-        user = 'Gavin Martin'
-        time.sleep(1)
-    elif user == '9':
-        user = 'Niamh Murphy'
-        time.sleep(1)
-    elif user == '10':
-        user = 'Raven Cooke'
-        time.sleep(1)
-    elif user == '11':
-        user = 'Niall Anderson'
-        time.sleep(1)
-    elif user == '12':
-        user = 'Yazhou He'
-        time.sleep(1)
-    elif user == '13':
-        user = 'Caroline Crowther'
-        time.sleep(1)
-    elif user == '14':
-        user = 'Mark Keleghan'
-        time.sleep(1)
+    if user not in user_list:
+        print('\n\n**** Who are you?\nEnter the number before your name (ie. 1)\n\n')
+        i = 1
+        for user_item in user_list:
+            print(str(i) + '.\t' + user_item)
+            i = i + 1
+        print('\n\n(User list was last updated on 2023-05-23)\n')
+        i = int(input())
+        while i > len(user_list) or i < 1:
+            print('\n\n**** Who are you?\Enter the number before your name (ie. 1)\n\n')
+            i = 1
+            for user_item in user_list:
+                print(str(i) + '.\t' + user_item)
+                i = i + 1
+            print('\n\n(User list was last updated on 2023-05-23)\n')
+            i = int(input())
+    user = user_list[i-1]
+    print('\nUser selected: ' + user)
+    time.sleep(1)
     return user
 
 

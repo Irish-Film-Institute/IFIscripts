@@ -15,6 +15,16 @@ def set_options():
         'input'
     )
     parser.add_argument(
+        '-as11',
+        action='store_true',
+        help='AS-11 UK DPP requires files except .mxf (A&V) files in the objects folder kept.'
+    )
+    parser.add_argument(
+        '-dcp',
+        action='store_true',
+        help='Digital Cinema Package (DCP) requires files except .mxf (A&V) files in the objects folder kept.'
+    )
+    parser.add_argument(
         '-o',
         help='Set output directory.', required=True
     )
@@ -34,39 +44,48 @@ def main():
     for root, dirs, files in os.walk(input):
         aip = os.path.basename(root)
         if 'aaa' in aip:
-            aip_full = root
-            print("\nAIP has found: %s" % aip_full)
-            aip_paste = aip + '_shell'
-            aip_paste_full = os.path.join(output, aip_paste)
+            aip_fpath = root
+            print("\nAIP has found: %s" % aip_fpath)
+            aip_dest = aip + '_shell'
+            aip_dest_fpath = os.path.join(output, aip_dest)
             try:
-                os.mkdir(aip_paste_full)
-                print("\nMaking %s in %s" % (aip_paste, aip_paste_full))
+                os.mkdir(aip_dest_fpath)
+                print("\nMaking %s in %s" % (aip_dest, output))
             except:
-                print("%s already exists in the output directory" % aip_paste)
+                print("%s already exists in the output directory %s" % (aip_dest, output))
                 sys.exit()
-            for aroot, adirs, afiles in os.walk(aip_full):
-                dir_path = aroot.replace(aip_full, "")
+            for aroot, adirs, afiles in os.walk(aip_fpath):
+                dir_path = aroot.replace(aip_fpath, "")
                 dir_path = dir_path[1:]
-                print("\nroot: %s\nsubfiles: %s\nsubfolders: %s" % (dir_path, afiles, adirs))
+                print("\nroot: %s\nsubfolders: %s\nsubfiles: %s" % (dir_path, adirs, afiles))
                 if adirs:
-                    print("\n---clone folders---")
+                    print("\t---clone folders---")
                     for adir in adirs:
-                        adir_full = os.path.join(aroot, adir)
-                        adir_paste = os.path.join(aip_paste, dir_path, adir)
-                        adir_paste_full = os.path.join(output, adir_paste)
-                        print(adir_paste_full)
-                        os.mkdir(adir_paste_full)
-                        print(adir_paste_full)
+                        adir_copy_fpath = os.path.join(aroot, adir)
+                        adir_dest = os.path.join(aip_dest, dir_path, adir)
+                        adir_dest_fpath = os.path.join(output, adir_dest)
+                        print("\t Source:\t" + adir_copy_fpath)
+                        os.mkdir(adir_dest_fpath)
+                        print("\t Destination:\t" + adir_dest_fpath)
                 if afiles:
-                    print("\n---copy files---")
+                    print("\t---copy files---")
                     for afile in afiles:
-                        afile_full = os.path.join(aroot, afile)
-                        afile_paste_full = os.path.join(output, aip_paste, dir_path, afile)
-                        if "objects" in afile_full:
-                            print("Skip content inside objects/")
+                        afile_copy_fpath = os.path.join(aroot, afile)
+                        afile_dest_fpath = os.path.join(output, aip_dest, dir_path, afile)
+                        if "objects" in afile_copy_fpath:
+                            if args.as11 or args.dcp:
+                                if not afile_dest_fpath.endswith(".mxf"):
+                                    print("\t Source:\t" + afile_copy_fpath)
+                                    shutil.copy(afile_copy_fpath, afile_dest_fpath)
+                                    print("\t Destination:\t" + afile_dest_fpath)
+                                else:
+                                    print("\t*Skip:\t\t" + afile_copy_fpath)
+                            else:
+                                print("\t*Skip:\t\t" + afile_copy_fpath)
                         else:
-                            shutil.copy(afile_full, afile_paste_full)
-                            print(afile_paste_full)
+                            print("\t Source:\t" + afile_copy_fpath)
+                            shutil.copy(afile_copy_fpath, afile_dest_fpath)
+                            print("\t Destination:\t" + afile_dest_fpath)
 
 
 if __name__ == "__main__":

@@ -40,7 +40,7 @@ def short_test(images):
         shutil.copy(full_path, temp_dir)
     mkv_uuid = ififuncs.create_uuid()
     mkv_file = os.path.join(tempfile.gettempdir(), mkv_uuid + '.mkv')
-    subprocess.call(['rawcooked', temp_dir, '-c:a', 'copy', '-o', mkv_file])
+    subprocess.call(['rawcooked', '--check-padding', temp_dir, '-c:a', 'copy', '-o', mkv_file])
     converted_manifest = os.path.join(temp_dir, '123.md5')
     ififuncs.hashlib_manifest(temp_dir, converted_manifest, temp_dir)
     subprocess.call(['rawcooked', mkv_file])
@@ -207,7 +207,7 @@ def make_ffv1(
     normalisation_tool = ififuncs.get_rawcooked_version()
     rawcooked_logfile = "\'" + rawcooked_logfile + "\'"
     env_dict = ififuncs.set_environment(rawcooked_logfile)
-    rawcooked_cmd = ['rawcooked', reel, '--check', 'full', '-c:a', 'copy', '-o', ffv1_path]
+    rawcooked_cmd = ['rawcooked', '--check-padding', reel, '-c:a', 'copy', '-o', ffv1_path]
     if args.framerate:
         rawcooked_cmd.extend(['-framerate', args.framerate])
     ffv12dpx = (rawcooked_cmd)
@@ -321,13 +321,15 @@ def package(objects, object_entry, uuid, source_abspath, args, log_name_source, 
             sipcreator_manifest,
             os.path.join(logs_dir, os.path.basename(rawcooked_logfile))
         )
+    '''
     metadata_dir = os.path.join(sip_dir, 'metadata')
-    os.chdir(current_dir)
-    shutil.copy(os.path.join(os.path.abspath(os.path.dirname(sys.argv[0])), 'film_scan_aip_documentation.txt'), metadata_dir)
+    shutil.copy(os.path.join(os.path.abspath(os.path.dirname(os.path.dirname(sys.argv[0]))), 'film_scan_aip_documentation.txt'), metadata_dir)
     ififuncs.manifest_update(
         sipcreator_manifest,
         os.path.join(metadata_dir, 'film_scan_aip_documentation.txt')
     )
+    '''
+    os.chdir(current_dir)
     os.remove(dfxml)
     os.remove(inputtracexml)
     os.remove(inputxml)
