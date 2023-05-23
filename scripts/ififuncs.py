@@ -742,36 +742,39 @@ def get_user():
     Asks user who they are. Returns a string with their name
     '''
     user = ''
-    if user not in ('1', '2', '3', '4', '5', '6', '7', '8'):
+    if user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9'):
         user = input(
-            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8\n\n1.\tCaroline Crowther\n2.\tEmma Battlebury\n3.\tGavin Martin\n4.\tMark Keleghan\n5.\tNiall Anderson\n6.\tRaelene Casey\n7.\tRaven Cooke\n8.\tYazhou He\n\n(User list was last updated on 2023-05-19)\n'
+            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8\n\n1.\tAllison McGrail\n2.\tCaroline Crowther\n3.\tEmma Battlebury\n4.\tGavin Martin\n5.\tMark Keleghan\n6.\tNiall Anderson\n7.\tRaelene Casey\n8.\tRaven Cooke\n9.\tYazhou He\n\n(User list was last updated on 2023-05-23)\n'
         )
-        while user not in ('1', '2', '3', '4', '5', '6', '7', '8'):
+        while user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9'):
             user = input(
-            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8\n\n1.\tCaroline Crowther\n2.\tEmma Battlebury\n3.\tGavin Martin\n4.\tMark Keleghan\n5.\tNiall Anderson\n6.\tRaelene Casey\n7.\tRaven Cooke\n8.\tYazhou He\n\n(User list was last updated on 2023-05-19)\n'
+            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8\n\n1.\tAllison McGrail\n2.\tCaroline Crowther\n3.\tEmma Battlebury\n4.\tGavin Martin\n5.\tMark Keleghan\n6.\tNiall Anderson\n7.\tRaelene Casey\n8.\tRaven Cooke\n9.\tYazhou He\n\n(User list was last updated on 2023-05-23)\n'
             )
     if user == '1':
-        user = 'Caroline Crowther'
+        user = 'Allison McGrail'
         time.sleep(1)
-    elif user == '2':
+     elif user == '2':
+        user = 'Caroline Crowther'
+        time.sleep(1)       
+    elif user == '3':
         user = 'Emma Battlebury'
         time.sleep(1)
-    elif user == '3':
+    elif user == '4':
         user = 'Gavin Martin'
         time.sleep(1)
-    elif user == '4':
+    elif user == '5':
         user = 'Mark Keleghan'
         time.sleep(1)
-    elif user == '5':
+    elif user == '6':
         user = 'Niall Anderson'
         time.sleep(1)
-    elif user == '6':
+    elif user == '7':
         user = 'Raelene Casey'
         time.sleep(1)
-    elif user == '7':
+    elif user == '8':
         user = 'Raven Cooke'
         time.sleep(1)
-    elif user == '8':
+    elif user == '9':
         user = 'Yazhou He'
         time.sleep(1)
     return user
