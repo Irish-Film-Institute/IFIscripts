@@ -323,6 +323,17 @@ def generate_log(log, what2log):
                      + ' ' + what2log + ' \n')
 
 
+def generate_txt(txt, what2txt):
+    if not os.path.isfile(txt):
+        with open(txt, "w", encoding='utf-8') as fo:
+            fo.write(time.strftime("Text created time: %Y-%m-%d %H:%M:%S \n")
+                     + 'Script User: ' + getpass.getuser() + ' \n'
+                     + what2txt + ' \n')
+    else:
+        with open(txt, "a", encoding='utf-8') as fo:
+            fo.write(what2txt + ' \n')
+
+
 def hashlib_md5(filename):
     '''
     uses hashlib to return an MD5 checksum of an input filename
