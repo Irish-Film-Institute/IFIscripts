@@ -744,11 +744,11 @@ def get_user():
     user = ''
     if user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9'):
         user = input(
-            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8\n\n1.\tAllison McGrail\n2.\tCaroline Crowther\n3.\tEmma Battlebury\n4.\tGavin Martin\n5.\tMark Keleghan\n6.\tNiall Anderson\n7.\tRaelene Casey\n8.\tRaven Cooke\n9.\tYazhou He\n\n(User list was last updated on 2023-05-23)\n'
+            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9\n\n1.\tAllison McGrail\n2.\tCaroline Crowther\n3.\tEmma Battlebury\n4.\tGavin Martin\n5.\tMark Keleghan\n6.\tNiall Anderson\n7.\tRaelene Casey\n8.\tRaven Cooke\n9.\tYazhou He\n\n(User list was last updated on 2023-05-23)\n'
         )
         while user not in ('1', '2', '3', '4', '5', '6', '7', '8', '9'):
             user = input(
-            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8\n\n1.\tAllison McGrail\n2.\tCaroline Crowther\n3.\tEmma Battlebury\n4.\tGavin Martin\n5.\tMark Keleghan\n6.\tNiall Anderson\n7.\tRaelene Casey\n8.\tRaven Cooke\n9.\tYazhou He\n\n(User list was last updated on 2023-05-23)\n'
+            '\n\n**** Who are you?\nPress 1,2,3,4,5,6,7,8,9\n\n1.\tAllison McGrail\n2.\tCaroline Crowther\n3.\tEmma Battlebury\n4.\tGavin Martin\n5.\tMark Keleghan\n6.\tNiall Anderson\n7.\tRaelene Casey\n8.\tRaven Cooke\n9.\tYazhou He\n\n(User list was last updated on 2023-05-23)\n'
             )
     if user == '1':
         user = 'Allison McGrail'
