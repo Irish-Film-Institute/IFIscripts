@@ -11,6 +11,7 @@ import sys
 import shutil
 import datetime
 import time
+import atexit
 import copyit
 import ififuncs
 import package_update
@@ -26,6 +27,22 @@ try:
 except ImportError:
     print('Clairmeta is not installed. DCP options will not function!')
 
+@atexit.register
+def clear_manifest_dir():
+    '''
+    This function prevent "moveit_manifests" folder has imcompleted 
+    manifest file inside and mess the incoming process.
+    It will move existed manifest file into the "moveit_manifests/old_manifests"
+    '''
+    desktop_manifest_dir = os.path.expanduser("~/Desktop/moveit_manifests")
+    old_manifest_dir = os.path.join(desktop_manifest_dir, 'old_manifests')
+    for i in os.listdir(desktop_manifest_dir):
+        o = os.path.join(old_manifest_dir, i)
+        i = os.path.join(desktop_manifest_dir, i)
+        if i.endswith('.md5'):
+            print('**** Found existing manifest: ' + i)
+            shutil.move(i, o)
+            print('**** Moved to old_manifest folder')
 
 def make_folder_path(path, args, object_entry):
     '''
