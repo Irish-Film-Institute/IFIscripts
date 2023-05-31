@@ -17,7 +17,7 @@ import os
 import re
 import time
 import ififuncs
-import accession
+import aipcreator
 import copyit
 import order
 
@@ -129,7 +129,7 @@ def parse_args(args_):
     Parse command line arguments.
     '''
     parser = argparse.ArgumentParser(
-        description='Batch process packages by running accession.py and makepbcore.py'
+        description='Batch process packages by running aipcreator.py and makepbcore.py'
         ' Written by Kieran O\'Leary.'
     )
     parser.add_argument(
@@ -224,7 +224,7 @@ def main(args_):
     oe_list = []
     if args.oe_csv:
         if not args.filmo_csv:
-            print(' - batchaccession.py - ERROR\n - No -filmographic argument supplied. This is mandatory when using the -oe_csv option. \n - Exiting..')
+            print(' - batchaipcreator.py - ERROR\n - No -filmographic argument supplied. This is mandatory when using the -oe_csv option. \n - Exiting..')
             sys.exit()
         oe_csv_extraction = ififuncs.extract_metadata(args.oe_csv)
         initial_oe_list = oe_csv_extraction[0]
@@ -271,7 +271,7 @@ def main(args_):
         print('\n')
     for success in sorted(to_accession.keys()):
         print('%s will be accessioned as %s' %  (success, to_accession[success]))
-    register = accession.make_register()
+    register = aipcreator.make_register()
     if args.filmo_csv:
         desktop_logs_dir = ififuncs.make_desktop_logs_dir()
         if args.dryrun:
@@ -345,7 +345,7 @@ def main(args_):
                     print(to_accession[package][3])
                     accession_cmd.extend(['-donation_date', to_accession[package][3]])
             print(accession_cmd)
-            accession.main(accession_cmd)
+            aipcreator.main(accession_cmd)
     collated_pbcore = gather_metadata(args.input)
     sorted_filepath = ififuncs.sort_csv(register, 'accession number')
     print('\nA helper accessions register has been generated in order to help with registration - located here: %s' % sorted_filepath)

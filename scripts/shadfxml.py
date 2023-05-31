@@ -8,7 +8,7 @@ import argparse
 import os
 import sys
 import ififuncs
-import accession
+import aipcreator
 import manifest
 
 def parse_args(args_):
@@ -67,7 +67,7 @@ def main(args_):
                 )
                 if not os.path.isfile(dfxml):
                     print('Generating Digital Forensics XML')
-                    dfxml = accession.make_dfxml(args, uuid_path, uuid)
+                    dfxml = aipcreator.make_dfxml(args, uuid_path, uuid)
                     ififuncs.generate_log(
                         new_log_textfile,
                         'EVENT = Metadata extraction - eventDetail=File system metadata extraction using Digital Forensics XML, eventOutcome=%s, agentName=makedfxml' % (dfxml)
