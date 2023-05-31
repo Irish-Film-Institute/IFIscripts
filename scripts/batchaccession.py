@@ -58,7 +58,7 @@ def gather_metadata(source):
         ififuncs.make_desktop_logs_dir(),
         time.strftime("%Y-%m-%dT%H_%M_%S_pbcore.csv")
     )
-    with open(collated_pbcore, 'w') as fo:
+    with open(collated_pbcore, 'w', encoding='utf-8') as fo:
         for i in metadata:
             fo.write(i[0])
     return collated_pbcore
