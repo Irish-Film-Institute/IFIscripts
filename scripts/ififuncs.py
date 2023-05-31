@@ -561,7 +561,7 @@ def create_csv(csv_file, *args):
 
 
 def append_csv(csv_file, *args):
-    f = open(csv_file, 'a', newline='')
+    f = open(csv_file, 'a', encoding='utf-8', newline='')
     try:
         writer = csv.writer(f)
         writer.writerow(*args)
