@@ -34,28 +34,28 @@ batchsipcreator.py
    ``batchsipcreator.py -i  /path/to/directory_name -o /path/to/output_folder -supplement_extension_pattern xml pdf txt -object_extension_pattern mxf stl``
 -  Run ``batchsipcreator.py -h`` for all options.
 
-accession.py
+aipcreator.py
 ~~~~~~~~~~~~
 
--  Accessions a package that has been through the Object Entry
+-  Accession a package that has been through the Object Entry
    procedure.
 -  Currently this just works with packages that have been generated
    using ``sipcreator.py``. SHA512 manifests are created,the OE number
    is replaced by an accession number, and the sipcreator logfile is
    updated with the various events that have taken place.
--  Usage for one directory - ``accession.py /path/to/directory_name``
--  Run ``accession.py -h`` for all options.
+-  Usage for one directory - ``aipcreator.py /path/to/directory_name``
+-  Run ``aipcreator.py -h`` for all options.
 
-batchaccession.py
+batchaipcreator.py
 ~~~~~~~~~~~~~~~~~
 
--  Batch process packages by running ``accession.py`` and
+-  Batch process packages by running ``aipcreator.py`` and
    ``makepbcore.py``
 -  The script will only process files with ``sipcreator.py`` style
    packages. ``makeffv1.py`` and ``dvsip.py`` packages will be ignored.
 -  Usage for processing all subdirectories -
-   ``batchaccession.py /path/to/directory_name``
--  Run ``batchaccession.py -h`` for all options.
+   ``batchaipcreator.py /path/to/directory_name``
+-  Run ``batchaipcreator.py -h`` for all options.
 
 order.py
 ~~~~~~~~
@@ -108,7 +108,7 @@ deletefiles.py
 ~~~~~~~~~~~~~~
 
 -  Deletes files after ``sipcreator.py`` has been run, but before
-   ``accession.py`` has been run.
+   ``aipcreator.py`` has been run.
 -  Manifests are updated, metadata is deleted and the events are all
    logged in the logfile.
 -  This script takes the parent OE folder as input. Use the ``-i``
@@ -122,7 +122,7 @@ package_update.py
 ~~~~~~~~~~~~
 
 -  Rearranges files into a subfolder files after ``sipcreator.py`` has
-   been run, but before ``accession.py`` has been run.
+   been run, but before ``aipcreator.py`` has been run.
 -  Manifests are updated, files are moved, and the events are all logged
    in the logfile.
 -  This is useful in conjunction with ``sipcreator.py`` and
@@ -471,7 +471,7 @@ loopline\_repackage.py
 ~~~~~~~~~~~~~~~~~~~~~~
 
 -  Retrospectively updates older FFV1/DV packages in order to meet our
-   current packaging requirements. This should allow accession.py and
+   current packaging requirements. This should allow aipcreator.py and
    makepbcore.py to run as expected. This will process a group of
    packages and each loop will result in the increment by one of the
    starting OE number. Use with caution.
@@ -482,7 +482,7 @@ loopline\_repackage.py
 batchmakeshell.py
 ~~~~~~~~~~~~~~~~~
 
--  Creates accession shells for the AIPs under a batch. This is used for 
+-  Creates shells for the AIPs under a batch. This is used for 
    the accessioning closing steps. The script will recognise all the 
    folders named with "aaa[0-9]{4}" digital accession number
    format. Then created their shell folders named "aaa[0-9]{4}_shell"
