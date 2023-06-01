@@ -15,10 +15,9 @@ import atexit
 import copyit
 import ififuncs
 import package_update
-import accession
+import aipcreator
 import manifest
 import makezip
-import accession
 from masscopy import analyze_log
 try:
     from clairmeta.utils.xml import prettyprint_xml
@@ -239,7 +238,7 @@ def parse_args(args_):
     )
     parser.add_argument(
         '-accession', action='store_true',
-        help='Launches accession.py immediately after sipcreator.py finishes. This is only useful if the SIP has already passed QC and will definitely be accessioned and ingested.'
+        help='Launches aipcreator.py immediately after sipcreator.py finishes. This is only useful if the SIP has already passed QC and will definitely be accessioned and ingested.'
     )
     parser.add_argument(
         '-filmo_csv',
@@ -571,7 +570,7 @@ def main(args_):
         package_update.main(supplement_cmd)
     if args.sc:
         print('Generating Digital Forensics XML')
-        dfxml = accession.make_dfxml(args, sip_path, uuid)
+        dfxml = aipcreator.make_dfxml(args, sip_path, uuid)
         ififuncs.generate_log(
             new_log_textfile,
             'EVENT = Metadata extraction - eventDetail=File system metadata extraction using Digital Forensics XML, eventOutcome=%s, agentName=makedfxml' % (dfxml)
@@ -593,7 +592,7 @@ def main(args_):
     if args.d:
         process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_textfile, metadata_dir, clairmeta_version)
     if args.accession:
-        register = accession.make_register()
+        register = aipcreator.make_register()
         filmographic_dict = ififuncs.extract_metadata(args.filmo_csv)[0]
         for filmographic_record in filmographic_dict:
             if filmographic_record['Reference Number'].lower() == reference_number.lower():
@@ -620,7 +619,7 @@ def main(args_):
         accession_cmd.extend(['-donation_date', donation_date])
         accession_cmd.extend(['-reproduction_creator', reproduction_creator])
         print(accession_cmd)
-        accession.main(accession_cmd)
+        aipcreator.main(accession_cmd)
     return new_log_textfile, new_manifest_textfile
 
 
