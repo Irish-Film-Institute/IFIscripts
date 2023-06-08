@@ -552,7 +552,7 @@ def manifest_file_count(manifest2check):
 
 
 def create_csv(csv_file, *args):
-    f = open(csv_file, 'w', newline='')
+    f = open(csv_file, 'w', encoding='utf-8', newline='')
     try:
         writer = csv.writer(f)
         writer.writerow(*args)

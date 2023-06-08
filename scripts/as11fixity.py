@@ -10,25 +10,7 @@ import hashlib
 from datetime import datetime
 from lxml import etree
 import unidecode
-
-
-def create_csv(csv_file, *args):
-    f = open(csv_file, 'w', encoding='utf8', newline='')
-    try:
-        writer = csv.writer(f)
-        writer.writerow(*args)
-    finally:
-        f.close()
-
-
-def append_csv(csv_file, *args):
-    f = open(csv_file, 'a', encoding='utf-8', newline='')
-    try:
-        writer = csv.writer(f)
-        writer.writerow(*args)
-    finally:
-        f.close()
-
+import ififuncs
 
 def digest_with_progress(filename, chunk_size):
     read_size = 0
@@ -36,7 +18,7 @@ def digest_with_progress(filename, chunk_size):
     digest = hashlib.md5()
     total_size = os.path.getsize(filename)
     data = True
-    f = open(filename, 'rb')
+    f = open(filename, 'rb', encoding= 'utf-8')
     while data:
         # Read and update digest.
         data = f.read(chunk_size)
@@ -96,7 +78,7 @@ def main():
     csv_report = os.path.expanduser("~/Desktop/%s.csv") % csv_report_filename
     checkfile = os.path.isfile(csv_report)
     counter = 0
-    create_csv(
+    ififuncs.create_csv(
         csv_report,
         (
             'ID',
@@ -172,7 +154,7 @@ def main():
                                     accession_number_id = lines.split('=')[-1].replace('\n', '')
                     if mxf_checksum == checksum:
                         print(dicto,7897897897)
-                        append_csv(
+                        ififuncs.append_csv(
                             csv_report,
                             (
                                 os.path.basename(os.path.dirname(uuid_dir)),
@@ -190,7 +172,7 @@ def main():
                                 )
                         )
                     else:
-                        append_csv(
+                        ififuncs.append_csv(
                             csv_report,
                             (
                                 os.path.basename(os.path.dirname(uuid_dir)),
@@ -208,7 +190,7 @@ def main():
                                 )
                         )
                 except AttributeError:
-                    append_csv(
+                    ififuncs.append_csv(
                         csv_report,
                         (
                             os.path.basename(os.path.dirname(uuid_dir)),
