@@ -1427,7 +1427,7 @@ def group_ids(source):
         if os.path.basename(root)[:2] == 'oe':
             if validate_uuid4(dirnames[0]) is not False:
                 uuid_oe_dict[os.path.basename(root)] = dirnames[0]
-        # check for accessioned packages
+        # check for AIPs
         elif os.path.basename(root)[:3] == 'aaa':
             if validate_uuid4(dirnames[0]) is not False:
                 uuid_oe_dict[os.path.basename(root)] = dirnames[0]

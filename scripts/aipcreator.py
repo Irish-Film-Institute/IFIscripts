@@ -1,7 +1,6 @@
 #! /usr/bin/env python3
 '''
-Runs (Spectrum) accessioning procedures on packages
-that have been through the Object Entry process
+Creates AIPs for the Irish Film Institute collections
 Written by Kieran O'Leary
 MIT License
 '''
@@ -47,7 +46,7 @@ def parse_args(args_):
     Parse command line arguments.
     '''
     parser = argparse.ArgumentParser(
-        description='Accessions objects into the Irish Film Institute collection'
+        description='Creates AIPs for the Irish Film Institute collections'
         'Completes the transformation of a SIP into an AIP.'
         ' Written by Kieran O\'Leary.'
     )
@@ -63,7 +62,7 @@ def parse_args(args_):
     )
     parser.add_argument(
         '-force',
-        help='Renames OE with accession number without confirmation.', action='store_true'
+        help='Renames OE with Accession number without confirmation.', action='store_true'
     )
     parser.add_argument(
         '-pbcore',
@@ -75,7 +74,7 @@ def parse_args(args_):
     )
     parser.add_argument(
         '-register',
-        help='Path of accessions register CSV file. Mostly to be used by batchaccession.py'
+        help='Path of accessions register CSV file. Mostly to be used by batchaipcreator.py'
     )
     parser.add_argument(
         '-filmo_csv',
@@ -120,7 +119,7 @@ def make_dfxml(args,new_uuid_path,uuid):
 
 def insert_filmographic(filmographic_csv, Reference_Number, package_filmographic):
     '''
-    Should this be done at the accession.py level?
+    Should this be done at the aipcreator.py level?
     yes, as it extracts the title.
     And it should be done after the args.pbcore bit as
     that is what extracts the reference number.
@@ -140,7 +139,7 @@ def insert_filmographic(filmographic_csv, Reference_Number, package_filmographic
                         writer.writerow(x)
 def main(args_):
     '''
-    Launches the various functions that will accession a package
+    Launches the various functions that will turn the SIP into an AIP.
     '''
     args = parse_args(args_)
     source = args.input
@@ -195,11 +194,11 @@ def main(args_):
         ififuncs.append_csv(register, (oe_number.upper()[:2] + '-' + oe_number[2:], accession_number, '','','','','', ''))
         ififuncs.generate_log(
             sipcreator_log,
-            'EVENT = accession.py started'
+            'EVENT = aipcreator.py started'
         )
         ififuncs.generate_log(
             sipcreator_log,
-            'eventDetail=accession.py %s' % ififuncs.get_script_version('accession.py')
+            'eventDetail=aipcreator.py %s' % ififuncs.get_script_version('aipcreator.py')
         )
         ififuncs.generate_log(
             sipcreator_log,
@@ -258,14 +257,14 @@ def main(args_):
                 insert_filmographic(args.filmo_csv, ref , package_filmographic)
                 ififuncs.generate_log(
                     sipcreator_log,
-                    'EVENT = Metadata extraction - eventDetail=Filmographic descriptive metadata added to metadata folder, eventOutcome=%s, agentName=accession.py' % (package_filmographic)
+                    'EVENT = Metadata extraction - eventDetail=Filmographic descriptive metadata added to metadata folder, eventOutcome=%s, agentName=aipcreator.py' % (package_filmographic)
                 )
                 ififuncs.manifest_update(sip_manifest, package_filmographic)
                 ififuncs.sha512_update(sha512_manifest, package_filmographic)
                 print('Filmographic descriptive metadata added to metadata folder')
         ififuncs.generate_log(
             sipcreator_log,
-            'EVENT = accession.py finished'
+            'EVENT = aipcreator.py finished'
         )
         ififuncs.checksum_replace(sip_manifest, sipcreator_log, 'md5')
         ififuncs.checksum_replace(sha512_manifest, sipcreator_log, 'sha512')

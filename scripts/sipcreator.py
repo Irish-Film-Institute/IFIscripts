@@ -238,7 +238,7 @@ def parse_args(args_):
     )
     parser.add_argument(
         '-accession', action='store_true',
-        help='Launches aipcreator.py immediately after sipcreator.py finishes. This is only useful if the SIP has already passed QC and will definitely be accessioned and ingested.'
+        help='Launches aipcreator.py immediately after sipcreator.py finishes. This is only useful if the SIP has already passed QC and will definitely be aipped and ingested.'
     )
     parser.add_argument(
         '-filmo_csv',
@@ -338,7 +338,7 @@ def determine_uuid(args, sip_path):
         if ififuncs.validate_uuid4(args.u) is None:
             uuid = args.u
             uuid_event = (
-                'EVENT = eventType=Identifier assignement,'
+                'EVENT = eventType=Identifier assignment,'
                 ' eventIdentifierType=UUID, value=%s, module=uuid.uuid4'
             ) % uuid
         else:
@@ -347,7 +347,7 @@ def determine_uuid(args, sip_path):
     else:
         uuid = os.path.basename(sip_path)
         uuid_event = (
-            'EVENT = eventType=Identifier assignement,'
+            'EVENT = eventType=Identifier assignment,'
             ' eventIdentifierType=UUID, value=%s, module=uuid.uuid4'
         ) % uuid
     return uuid, uuid_event
@@ -472,7 +472,7 @@ def main(args_):
     if not args.sc:
         ififuncs.generate_log(
             new_log_textfile,
-            'EVENT = eventType=Identifier assignement,'
+            'EVENT = eventType=Identifier assignment,'
             ' eventIdentifierType=object entry, value=%s'
             % object_entry
         )

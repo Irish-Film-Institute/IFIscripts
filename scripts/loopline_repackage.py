@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 '''
 Retrospectively updates older FFV1/DV packages in order to meet our current
-packaging requirements. This should allow accession.py and makepbcore.py to run as
+packaging requirements. This should allow aipcreator.py and makepbcore.py to run as
 expected. This script should work on files created by:
 makeffv1.py
 dvsip.py
@@ -21,7 +21,7 @@ def parse_args(args_):
     parser = argparse.ArgumentParser(
         description='Retrospectively updates older FFV1/DV packages in order to'
         'meet our current packaging requirements. This should allow'
-        ' accession.py and makepbcore.py to run as expected.'
+        ' aipcreator.py and makepbcore.py to run as expected.'
         ' Written by Kieran O\'Leary.'
     )
     parser.add_argument(
@@ -48,14 +48,14 @@ def get_numbers(args):
     '''
     if args.start_number:
         if args.start_number[:2] != 'oe':
-            print 'First two characters must be \'oe\' and last four characters must be four digits'
+            print('First two characters must be \'oe\' and last four characters must be four digits')
             object_entry = ififuncs.get_object_entry()
         elif len(args.start_number[2:]) not in range(4, 6):
-            print 'First two characters must be \'oe\' and last four characters must be four digits'
+            print('First two characters must be \'oe\' and last four characters must be four digits')
             object_entry = ififuncs.get_object_entry()
         elif not args.start_number[2:].isdigit():
             object_entry = ififuncs.get_object_entry()
-            print 'First two characters must be \'oe\' and last four characters must be four digits'
+            print('First two characters must be \'oe\' and last four characters must be four digits')
         else:
             object_entry = args.start_number
     else:
@@ -215,7 +215,7 @@ def main(args_):
                     )
                 uuid = ififuncs.create_uuid()
                 uuid_event = (
-                    'EVENT = eventType=Identifier assignement,'
+                    'EVENT = eventType=Identifier assignment,'
                     ' eventIdentifierType=UUID, value=%s, module=uuid.uuid4'
                 ) % uuid
                 ififuncs.generate_log(
@@ -240,13 +240,13 @@ def main(args_):
                 )
                 ififuncs.generate_log(
                     log,
-                    'EVENT = eventType=Identifier assignement,'
+                    'EVENT = eventType=Identifier assignment,'
                     ' eventIdentifierType=object entry, value=%s'
                     % new_object_entry
                 )
                 ififuncs.generate_log(
                     log,
-                    'EVENT = eventType=Identifier assignement,'
+                    'EVENT = eventType=Identifier assignment,'
                     ' eventIdentifierType=Filmographic reference number , value=%s'
                     % oe_package['filmographic_reference_number']
                 )

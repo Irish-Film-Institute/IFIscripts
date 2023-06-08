@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
 '''
-Batch process packages by running accession.py and makepbcore.py
+Batch process packages by running aipcreator.py and makepbcore.py
 The outcome will be:
-* Packages are accessioned
+* Packages are aipped
 * Filmographic records can be ingested to DB TEXTWORKS
 * Technical records can be ingested to DB TEXTWORKS
-* Skeleton accession record can be also be made available.
-
-NOTE - this is almost done, you just need to find when to_accession[package] == 3, then
-add an arg to the accession commmand that will declare the package as a reproduction.
+* Skeleton accession register record can be also be made available.
 '''
 import argparse
 import sys
@@ -66,7 +63,7 @@ def gather_metadata(source):
 
 def initial_check(args, accession_digits, oe_list, reference_number):
     '''
-    Tells the user which packages will be accessioned and what their accession
+    Tells the user which packages will be aipped and what their accession
     numbers will be.
     '''
     to_accession = {}
@@ -75,14 +72,14 @@ def initial_check(args, accession_digits, oe_list, reference_number):
     ref = reference_number
     reference_digits = int(ref[2:])
     # so just reverse this - loop through the csv first.
-    # this will break the non CSV usage of batchaccession for now.
+    # this will break the non CSV usage of batchaipcreator for now.
     for thingies in oe_list:
         for root, _, _ in sorted(os.walk(args.input)):
             if os.path.basename(root)[:2] == 'oe' and len(os.path.basename(root)[2:]) >= 4:
                 if copyit.check_for_sip(root) is None:
                     wont_accession.append(root)
                 else:
-                    # this is just batchaccessioning if no csv is supplied
+                    # this is just batchaipcreator if no csv is supplied
                     # this is pretty pointless at the moment seeing as this is loopline through oe_list :(
                     if not oe_list:
                         to_accession[root] = 'aaa' + str(accession_digits).zfill(4)
@@ -111,12 +108,12 @@ def initial_check(args, accession_digits, oe_list, reference_number):
     for fails in wont_accession:
         print('%s looks like it is not a fully formed SIP. Perhaps loopline_repackage.py should proccess it?' % fails)
     for success in sorted(to_accession.keys()):
-        print('%s will be accessioned as %s' %  (success, to_accession[success]))
+        print('%s will be aipped as %s' %  (success, to_accession[success]))
     return to_accession
 
 def get_filmographic_titles(to_accession, filmographic_dict):
     '''
-    Retrieves filmographic titles of packages to be accessioned for QC purposes
+    Retrieves filmographic titles of packages to be aipped for QC purposes
     '''
     for ids in to_accession:
         oe_number = os.path.basename(ids)
@@ -218,7 +215,7 @@ def process_oe_csv(oe_csv_extraction, source_path):
 
 def main(args_):
     '''
-    Batch process packages by running accession.py and makepbcore.py
+    Batch process packages by running aipcreator.py and makepbcore.py
     '''
     args = parse_args(args_)
     oe_list = []
@@ -270,7 +267,7 @@ def main(args_):
                 accession_digits += 1
         print('\n')
     for success in sorted(to_accession.keys()):
-        print('%s will be accessioned as %s' %  (success, to_accession[success]))
+        print('%s will be aipped as %s' %  (success, to_accession[success]))
     register = aipcreator.make_register()
     if args.filmo_csv:
         desktop_logs_dir = ififuncs.make_desktop_logs_dir()
