@@ -462,7 +462,7 @@ makefolders.py
    folder. This is specific to a film scanning workflow as there are
    seperate audio and image subfolders. You can specifiy the values on
    the command line or a terminal interview will appear which will
-   prompt you for filmographic reference number, source accession number
+   prompt you for filmographic URN, source accession number
    and title. Use ``makefolders.py -h`` for the full list of options.
 -  Usage: ``makefolders.py -o /path/to/destination``
 
@@ -488,7 +488,7 @@ batchmakeshell.py
    and clone all the subcontent except the content inside the 
    'objects' folder into them. The shells will be created into the
    targeted output path.
--  Usage: ``batchmakeshell.py $path/to/batch_directories -o /path/to/destination``
+-  Usage: ``batchmakeshell.py path/to/batch_directories -o /path/to/destination``
 -  This script has extra options, including making shells for AS-11 UK DPP and
    DCP. Use ``batchmakeshell.py -h`` to see all options.
     

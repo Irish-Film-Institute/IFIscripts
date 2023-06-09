@@ -665,7 +665,7 @@ else:
     msg = "Fill out these things please"
     title = "blablablabl"
     fieldNames = ["Source Accession Number",
-                  "Filmographic Reference Number", 
+                  "Filmographic URN", 
                   "Identifier-Object Entry/Accession Number:"]
       # we start with blanks for the values
     fieldValues = multenterbox(msg,title, fieldNames)
@@ -776,7 +776,7 @@ else:
         fo.write('</revtmd:organization_division>\n')
         fo.write('</revtmd:organization>\n')
         fo.write('<revtmd:identifier type="Object Entry">%s</revtmd:identifier>\n' % fieldValues[2])
-        fo.write('<revtmd:identifier type="Inmagic DB Textworks Filmographic Reference Number">%s</revtmd:identifier>\n' % fieldValues[1])
+        fo.write('<revtmd:identifier type="Inmagic DB Textworks Filmographic URN">%s</revtmd:identifier>\n' % fieldValues[1])
         
         fo.write('<revtmd:duration>%s</revtmd:duration>\n' % container_duration)
         fo.write('<revtmd:language/>\n')

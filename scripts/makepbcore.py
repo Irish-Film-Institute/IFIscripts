@@ -148,12 +148,8 @@ def parse_args(args_):
         help='Declare who you are. If this is not set, you will be prompted.'
     )
     parser.add_argument(
-        '-accession',
-        help='Enter the Accession number for the representation.'
-    )
-    parser.add_argument(
-        '-reference',
-        help='Enter the Filmographic reference number for the representation.'
+        '-filmo_number',
+        help='Enter the Filmographic URN for the representation.'
     )
     parser.add_argument(
         '-p', action='store_true',
@@ -201,9 +197,9 @@ def get_accession_number(source):
         return 'not_aipped'
 
 
-def get_reference_number(source):
+def get_filmo_number(source):
     '''
-    Checks if the reference number is in the folder path.
+    Checks if the filmographic URN is in the folder path.
     This check is not sustainable, will have to be made more flexible!
     '''
     basename = os.path.basename(os.path.dirname(source))
@@ -211,7 +207,7 @@ def get_reference_number(source):
         if basename[:3] == 'af1':
             return basename
     else:
-        basename = ififuncs.get_reference_number()
+        basename = ififuncs.get_filmo_number()
         return basename
 
 
@@ -365,10 +361,10 @@ def main(args_):
         if ififuncs.validate_uuid4(dirs) is None:
             instantiationIdentif = dirs
     Accession_Number = get_accession_number(args.input)
-    if args.reference:
-        Reference_Number = args.reference.upper()
+    if args.filmo_number:
+        Reference_Number = args.filmo_number.upper()
     else:
-        Reference_Number = get_reference_number(args.input)
+        Reference_Number = get_filmo_number(args.input)
     if args.p:
         for root, _, filenames in os.walk(args.input):
             if os.path.basename(root) == 'metadata':

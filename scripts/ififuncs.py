@@ -1006,15 +1006,15 @@ def get_accession_number():
         else:
             return accession_number
 
-def get_reference_number():
+def get_filmo_number():
     '''
-    Asks user for a Filmographic reference number. Due to the variety of reference numbers, validation
-    will be removed for now.
+    Asks user for a Filmographic URN. Due to the variety 
+    of Filmographic URN, validation will be removed for now.
     '''
-    reference_number = input(
-        '\n\n**** Please enter the Filmographic reference number of the representation- if there is more than one work that is represented, seperate them with an ampersand, eg af1234&aa675\n\n'
+    get_filmo_number = input(
+        '\n\n**** Please enter the Filmographic URN of the representation- if there is more than one work that is represented, seperate them with an ampersand, eg af1234&aa675\n\n'
     )
-    return reference_number.upper()
+    return get_filmo_number.upper()
 
 def get_contenttitletext(cpl):
     '''

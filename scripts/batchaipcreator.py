@@ -61,7 +61,7 @@ def gather_metadata(source):
     return collated_pbcore
 
 
-def initial_check(args, accession_digits, oe_list, reference_number):
+def initial_check(args, accession_digits, oe_list, filmo_number):
     '''
     Tells the user which packages will be aipped and what their accession
     numbers will be.
@@ -69,8 +69,8 @@ def initial_check(args, accession_digits, oe_list, reference_number):
     to_accession = {}
     wont_accession = []
     # accession = 'af' + str(accession_digits)
-    ref = reference_number
-    reference_digits = int(ref[2:])
+    ref = filmo_number
+    filmo_digits = int(ref[2:])
     # so just reverse this - loop through the csv first.
     # this will break the non CSV usage of batchaipcreator for now.
     for thingies in oe_list:
@@ -92,18 +92,18 @@ def initial_check(args, accession_digits, oe_list, reference_number):
                                              order.main(root))
                             ] = [
                                 'aaa' + str(accession_digits).zfill(4),
-                                ref[:2] + str(reference_digits).zfill(4)
+                                ref[:2] + str(filmo_digits).zfill(4)
                             ]
                             if root in to_accession:
                                 # If a single file is found, this prevents the file being
                                 # processed twice, with a skip in the number run
-                                reference_digits += 1
+                                filmo_digits += 1
                                 accession_digits += 1
                                 continue
                             accession_digits += 1
                             # gets reproduction info
-                            to_accession[root] = ['aaa' + str(accession_digits).zfill(4), ref[:2] + str(reference_digits), 'reproduction']
-                            reference_digits += 1
+                            to_accession[root] = ['aaa' + str(accession_digits).zfill(4), ref[:2] + str(filmo_digits), 'reproduction']
+                            filmo_digits += 1
                             accession_digits += 1
     for fails in wont_accession:
         print('%s looks like it is not a fully formed SIP. Perhaps loopline_repackage.py should proccess it?' % fails)
@@ -145,8 +145,8 @@ def parse_args(args_):
         help='Enter the path to the Object Entry CSV'
     )
     parser.add_argument(
-        '-reference',
-        help='Enter the starting Filmographic reference number for the representation. This is not required when using the -oe_csv option'
+        '-filmo_number',
+        help='Enter the starting Filmographic URN for the representation. This is not required when using the -oe_csv option'
     )
     parser.add_argument(
         '-dryrun', action='store_true',
@@ -156,17 +156,17 @@ def parse_args(args_):
     return parsed_args
 
 
-def get_filmographic_number(number):
+def get_filmographic_number(filmo_number):
     '''
     This check is not sustainable, will have to be made more flexible!
     '''
-    if len(number) == 7:
-        if number[:3] != 'af1':
-            number = ififuncs.get_reference_number()
-        return number.upper()
+    if len(filmo_number) == 7:
+        if filmo_number[:3] != 'af1':
+            filmo_number = ififuncs.get_filmo_number()
+        return filmo_number.upper()
     else:
-        number = ififuncs.get_reference_number()
-        return number.upper()
+        filmo_number = ififuncs.get_filmo_number()
+        return filmo_number.upper()
 
 
 def get_number(args):
@@ -203,7 +203,7 @@ def process_oe_csv(oe_csv_extraction, source_path):
             dictionary['donation_date'] = record['Date Received']
             dictionary['normalised_oe_number']  = dictionary['Object Entry'][:2].lower() + dictionary['Object Entry'][3:]
             dictionary['source_path'] = os.path.join(source_path, dictionary['normalised_oe_number'])
-            dictionary['reference number'] = record['Additional Information'].split('Representation of ')[1].split('|')[0].rstrip()
+            dictionary['Filmographic URN'] = record['Additional Information'].split('Representation of ')[1].split('|')[0].rstrip()
             oe_dicts.append(dictionary)
         except IndexError:
             continue
@@ -242,12 +242,12 @@ def main(args_):
             transformed_oe = oe_number[:2] + oe_number[3:]
             oe_list.append(transformed_oe)
     if not args.oe_csv:
-        # No need to ask for the reference number if the OE csv option is supplied.
-        # The assumption here is that the OE csv contains the reference numbers though.
-        if args.reference:
-            reference_number = get_filmographic_number(args.reference)
+        # No need to ask for the Filmographic URN if the OE csv option is supplied.
+        # The assumption here is that the OE csv contains the Filmographic URN though.
+        if args.filmo_number:
+            filmo_number = get_filmographic_number(args.filmo_number)
         else:
-            reference_number = ififuncs.get_reference_number()
+            filmo_number = ififuncs.get_filmo_number()
     donor = ififuncs.ask_question('Who is the source of acquisition, as appears on the donor agreement? This will not affect Reproductions.')
     depositor_reference = ififuncs.ask_question('What is the donor/depositor number? This will not affect Reproductions.')
     reproduction_creator = ififuncs.ask_question('Who is the reproduction creator? This will not affect acquisitions. Enter n/a if not applicable')
@@ -256,14 +256,14 @@ def main(args_):
     accession_number = get_number(args)
     accession_digits = int(accession_number[3:])
     if not args.oe_csv:
-        to_accession = initial_check(args, accession_digits, oe_list, reference_number)
+        to_accession = initial_check(args, accession_digits, oe_list, filmo_number)
     else:
         to_accession = {}
         print('\nIngested info from CSVs: Please check the following if an error occurs')
         for oe_record in oe_dicts:
             print(oe_record)
             if os.path.isdir(oe_record['source_path']):
-                to_accession[oe_record['source_path']] = ['aaa' + str(accession_digits).zfill(4), oe_record['reference number'], oe_record['parent'], oe_record['donation_date']]
+                to_accession[oe_record['source_path']] = ['aaa' + str(accession_digits).zfill(4), oe_record['Filmographic URN'], oe_record['parent'], oe_record['donation_date']]
                 accession_digits += 1
         print('\n')
     for success in sorted(to_accession.keys()):
@@ -291,7 +291,7 @@ def main(args_):
                 writer.writeheader()
                 for i in filmographic_dict:
                     i.pop('Object Entry', None)
-                    # Only include records that have reference numbers
+                    # Only include records that have Filmographic URN
                     if not i['Filmographic URN'] == '':
                         writer.writerow(i)
     if not to_accession:
@@ -299,13 +299,20 @@ def main(args_):
         sys.exit()
     filmographic_dict, headers = ififuncs.extract_metadata(args.filmo_csv)
     for package in to_accession:
-        filmo = False
+        filmo_match = False
+        filmo_lower = []
         filmo_ref = to_accession[package][1]
         for record in filmographic_dict:
             if filmo_ref.upper() == record["Filmographic URN"]:
-                filmo = True
-        if filmo is False:
+                filmo_match = True
+            if filmo_number.lower() == record["Filmographic URN"]:
+                filmo_match = False
+                filmo_lower.append(filmo_ref)
+        if filmo_match is False:
             print('\n*** WARNING it appears that %s is not present in your filmographic CSV - proceeding will probably result in a crash' % filmo_ref)
+        if filmo_lower:
+            print('\n*** These Filmographic URN(s) in the filmographic CSV are in lower case: ')
+            print(filmo_lower, sep=', ')
     if args.dryrun:
         sys.exit()
     proceed = ififuncs.ask_yes_no(
@@ -318,8 +325,8 @@ def main(args_):
             accession_cmd = [
                 package, '-user', user,
                 '-force',
-                '-number', to_accession[package][0],
-                '-reference', to_accession[package][1],
+                '-accession_number', to_accession[package][0],
+                '-filmo_number', to_accession[package][1],
                 '-register', register,
                 '-filmo_csv', new_csv
             ]
@@ -346,7 +353,7 @@ def main(args_):
     collated_pbcore = gather_metadata(args.input)
     sorted_filepath = ififuncs.sort_csv(register, 'accession number')
     print('\nA helper accessions register has been generated in order to help with registration - located here: %s' % sorted_filepath)
-    print('\nA modified filmographic CSV has been generated with added reference numbers - located here: %s' % new_csv)
+    print('\nA modified filmographic CSV has been generated with added Filmographic URN - located here: %s' % new_csv)
     print('\nA collated CSV consisting of each PBCore report has been generated for batch database import - located here: %s' % collated_pbcore)
 if __name__ == '__main__':
     main(sys.argv[1:])

@@ -57,7 +57,7 @@ def parse_args(args_):
         '-user',
         help='Declare who you are. If this is not set, you will be prompted.')
     parser.add_argument(
-        '-number',
+        '-accession_number',
         help='Enter the Accession number for the representation.The parent Object Entry number will be replaced with this name.'
     )
     parser.add_argument(
@@ -69,8 +69,8 @@ def parse_args(args_):
         help='launches makepbcore and updates AIP', action='store_true'
     )
     parser.add_argument(
-        '-reference',
-        help='Enter the Filmographic reference number for the representation. This is only relevant when used with -pbcore. For multiple works that are represented, seperate each reference number with a + sign eg AF1234+AC456'
+        '-filmo_number',
+        help='Enter the Filmographic URN for the representation. This is only relevant when used with -pbcore. For multiple works that are represented, seperate each Filmographic URN with a + sign eg AF1234+AC456'
     )
     parser.add_argument(
         '-register',
@@ -117,21 +117,21 @@ def make_dfxml(args,new_uuid_path,uuid):
     makedfxml.main([new_uuid_path, '-n', '-o', dfxml])
     return dfxml
 
-def insert_filmographic(filmographic_csv, Reference_Number, package_filmographic):
+def insert_filmographic(filmographic_csv, filmographic_number, package_filmographic):
     '''
     Should this be done at the aipcreator.py level?
     yes, as it extracts the title.
     And it should be done after the args.pbcore bit as
-    that is what extracts the reference number.
-    filmographic_csv=source filmographic csv with reference numbers
-    Reference_Number=the specific reference number that you would like to extract
+    that is what extracts the filmographic URN.
+    filmographic_csv=source filmographic csv with filmo numbers
+    Filmo_Number=the specific filmographic URN that you would like to extract
     package_filmographic = the full path of the filmographic to be instered in /metadata
     '''
     csv_dict = ififuncs.extract_metadata(filmographic_csv)
     for items in csv_dict:
         for x in items:
             if type(x) in [collections.OrderedDict, dict]:
-                if Reference_Number in x['Filmographic URN'].upper():
+                if filmographic_number in x['Filmographic URN'].upper():
                     with open(package_filmographic, 'w', encoding='utf-8') as csvfile:
                         fieldnames = csv_dict[1]
                         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -151,24 +151,24 @@ def main(args_):
             user = args.user
         else:
             user = ififuncs.get_user()
-        if args.number:
-            if args.number[:3] != 'aaa':
+        if args.accession_number:
+            if args.accession_number[:3] != 'aaa':
                 print('First three characters must be \'aaa\' and last four characters must be four digits')
                 accession_number = ififuncs.get_accession_number()
-            elif len(args.number[3:]) != 4:
+            elif len(args.accession_number[3:]) != 4:
                 accession_number = ififuncs.get_accession_number()
                 print('First three characters must be \'aaa\' and last four characters must be four digits')
-            elif not args.number[3:].isdigit():
+            elif not args.accession_number[3:].isdigit():
                 accession_number = ififuncs.get_accession_number()
                 print('First three characters must be \'aaa\' and last four characters must be four digits')
             else:
-                accession_number = args.number
+                accession_number = args.accession_number
         else:
             accession_number = ififuncs.get_accession_number()
-        if args.reference:
-            Reference_Number = args.reference.upper()
+        if args.filmo_number:
+            filmo_number = args.filmo_number.upper()
         else:
-            Reference_Number = ififuncs.get_reference_number()
+            filmo_number = ififuncs.get_filmo_number()
         if args.acquisition_type:        
             acquisition_type = ififuncs.get_acquisition_type(args.acquisition_type)
             print(acquisition_type)
@@ -243,18 +243,18 @@ def main(args_):
                 'EVENT = Metadata extraction - eventDetail=File system metadata extraction using Digital Forensics XML, eventOutcome=FAILURE due to UnicodeDecodeError, agentName=makedfxml'
             )
             dfxml_check = False
-        # this is inefficient. The script should not have to ask for reference
+        # this is inefficient. The script should not have to ask for filmographic
         # number twice if someone wants to insert the filmographic but do not
         # want to make the pbcore csv, perhaps because the latter already exists.
         if args.filmo_csv:
             metadata_dir = os.path.join(new_uuid_path, 'metadata')
-            if '+' in Reference_Number:
-                reference_list = Reference_Number.split('+')
+            if '+' in filmo_number:
+                filmo_list = filmo_number.split('+')
             else:
-                reference_list = [Reference_Number]
-            for ref in reference_list:
-                package_filmographic = os.path.join(metadata_dir, ref + '_filmographic.csv')
-                insert_filmographic(args.filmo_csv, ref , package_filmographic)
+                filmo_list = [filmo_number]
+            for filmo in filmo_list:
+                package_filmographic = os.path.join(metadata_dir, filmo + '_filmographic.csv')
+                insert_filmographic(args.filmo_csv, filmo , package_filmographic)
                 ififuncs.generate_log(
                     sipcreator_log,
                     'EVENT = Metadata extraction - eventDetail=Filmographic descriptive metadata added to metadata folder, eventOutcome=%s, agentName=aipcreator.py' % (package_filmographic)
@@ -272,8 +272,8 @@ def main(args_):
             ififuncs.manifest_update(sip_manifest, dfxml)
             ififuncs.sha512_update(sha512_manifest, dfxml)
         if args.pbcore:
-            for ref in reference_list:
-                makepbcore_cmd = [accession_path, '-p', '-user', user, '-reference', ref]
+            for filmo in filmo_list:
+                makepbcore_cmd = [accession_path, '-p', '-user', user, '-filmo_number', filmo]
                 if args.parent:
                     makepbcore_cmd.extend(['-parent', args.parent])
                 if args.acquisition_type:

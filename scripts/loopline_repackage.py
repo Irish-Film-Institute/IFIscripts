@@ -37,7 +37,7 @@ def parse_args(args_):
     )
     parser.add_argument(
         '-filmographic',
-        help='Path to Filmographic CSV. Must contain reference numbers.'
+        help='Path to Filmographic CSV. Must contain Filmographic URN.'
     )
     parsed_args = parser.parse_args(args_)
     return parsed_args
@@ -247,7 +247,7 @@ def main(args_):
                 ififuncs.generate_log(
                     log,
                     'EVENT = eventType=Identifier assignment,'
-                    ' eventIdentifierType=Filmographic reference number , value=%s'
+                    ' eventIdentifierType=Filmographic URN , value=%s'
                     % oe_package['filmographic_reference_number']
                 )
                 oe_package['new_object_entry'] = new_object_entry

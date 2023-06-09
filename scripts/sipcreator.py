@@ -237,7 +237,7 @@ def parse_args(args_):
         help='Uses makezip.py to store the objects in an uncompressed ZIP'
     )
     parser.add_argument(
-        '-accession', action='store_true',
+        '-aipcreator', action='store_true',
         help='Launches aipcreator.py immediately after sipcreator.py finishes. This is only useful if the SIP has already passed QC and will definitely be aipped and ingested.'
     )
     parser.add_argument(
@@ -479,9 +479,9 @@ def main(args_):
     metadata_dir = os.path.join(sip_path, 'metadata')
     supplemental_dir = os.path.join(metadata_dir, 'supplemental')
     logs_dir = os.path.join(sip_path, 'logs')
-    if args.accession:
+    if args.aipcreator:
         accession_number = ififuncs.get_accession_number()
-        reference_number = ififuncs.get_reference_number()
+        filmo_number = ififuncs.get_filmo_number()
         parent = ififuncs.ask_question('What is the parent record? eg MV 1234. Enter n/a if this is a born digital acquisition with no parent.')
         donor = ififuncs.ask_question('Who is the source of acquisition, as appears on the donor agreement? This will not affect Reproductions.')
         reproduction_creator = ififuncs.ask_question('Who is the reproduction creator? This will not affect acquisitions. Enter n/a if not applicable')
@@ -591,22 +591,22 @@ def main(args_):
     print('\n- %s ran this script at %s and it finished at %s' % (user, start, finish))
     if args.d:
         process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_textfile, metadata_dir, clairmeta_version)
-    if args.accession:
+    if args.aipcreator:
         register = aipcreator.make_register()
         filmographic_dict = ififuncs.extract_metadata(args.filmo_csv)[0]
         for filmographic_record in filmographic_dict:
-            if filmographic_record['Reference Number'].lower() == reference_number.lower():
-                if filmographic_record['Title'] == '':
-                    title = filmographic_record['TitleSeries'] + '; ' + filmographic_record['EpisodeNo']
+            if filmographic_record['Filmographic URN'].lower() == filmo_number.lower():
+                if filmographic_record['Title/Name'] == '':
+                    title = filmographic_record['Series Title'] + '; ' + filmographic_record['Episode No']
                 else:
-                    title = filmographic_record['Title']
+                    title = filmographic_record['Title/Name']
         oe_register = make_oe_register()
-        ififuncs.append_csv(oe_register, (object_entry.upper()[:2] + '-' + object_entry[2:], donation_date, '1','',title,donor,acquisition_type[1], accession_number, 'Representation of %s|Reproduction of %s' % (reference_number, parent), ''))
+        ififuncs.append_csv(oe_register, (object_entry.upper()[:2] + '-' + object_entry[2:], donation_date, '1','',title,donor,acquisition_type[1], accession_number, 'Representation of %s|Reproduction of %s' % (filmo_number, parent), ''))
         accession_cmd = [
             os.path.dirname(sip_path), '-user', user,
             '-force',
-            '-number', accession_number,
-            '-reference', reference_number,
+            '-accession_number', accession_number,
+            '-filmo_number', filmo_number,
             '-register', register,
             '-filmo_csv', args.filmo_csv,
             '-pbcore'
