@@ -216,9 +216,7 @@ def main(args_):
         )
         ififuncs.generate_log(
             sipcreator_log,
-            'EVENT = eventType=accession,'
-            ' eventIdentifierType=accession number, value=%s'
-            % accession_number
+            'EVENT = eventType=Information package creation, eventOutcomeDetailNote=Archival information package'
         )
         sip_manifest = os.path.join(
             accession_path, uuid

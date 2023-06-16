@@ -301,15 +301,15 @@ def main(args_):
     for package in to_accession:
         filmo_match = False
         filmo_lower = []
-        filmo_ref = to_accession[package][1]
+        filmo_number_oe_csv = to_accession[package][1]
         for record in filmographic_dict:
-            if filmo_ref.upper() == record["Filmographic URN"]:
+            if filmo_number_oe_csv.upper() == record["Filmographic URN"]:
                 filmo_match = True
-            if filmo_number.lower() == record["Filmographic URN"]:
+            if filmo_number_oe_csv.lower() == record["Filmographic URN"]:
                 filmo_match = False
-                filmo_lower.append(filmo_ref)
+                filmo_lower.append(filmo_number_oe_csv)
         if filmo_match is False:
-            print('\n*** WARNING it appears that %s is not present in your filmographic CSV - proceeding will probably result in a crash' % filmo_ref)
+            print('\n*** WARNING it appears that %s is not present in your filmographic CSV - proceeding will probably result in a crash' % filmo_number_oe_csv)
         if filmo_lower:
             print('\n*** These Filmographic URN(s) in the filmographic CSV are in lower case: ')
             print(filmo_lower, sep=', ')

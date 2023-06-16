@@ -473,8 +473,12 @@ def main(args_):
         ififuncs.generate_log(
             new_log_textfile,
             'EVENT = eventType=Identifier assignment,'
-            ' eventIdentifierType=object entry, value=%s'
+            ' eventIdentifierType=object entry number, value=%s'
             % object_entry
+        )
+        ififuncs.generate_log(
+            new_log_textfile,
+            'EVENT = eventType=Information package creation, eventOutcomeDetailNote=Submission information package'
         )
     metadata_dir = os.path.join(sip_path, 'metadata')
     supplemental_dir = os.path.join(metadata_dir, 'supplemental')
