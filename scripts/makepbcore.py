@@ -185,7 +185,7 @@ def parse_args(args_):
 
 def get_accession_number(source):
     '''
-    Checks if the package has been aipped.
+    Checks if the AIP has been created.
     Returns the accession number if this is the case, otherwise the script exits.
     '''
     basename = os.path.basename(source)
@@ -193,8 +193,8 @@ def get_accession_number(source):
         if basename[:3] == 'aaa':
             return basename
     else:
-        print('looks like your package has not been aipped? Exiting!')
-        return 'not_aipped'
+        print('looks like your AIP has not been created? Exiting!')
+        return 'not_AIPed'
 
 
 def get_filmo_number(source):

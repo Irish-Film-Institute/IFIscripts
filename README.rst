@@ -56,7 +56,7 @@ An example workflow might be:
 
 * If the package passes our Quality Control Procedures, then it will be accessioned. ``aipcreator.py`` will generate an accession number, rename the OE number with the accession number, generate a SHA-512 manifest and update the log file to document these new preservation events.
 
-* A large batch of items can be aipped using ``batchaipcreator.py``. If the ``-pbcore`` command line argument is used with the aipcreator scripts, technical metadata based on the PBCore standard will be generated in CSV format. This process can be run seperately by using ``makepbcore.py``. CSV was chosen instead of XML as this allows us to immediately import the CSV into our database system so that we have item level records.
+* A large batch of items can be AIPed using ``batchaipcreator.py``. If the ``-pbcore`` command line argument is used with the aipcreator scripts, technical metadata based on the PBCore standard will be generated in CSV format. This process can be run seperately by using ``makepbcore.py``. CSV was chosen instead of XML as this allows us to immediately import the CSV into our database system so that we have item level records.
 
 * Access copies may be needed, so low-res watermarked proxies can be generated with ``bitc.py``, or high res mezzanines with ``prores.py``.
 

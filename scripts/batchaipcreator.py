@@ -2,7 +2,7 @@
 '''
 Batch process packages by running aipcreator.py and makepbcore.py
 The outcome will be:
-* Packages are aipped
+* AIP is created
 * Filmographic records can be ingested to DB TEXTWORKS
 * Technical records can be ingested to DB TEXTWORKS
 * Skeleton accession register record can be also be made available.
@@ -63,7 +63,7 @@ def gather_metadata(source):
 
 def initial_check(args, accession_digits, oe_list, filmo_number):
     '''
-    Tells the user which packages will be aipped and what their accession
+    Tells the user which AIPs will be created and what their accession
     numbers will be.
     '''
     to_accession = {}
@@ -108,12 +108,12 @@ def initial_check(args, accession_digits, oe_list, filmo_number):
     for fails in wont_accession:
         print('%s looks like it is not a fully formed SIP. Perhaps loopline_repackage.py should proccess it?' % fails)
     for success in sorted(to_accession.keys()):
-        print('%s will be aipped as %s' %  (success, to_accession[success]))
+        print('%s will be AIPed as %s' %  (success, to_accession[success]))
     return to_accession
 
 def get_filmographic_titles(to_accession, filmographic_dict):
     '''
-    Retrieves filmographic titles of packages to be aipped for QC purposes
+    Retrieves filmographic titles of packages to be AIPed for QC purposes
     '''
     for ids in to_accession:
         oe_number = os.path.basename(ids)
@@ -267,7 +267,7 @@ def main(args_):
                 accession_digits += 1
         print('\n')
     for success in sorted(to_accession.keys()):
-        print('%s will be aipped as %s' %  (success, to_accession[success]))
+        print('%s will be AIPed as %s' %  (success, to_accession[success]))
     register = aipcreator.make_register()
     if args.filmo_csv:
         desktop_logs_dir = ififuncs.make_desktop_logs_dir()

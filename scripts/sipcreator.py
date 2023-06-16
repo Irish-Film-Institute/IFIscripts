@@ -238,7 +238,7 @@ def parse_args(args_):
     )
     parser.add_argument(
         '-aipcreator', action='store_true',
-        help='Launches aipcreator.py immediately after sipcreator.py finishes. This is only useful if the SIP has already passed QC and will definitely be aipped and ingested.'
+        help='Launches aipcreator.py immediately after sipcreator.py finishes. This is only useful if the SIP has already passed QC and will definitely be AIPed and ingested.'
     )
     parser.add_argument(
         '-filmo_csv',

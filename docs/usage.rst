@@ -205,7 +205,7 @@ prores.py
 makedip.py
 ~~~~~~~~~
 
--  Runs bitc.py or prores.py but only for use with AIPs.
+-  Runs bitc.py or prores.py.
 -  Usage for running bitc.py on all objects in a batch of information packages -
    ``makedip.py path/to/batch_directories -o path/to/output``
 -  The ``-prores`` option will use run ``prores.py`` instead of ``bitc.py``
