@@ -789,39 +789,34 @@ def get_acquisition_type(acquisition_type):
     '''
     Asks user for the type of acquisition
     '''
-    if acquisition_type not in ('1', '2', '4', '5', '7', '8', '13', '14'):
+    if acquisition_type not in ('1', '2', '3', '4', '5', '6'):
         acquisition_type = input(
-            '\n\n**** What is the type of acquisition? - This will not affect Reproductions that have been auto-detected.\nPress 1,2,4,5,7,8,13,14\n\n1. IFB -  deposited  in compliance with IFB delivery requirements\n2. BAI  - deposited  in compliance with BAI delivery requirements\n4. Deposit\n5. Purchased for collection\n7. Unknown at present\n8. Arts Council- deposited in compliance with Arts council delivery requirements\n13. Reproduction\n14. Donation\n'
+            '\n\n**** What is the type of acquisition? - This will not affect Reproductions that have been auto-detected.\nPress 1,2,3,4,5,6\n\n1. Deposit\n2. Deposit via overarching agreements\n3. Donation\n4. Reproduction\n5. Purchased for collection\n6. Unknown at present\n'
         )
-        while acquisition_type not in ('1', '2', '4', '5', '7', '8', '13', '14'):
+        while acquisition_type not in ('1', '2', '3', '4', '5', '6'):
             acquisition_type = input(
-                '\n\n**** What is the type of acquisition? - This will not affect Reproductions that have been auto-detected.\nPress 1,2,4,5,7,8,13,14\n\n1. IFB -  deposited  in compliance with IFB delivery requirements\n2. BAI  - deposited  in compliance with BAI delivery requirements\n4. Deposit\n5. Purchased for collection\n7. Unknown at present\n8. Arts Council- deposited in compliance with Arts council delivery requirements\n13. Reproduction\n14. Donation\n'
+                '\n\n**** What is the type of acquisition? - This will not affect Reproductions that have been auto-detected.\nPress 1,2,3,4,5,6\n\n1. Deposit\n2. Deposit via overarching agreements\n3. Donation\n4. Reproduction\n5. Purchased for collection\n6. Unknown at present\n'
             )
     if acquisition_type == '1':
-        acquisition_type = ['1. IFB -  deposited  in compliance with IFB delivery requirements', 'Deposit', '1']
+        acquisition_type = ['Deposit', 'Deposit', '1']
         time.sleep(1)
     elif acquisition_type == '2':
-        acquisition_type = ['2. BAI  - deposited  in compliance with BAI delivery requirements', 'Deposit', '2']
+        acquisition_type = ['Deposit via overarching agreements', 'Deposit', '2']
+        time.sleep(1)
+    elif acquisition_type == '3':
+        acquisition_type = ['Donation', 'Donation', '3']
         time.sleep(1)
     elif acquisition_type == '4':
-        acquisition_type = ['4. Deposit', 'Deposit', '4']
+        acquisition_type = ['Reproduction', 'Reproduction', '4']
         time.sleep(1)
     elif acquisition_type == '5':
-        acquisition_type = ['5. Purchased for collection', 'Purchase', '5']
+        acquisition_type = ['Purchased for collection', 'Purchase', '5']
         time.sleep(1)
-    elif acquisition_type == '7':
-        acquisition_type = ['7. Unknown at present', 'Unknown', '7']
-        time.sleep(1)
-    elif acquisition_type == '8':
-        acquisition_type = ['Arts Council- deposited in compliance with Arts council delivery requirements', 'Deposit', '8']
-        time.sleep(1)
-    elif acquisition_type == '13':
-        acquisition_type = ['Reproduction', 'Reproduction', '13']
-        time.sleep(1)
-    elif acquisition_type == '14':
-        acquisition_type = ['Donation', 'Donation', '14']
-        time.sleep(1)
+    elif acquisition_type == '6':
+        acquisition_type = ['6. Unknown at present', 'Unknown', '6']
+        time.sleep(1)        
     return acquisition_type
+
 def sort_manifest(manifest_textfile):
     '''
     Sorts an md5 manifest in alphabetical order.
