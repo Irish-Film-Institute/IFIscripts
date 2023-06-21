@@ -40,8 +40,9 @@ def clear_manifest_dir():
         i = os.path.join(desktop_manifest_dir, i)
         if i.endswith('.md5'):
             print('**** Found existing manifest: ' + i)
-            shutil.move(i, o)
-            print('**** Moved to old_manifest folder')
+            if i.endswith('objects_manifest.md5'):
+                shutil.move(i, o)
+                print('**** Moved object_manifest.md5 to old_manifest folder in case of content overlap. \n**** Check if other manifests are in use in other scripts before move them manually.')
 
 def make_folder_path(path, args, object_entry):
     '''
