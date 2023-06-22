@@ -813,7 +813,7 @@ def get_acquisition_type(acquisition_type):
         acquisition_type = ['Purchased for collection', 'Purchase', '5']
         time.sleep(1)
     elif acquisition_type == '6':
-        acquisition_type = ['6. Unknown at present', 'Unknown', '6']
+        acquisition_type = ['Unknown at present', 'Unknown', '6']
         time.sleep(1)        
     return acquisition_type
 
