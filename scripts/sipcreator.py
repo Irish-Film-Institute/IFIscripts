@@ -19,6 +19,8 @@ import aipcreator
 import manifest
 import makezip
 from masscopy import analyze_log
+import contextlib
+import io
 try:
     from clairmeta.utils.xml import prettyprint_xml
     from clairmeta import DCP
@@ -364,6 +366,13 @@ def process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_te
     os.rename(os.path.basename(dcp_dirname), content_title)
     new_dcp_path = os.path.join('objects', content_title).replace("\\", "/")
     absolute_dcp_path = os.path.join(sip_path, new_dcp_path)
+    oe_index = sip_path.find("oe")
+    oe = sip_path[oe_index:oe_index+7]
+    # print clairmeta result to ifiscripts_log/$oe_clairmeta_outcome_$datetime.txt
+    desktop_logs_dir = ififuncs.make_desktop_logs_dir()
+    txt_name_filename = oe + "_claiemeta_outcome" + time.strftime("_%Y_%m_%dT%H_%M_%S")
+    txt_name_source = "%s/%s.txt" % (desktop_logs_dir, txt_name_filename)
+    ififuncs.generate_txt(txt_name_source, 'Target Directory: %s' % objects_dir)
     ififuncs.manifest_replace(
         new_manifest_textfile,
         os.path.join('objects', os.path.basename(args.i[0])).replace("\\", "/"),
@@ -378,6 +387,17 @@ def process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_te
     # json_str = json.dumps(dcp_dict , sort_keys=True, indent=2, separators=(',', ': '))
     xml_str = dicttoxml.dicttoxml(dcp_dict, custom_root='ClairmetaProbe', ids=False, attr_type=False)
     xml_pretty = prettyprint_xml(xml_str)
+    
+    f = io.StringIO()
+    with contextlib.redirect_stdout(f):
+        # put the right command here
+    output = f.getvalue()
+    print("CHECK CHECK")
+    print(output)
+    print("CHECK2 CHECK2")
+    with open(txt_name_source, 'a', encoding='utf-8') as file:
+        file.write(output)
+    
     status, report = dcp.check()
     ififuncs.generate_log(
         new_log_textfile,
@@ -386,6 +406,7 @@ def process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_te
         )
     )
     clairmeta_xml = os.path.join(metadata_dir, '%s_clairmeta.xml' % content_title)
+    ififuncs.generate_txt(txt_name_source, 'Clairmeta Output: %s' % clairmeta_xml)
     ififuncs.generate_log(
         new_log_textfile,
         'EVENT = Metadata extraction - eventDetail=Clairmeta DCP metadata extraction, eventOutcome=%s, agentName=Clairmeta version %s' % (clairmeta_xml, clairmeta_version)
@@ -394,8 +415,6 @@ def process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_te
         fo.write(xml_pretty)
     ififuncs.checksum_replace(new_manifest_textfile, new_log_textfile, 'md5')
     ififuncs.manifest_update(new_manifest_textfile, clairmeta_xml)
-    print(status)
-    print(report)
 
 def make_oe_register():
     '''
