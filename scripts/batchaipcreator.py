@@ -336,7 +336,8 @@ def main(args_):
                         accession_cmd.append('-pbcore')
             if len(to_accession[package]) == 4:
                 if not to_accession[package][2] == 'n/a':
-                    accession_cmd.extend(['-acquisition_type', '13'])
+                    # acquisition_type target to the index of reproduction
+                    accession_cmd.extend(['-acquisition_type', '4'])
                     if args.oe_csv:
                         accession_cmd.extend(['-parent', to_accession[package][2]])
                         accession_cmd.extend(['-reproduction_creator', reproduction_creator])
