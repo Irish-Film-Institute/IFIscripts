@@ -220,6 +220,10 @@ def main(args_):
             ' eventIdentifierType=accession number, value=%s'
             % accession_number
         )
+        ififuncs.generate_log(
+            sipcreator_log,
+            'EVENT = eventType=Information package creation'
+        )
         '''
         ififuncs.generate_log(
             sipcreator_log,

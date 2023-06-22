@@ -477,6 +477,10 @@ def main(args_):
             ' eventIdentifierType=object entry number, value=%s'
             % object_entry
         )
+        ififuncs.generate_log(
+            new_log_textfile,
+            'EVENT = eventType=Information package creation'
+        )
         '''
         ififuncs.generate_log(
             new_log_textfile,
