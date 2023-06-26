@@ -6,6 +6,7 @@ import argparse
 import subprocess
 import platform
 import ififuncs
+import framemd5
 
 def parse_args():
     '''
@@ -27,12 +28,12 @@ def parse_args():
     return parsed_args
 
 def batchframemd5(sip_path):
-    print("PART 1 - framemd5 creation")
+    print("\n\nPART 1 - framemd5 creation")
     oe = os.listdir(sip_path)
     framemd5_f = []
     for sip in oe:
         if sip[:2] == 'oe':
-            print("**** SIP has been found: %s" % sip)
+            print("\n**** SIP has been found: %s" % sip)
             sip_d = os.path.join(sip_path, sip)
             uuid = os.listdir(sip_d)
             for item in uuid:
@@ -44,15 +45,19 @@ def batchframemd5(sip_path):
                         v = os.path.join(obj, item)
                         print("**** Object has been found: %s" % v)
                     try:
+                        '''
                         if platform.system() == 'Windows':
                             framemd5_cmd = ['python', 'framemd5.py', '-i', v]
                         else:
                             framemd5_cmd = ['python3', 'framemd5.py', '-i', v]
                         print(framemd5_cmd)
                         subprocess.check_output(framemd5_cmd)
+                        '''
+                        framemd5_cmd = ['-i', v]
+                        framemd5.main(framemd5_cmd)
                     except Exception as e:
                         print(e)
-                        print("\n!!!! framemd5.py failed!")
+                        print("!!!! framemd5.py failed!")
                     obj_d = os.listdir(obj)
                     for item in obj_d:
                         if item.endswith('.framemd5'):
@@ -62,7 +67,7 @@ def batchframemd5(sip_path):
     return framemd5_f
 
 def diff_framemd5(framemd5_f, psm_path, txt_name_source):
-    print("PART 2 - framemd5 vs md5 fixity check")
+    print("\n\nPART 2 - framemd5 vs md5 fixity check")
 
     print('Framemd5 exists:')
     for f in framemd5_f:
@@ -110,14 +115,14 @@ def diff_framemd5(framemd5_f, psm_path, txt_name_source):
         print('-----\nFixity check completed')  
 
 def batchrm_framemd5(sip_path):
-    print("PART 3 - framemd5 deletation")
+    print("\n\nPART 3 - framemd5 deletation")
     framemd5_f = []
     for root, dir, file in os.walk(sip_path):
         if root.endswith('objects'):
             for f in file:
                 f_abspath = os.path.join(root, f)
                 if f.endswith('.framemd5') and os.path.isfile(f_abspath):
-                    # os.remove(f_abspath)
+                    os.remove(f_abspath)
                     framemd5_f.append(f_abspath)
     return framemd5_f
 

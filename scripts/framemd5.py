@@ -5,10 +5,11 @@ If the input is a file, then framemd5.py will just generate a sidecar for this o
 '''
 import subprocess
 import os
+import sys
 import argparse
 import ififuncs
 
-def parse_args():
+def parse_args(args_):
     '''
     Parse command line arguments.
     '''
@@ -20,15 +21,15 @@ def parse_args():
         '-i',
         help='full path of input file or directory', required=True
     )
-    parsed_args = parser.parse_args()
+    parsed_args = parser.parse_args(args_)
     return parsed_args
 
-def main():
+def main(args_):
     '''
     Simple recursive process that makes framemd5 sidecar reports.
     '''
     ififuncs.check_existence(['ffmpeg'])
-    args = parse_args()
+    args = parse_args(args_)
     source = args.i
     fmd5 = source + '_source.framemd5'
     if os.path.isfile(source):
@@ -61,5 +62,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])
 
