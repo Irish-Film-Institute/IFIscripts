@@ -743,9 +743,11 @@ def get_user():
     '''
     user_list = ['Allison McGrail',
                 'Caroline Crowther',
+                'Cody Farren',
                 'Emma Battlebury',
                 'Gavin Martin',
                 'Mark Keleghan',
+                'Matheus Almeida',
                 'Niall Anderson',
                 'Raelene Casey',
                 'Raven Cooke',
