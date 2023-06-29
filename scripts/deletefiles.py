@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 '''
-Deletes files after sipcreator has been run, but before accession.py has been run.
+Deletes files after sipcreator has been run, but before aipcreator.py has been run.
 Manifests are updated and metadata is deleted.
 '''
 import os

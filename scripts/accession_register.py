@@ -27,7 +27,7 @@ def parse_args(args_):
     )
     parser.add_argument(
         '-filmo_csv',
-        help='Path to Filmographic CSV. Must contain reference numbers.'
+        help='Path to Filmographic CSV. Must contain Filmographic URN.'
     )
     parsed_args = parser.parse_args(args_)
     return parsed_args
@@ -58,9 +58,9 @@ def main(args_):
     pbcore_csv_dict = ififuncs.extract_metadata(args.pbcore_csv)[0]
     filmo_csv_dict = ififuncs.extract_metadata(args.filmo_csv)[0]
     for accession in sorted_csv_dict:
-        number = accession['accession number']
+        accession_number = accession['accession number']
         for technical_record in pbcore_csv_dict:
-            if technical_record['Accession Number'] == number:
+            if technical_record['Accession Number'] == accession_number:
                 accession['acquisition method'] = technical_record['Type Of Deposit']
                 accession['acquired from'] = technical_record['Donor']
                 accession['date acquired'] = technical_record['Date Of Donation']
