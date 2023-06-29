@@ -42,8 +42,9 @@ def batchframemd5(sip_path):
                     obj = os.path.join(uuid_d, 'objects')
                     obj_d = os.listdir(obj)
                     for item in obj_d:
-                        v = os.path.join(obj, item)
-                        print("**** Object has been found: %s" % v)
+                        if not item.endswith('.qctools.mkv'):
+                            v = os.path.join(obj, item)
+                            print("**** Object has been found: %s" % v)
                     try:
                         '''
                         if platform.system() == 'Windows':
