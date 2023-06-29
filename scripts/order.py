@@ -2,7 +2,7 @@
 '''
 Audits logfiles to determine the parent of a derivative package.
 This script can aid in automating large accessioning procedures that involve
-the accessioning of derivatives along with masters, eg a Camera Card and
+the AIPing of derivatives along with masters, eg a Camera Card and
 a concatenated derivative, or a master file and a mezzanine.
 
 order.py will be able to determine if something is a reproduction,

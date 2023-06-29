@@ -19,8 +19,8 @@ def parse_args():
         help='full path of output directory', required=True
     )
     parser.add_argument(
-        '-refno', '-r',
-        help='Filmographic reference number'
+        '-filmo_number', '-f',
+        help='Filmographic URN'
     )
     parser.add_argument(
         '-source', '-s',
@@ -44,7 +44,7 @@ def ask_something(question):
             '\n\n****%s\n\n' % question
         )
         if ' ' in thing2ask:
-            print 'no spaces please!!'
+            print('no spaces please!!')
             thing2ask = raw_input(
                 '\n\n****%s\n\n' % question
             )
@@ -54,7 +54,7 @@ def get_input(args):
     '''
     Interview the user so that the components of foldername are revealed.
     '''
-    if not args.refno:
+    if not args.filmo_number:
         filmographic = ask_something('filmographic number plz')
     if not args.source:
         source = ask_something('source accesion number plz')
@@ -78,7 +78,7 @@ def make_folders(parent, args):
     os.makedirs(objects_dir)
     os.makedirs(metadata_dir)
     for folder in [logs_dir, objects_dir, metadata_dir]:
-        print folder
+        print(folder)
         os.chdir(folder)
         os.makedirs('image')
         os.makedirs('audio')

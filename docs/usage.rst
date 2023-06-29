@@ -37,12 +37,11 @@ batchsipcreator.py
 aipcreator.py
 ~~~~~~~~~~~~
 
--  Accession a package that has been through the Object Entry
-   procedure.
+-  Turns a SIP that has passed QC procedures into an AIP.
 -  Currently this just works with packages that have been generated
-   using ``sipcreator.py``. SHA512 manifests are created,the OE number
-   is replaced by an accession number, and the sipcreator logfile is
-   updated with the various events that have taken place.
+   using ``sipcreator.py`` and ``seq2ffv1.py``. SHA512 manifests are 
+   created,the OE number is replaced by an accession number, and the sipcreator
+   logfile is updated with the various events that have taken place.
 -  Usage for one directory - ``aipcreator.py /path/to/directory_name``
 -  Run ``aipcreator.py -h`` for all options.
 
@@ -91,8 +90,8 @@ mergepbcore.py
 
 -  Collates PBCore CSV records into a single merged CSV.
 -  The merged csv will be stored in the Desktop ifiscripts_logs folder.
--  This script takes a parent folder containing accessioned packages as input.
--  Usage ``mergepbcore.py /path/to/folder_that_contains_accessioned_packages``
+-  This script takes a parent folder containing AIPs as input.
+-  Usage ``mergepbcore.py /path/to/folder_that_contains_AIPs_as_input``
 -  Run ``mergepbcore.py -h`` for all options.
 
 mergecsv.py
@@ -206,11 +205,11 @@ prores.py
 makedip.py
 ~~~~~~~~~
 
--  Runs bitc.py or prores.py but only for use with accessioned packages.
--  Usage for running bitc.py all accessioned objects in a parent directory -
-   ``makedip.py path/to/lots_of_accessioned_directories -o path/to/output``
+-  Runs bitc.py or prores.py.
+-  Usage for running bitc.py on all objects in a batch of information packages -
+   ``makedip.py path/to/batch_directories -o path/to/output``
 -  The ``-prores`` option will use run ``prores.py`` instead of ``bitc.py``
--  The script will rename the output file so that it contains the accession number
+-  The script will rename the output file so that it contains either the OE number or the accession number.
 -  If it sees that a proxy already exists, then it will skip the video.
 -  Use ``makedip.py -h`` to see all options
 
@@ -463,7 +462,7 @@ makefolders.py
    folder. This is specific to a film scanning workflow as there are
    seperate audio and image subfolders. You can specifiy the values on
    the command line or a terminal interview will appear which will
-   prompt you for filmographic reference number, source accession number
+   prompt you for filmographic URN, source accession number
    and title. Use ``makefolders.py -h`` for the full list of options.
 -  Usage: ``makefolders.py -o /path/to/destination``
 
@@ -489,7 +488,9 @@ batchmakeshell.py
    and clone all the subcontent except the content inside the 
    'objects' folder into them. The shells will be created into the
    targeted output path.
--  Usage: ``batchmakeshell.py $input -o $output``
+-  Usage: ``batchmakeshell.py path/to/batch_directories -o /path/to/destination``
+-  This script has extra options, including making shells for AS-11 UK DPP and
+   DCP. Use ``batchmakeshell.py -h`` to see all options.
     
 
 Misc

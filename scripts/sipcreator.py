@@ -238,8 +238,8 @@ def parse_args(args_):
         help='Uses makezip.py to store the objects in an uncompressed ZIP'
     )
     parser.add_argument(
-        '-accession', action='store_true',
-        help='Launches aipcreator.py immediately after sipcreator.py finishes. This is only useful if the SIP has already passed QC and will definitely be accessioned and ingested.'
+        '-aipcreator', action='store_true',
+        help='Launches aipcreator.py immediately after sipcreator.py finishes. This is only useful if the SIP has already passed QC and will definitely be AIPed and ingested.'
     )
     parser.add_argument(
         '-filmo_csv',
@@ -339,7 +339,7 @@ def determine_uuid(args, sip_path):
         if ififuncs.validate_uuid4(args.u) is None:
             uuid = args.u
             uuid_event = (
-                'EVENT = eventType=Identifier assignement,'
+                'EVENT = eventType=Identifier assignment,'
                 ' eventIdentifierType=UUID, value=%s, module=uuid.uuid4'
             ) % uuid
         else:
@@ -348,7 +348,7 @@ def determine_uuid(args, sip_path):
     else:
         uuid = os.path.basename(sip_path)
         uuid_event = (
-            'EVENT = eventType=Identifier assignement,'
+            'EVENT = eventType=Identifier assignment,'
             ' eventIdentifierType=UUID, value=%s, module=uuid.uuid4'
         ) % uuid
     return uuid, uuid_event
@@ -473,16 +473,26 @@ def main(args_):
     if not args.sc:
         ififuncs.generate_log(
             new_log_textfile,
-            'EVENT = eventType=Identifier assignement,'
-            ' eventIdentifierType=object entry, value=%s'
+            'EVENT = eventType=Identifier assignment,'
+            ' eventIdentifierType=object entry number, value=%s'
             % object_entry
         )
+        ififuncs.generate_log(
+            new_log_textfile,
+            'EVENT = eventType=Information package creation'
+        )
+        '''
+        ififuncs.generate_log(
+            new_log_textfile,
+            'EVENT = eventType=Information package creation, eventOutcomeDetailNote=Submission information package'
+        )
+        '''
     metadata_dir = os.path.join(sip_path, 'metadata')
     supplemental_dir = os.path.join(metadata_dir, 'supplemental')
     logs_dir = os.path.join(sip_path, 'logs')
-    if args.accession:
+    if args.aipcreator:
         accession_number = ififuncs.get_accession_number()
-        reference_number = ififuncs.get_reference_number()
+        filmo_number = ififuncs.get_filmo_number()
         parent = ififuncs.ask_question('What is the parent record? eg MV 1234. Enter n/a if this is a born digital acquisition with no parent.')
         donor = ififuncs.ask_question('Who is the source of acquisition, as appears on the donor agreement? This will not affect Reproductions.')
         reproduction_creator = ififuncs.ask_question('Who is the reproduction creator? This will not affect acquisitions. Enter n/a if not applicable')
@@ -592,22 +602,22 @@ def main(args_):
     print('\n- %s ran this script at %s and it finished at %s' % (user, start, finish))
     if args.d:
         process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_textfile, metadata_dir, clairmeta_version)
-    if args.accession:
+    if args.aipcreator:
         register = aipcreator.make_register()
         filmographic_dict = ififuncs.extract_metadata(args.filmo_csv)[0]
         for filmographic_record in filmographic_dict:
-            if filmographic_record['Reference Number'].lower() == reference_number.lower():
-                if filmographic_record['Title'] == '':
-                    title = filmographic_record['TitleSeries'] + '; ' + filmographic_record['EpisodeNo']
+            if filmographic_record['Filmographic URN'].lower() == filmo_number.lower():
+                if filmographic_record['Title/Name'] == '':
+                    title = filmographic_record['Series Title'] + '; ' + filmographic_record['Episode No']
                 else:
-                    title = filmographic_record['Title']
+                    title = filmographic_record['Title/Name']
         oe_register = make_oe_register()
-        ififuncs.append_csv(oe_register, (object_entry.upper()[:2] + '-' + object_entry[2:], donation_date, '1','',title,donor,acquisition_type[1], accession_number, 'Representation of %s|Reproduction of %s' % (reference_number, parent), ''))
+        ififuncs.append_csv(oe_register, (object_entry.upper()[:2] + '-' + object_entry[2:], donation_date, '1','',title,donor,acquisition_type[1], accession_number, 'Representation of %s|Reproduction of %s' % (filmo_number, parent), ''))
         accession_cmd = [
             os.path.dirname(sip_path), '-user', user,
             '-force',
-            '-number', accession_number,
-            '-reference', reference_number,
+            '-accession_number', accession_number,
+            '-filmo_number', filmo_number,
             '-register', register,
             '-filmo_csv', args.filmo_csv,
             '-pbcore'
