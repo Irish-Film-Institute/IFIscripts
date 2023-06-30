@@ -328,6 +328,19 @@ validate.py
 -  Usage: ``validate.py /path/to/manifest.md5`` or
    ``validate.py /path/to/_manifest-sha512.txt``
 
+batchdiff_framemd5.py
+~~~~~~~~~~~
+
+-  Creates framemd5 sidecars on a batch of SIPs powered by `framemd5.py`;
+   Compares the hashes in framesmd5 and those in md5 files in PSM directory;
+   Once mismatch was found, it will skip the rest of the hashes and 
+   skip to the next object; It will delete all framemd5 files after 
+   the batch of the comparsions have finished.
+-  Usage: ``batchdiff_framemd5.py -sip /path/to/parent_folder/of/SIPs 
+   -psm /path/to/parent_folder/of/PSMs``
+-  NB: The script will default to only one md5 manifest file per PSM. If 
+   there are repeated manifest in the directory, users may need to add bloack 
+   in the script manually.
 
 Image Sequences
 ---------------
