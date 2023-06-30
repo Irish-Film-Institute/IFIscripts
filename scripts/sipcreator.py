@@ -353,7 +353,7 @@ def determine_uuid(args, sip_path):
         ) % uuid
     return uuid, uuid_event
 
-def process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_textfile, metadata_dir, clairmeta_version):
+def process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_textfile, txt_name_source, metadata_dir, clairmeta_version):
     '''
     Runs DCP specific functions.
     '''
@@ -379,6 +379,10 @@ def process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_te
     xml_str = dicttoxml.dicttoxml(dcp_dict, custom_root='ClairmetaProbe', ids=False, attr_type=False)
     xml_pretty = prettyprint_xml(xml_str)
     status, report = dcp.check()
+    # print clairmeta result to ifiscripts_log/$oe_clairmeta_outcome_$datetime.txt
+    with open(txt_name_source, 'a') as file:
+        file.write(report.pretty_str())
+    print('\n\nClairmeta outcome has exported to' + txt_name_source)
     ififuncs.generate_log(
         new_log_textfile,
         'EVENT = eventType=validation, eventOutcome=%s, eventDetail=%s, agentName=Clairmeta version %s' % (
@@ -394,8 +398,6 @@ def process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_te
         fo.write(xml_pretty)
     ififuncs.checksum_replace(new_manifest_textfile, new_log_textfile, 'md5')
     ififuncs.manifest_update(new_manifest_textfile, clairmeta_xml)
-    print(status)
-    print(report)
 
 def make_oe_register():
     '''
@@ -601,7 +603,12 @@ def main(args_):
     finish = datetime.datetime.now()
     print('\n- %s ran this script at %s and it finished at %s' % (user, start, finish))
     if args.d:
-        process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_textfile, metadata_dir, clairmeta_version)
+        # print clairmeta result to ifiscripts_log/$oe_clairmeta_outcome_$datetime.txt
+        desktop_logs_dir = ififuncs.make_desktop_logs_dir()
+        txt_name_filename = object_entry + "_clairmeta_outcome" + time.strftime("_%Y_%m_%dT%H_%M_%S")
+        txt_name_source = "%s/%s.txt" % (desktop_logs_dir, txt_name_filename)
+        ififuncs.generate_txt(txt_name_source, 'Target Directory: %s' % inputs)
+        process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_textfile, txt_name_source, metadata_dir, clairmeta_version)
     if args.aipcreator:
         register = aipcreator.make_register()
         filmographic_dict = ififuncs.extract_metadata(args.filmo_csv)[0]
