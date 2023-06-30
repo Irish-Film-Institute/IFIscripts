@@ -217,7 +217,8 @@ def main():
             if xml_flag == 0:
                 print(dirpath + '\n*****There is no metadata xml file in the supplement directory!\n*****Check if the structure is correct.\n---')
                 continue
-    print("Report complete - Time elaspsed : ", datetime.now() - startTime)
+    print("Report complete\nTime elaspsed : ", datetime.now() - startTime)
+    print("Location: " + csv_report)
 
 
 if __name__ == '__main__':
