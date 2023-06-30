@@ -382,6 +382,7 @@ def process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_te
     # print clairmeta result to ifiscripts_log/$oe_clairmeta_outcome_$datetime.txt
     with open(txt_name_source, 'a') as file:
         file.write(report.pretty_str())
+    print('\n\nClairmeta outcome has exported to' + txt_name_source)
     ififuncs.generate_log(
         new_log_textfile,
         'EVENT = eventType=validation, eventOutcome=%s, eventDetail=%s, agentName=Clairmeta version %s' % (
