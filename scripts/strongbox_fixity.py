@@ -32,7 +32,7 @@ def parse_args(args_):
     )
     parser.add_argument(
         '-i',
-        help='Path of the parent folder containing the accessioned packages'
+        help='Path of the parent folder containing the AIPs.'
     )
     parsed_args = parser.parse_args(args_)
     return parsed_args
