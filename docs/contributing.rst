@@ -4,14 +4,23 @@ Contributing
 Issues
 ------
 
-Contributions are very much welcome in any form. Feel free to raise an issue requesting a new feature, or to report a bug. If reporting a bug, please copy/paste the full, complete, uncut terminal output. You can raise the issue in the github issue tracker: https://github.com/kieranjol/IFIscripts/issues
+Contributions are very much welcome in any form. Feel free to raise an issue requesting a new feature, or to report a bug. If requesting a new feature, please describe the workflow which the feature will be used, the required input & output data, and the output form of that. If reporting a bug, please copy/paste the full, complete, uncut terminal output.
+
+For the issues requested by IFI Irish Film Archive staff, please raise tickets in the Teams/Script work group/Script_maintenance_log.xlsx. All tickets will be assessed with workflow first and then uploaded on GitHub in new branches or issues if needed.
+
+For issues we are going to solve, we will create a relative pull request and quote each other.
 
 Pull Requests
 -------------
 
-Pull requests are welcome. If contributing code, it can be nice to run it through ``pylint`` first, as this will check for PEP-08 compliance. I'd rather get the code contribution in pretty much any form, so this is not necessary. Pull requests can be raised here:  https://github.com/kieranjol/IFIscripts/pulls
+Pull requests are welcome. If contribution is on existing scripts, please follow the coding style and leave comments for short descriptions. If contributing new script, it can be nice to run it through ``pylint`` first, as this will check for PEP-08 compliance.
 
-Generally, we try to limit the use of external dependencies, so we try to do as much in ``python`` as possible. This can be seen in any scripts that generate checksums. We slowly moved away from using the wonderful ``md5deep`` and used the internal python ``hashlib`` libraries instead. Previously, we limited the use of external python libraries, and only really use ``lxml``. This is probably going to change going forward, especially as we move towards managing installs and updates via ``pip`` and ``setup.py``.
+We are trying to limit the use of external dependencies unless it is necessary for the workflows and materials. While if you add any external dependencies, please specify in the pull request and add them in ``setup.py``.
+
+*Please commit as '$script.py - $description' for a clear review.*
+*Please also leave the test instances and results with the full, complete, uncut terminal output. If it generates any files, please specify the filename and format, and content if applicable.*
+
+For pull requests by IFI Irish Film Archive staff, please follow the script work group policy and contributing after testing in the local workspace. For any edits of re-phrasing or typo, force-push would be better in case of unnecessary commits. 
 
 Contributions Needed
 --------------------
