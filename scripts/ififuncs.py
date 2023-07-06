@@ -38,6 +38,7 @@ except ImportError:
     print('ERROR - lxml is not installed - try pip install lxml')
     sys.exit()
 
+
 def diff_textfiles(source_textfile, other_textfile):
     '''
     Compares two textfiles. Returns strings that indicate losslessness.
@@ -71,6 +72,7 @@ def make_mediainfo(xmlfilename, xmlvariable, inputfilename):
             xmlvariable = subprocess.check_output(mediainfo_cmd).decode('cp1252')
         fo.write(xmlvariable)
 
+
 def make_exiftool(xmlfilename, inputfilename):
     '''
     Writes an exiftool json output.
@@ -91,6 +93,8 @@ def make_exiftool(xmlfilename, inputfilename):
             with open(inputfilename, 'rb') as file_object:
                 xmlvariable = subprocess.check_output(['exiftool', '-j', '-'], stdin=file_object).decode("utf-8")
         fo.write(xmlvariable)
+
+
 def make_siegfried(xmlfilename, inputfilename):
     '''
     Writes a Siegfried/PRONOM json report.
@@ -106,6 +110,7 @@ def make_siegfried(xmlfilename, inputfilename):
         parsed = json.loads(xmlvariable)
         fo.write(json.dumps(parsed, indent=4, sort_keys=True))
 
+
 def make_mediaconch(full_path, mediaconch_xmlfile):
     '''
     Creates a mediaconch implementation check XML report.
@@ -119,6 +124,7 @@ def make_mediaconch(full_path, mediaconch_xmlfile):
     mediaconch_output = subprocess.check_output(mediaconch_cmd).decode(sys.stdout.encoding)
     with open(mediaconch_xmlfile, 'w') as xmlfile:
         xmlfile.write(mediaconch_output)
+
 
 def extract_provenance(filename, output_folder, output_uuid):
     '''
@@ -142,6 +148,7 @@ def extract_provenance(filename, output_folder, output_uuid):
     makedfxml.main([filename, '-n', '-o', dfxml])
     return inputxml, inputtracexml, dfxml
 
+
 def generate_mediainfo_xmls(filename, output_folder, output_uuid, log_name_source):
     '''
     This will add the mediainfo xmls to the package
@@ -161,6 +168,8 @@ def generate_mediainfo_xmls(filename, output_folder, output_uuid, log_name_sourc
         'EVENT = Metadata extraction - eventDetail=File system metadata extraction using Digital Forensics XML, eventOutcome=%s, agentName=makedfxml' % (dfxml)
     )
     return inputxml, inputtracexml, dfxml
+
+
 def make_qctools(input):
     '''
     Runs an ffprobe process that stores QCTools XML info as a variable.
@@ -230,6 +239,7 @@ def get_milliseconds(filename):
     except Exception as e:
             print("\nDuration ERROR\n\t-> get_mediainfo(miliseconds) not support\n\t-> %s\n\t-> ififuncs.py line: 219" % e)
 
+
 def convert_millis(milli):
     '''
     Accepts milliseconds and returns this value as HH:MM:SS.NNN
@@ -295,6 +305,7 @@ def send_gmail(email_to, attachment, subject, email_body, email_address, passwor
     #server_ssl.quit()
     server_ssl.close()
     print(' - successfully sent the mail')
+
 
 def frames_to_seconds(audio_entry_point):
     audio_frame_count = float(audio_entry_point)
@@ -382,6 +393,7 @@ def hashlib_sha512(filename):
     sha512_output = m.hexdigest()
     return sha512_output
 
+
 def hashlib_manifest(manifest_dir, manifest_textfile, path_to_remove):
     '''
     Creates an MD5 manifest with relative filepaths.
@@ -456,6 +468,7 @@ def sha512_manifest(manifest_dir, manifest_textfile, path_to_remove):
         for i in manifest_list:
             fo.write((unicodedata.normalize('NFC', i) + '\n'))
 
+
 def hashlib_append(manifest_dir, manifest_textfile, path_to_remove):
     '''
     Lazy rehash of hashlib_manifest, except this just adds files to an existing manifest.
@@ -508,6 +521,8 @@ def make_manifest(manifest_dir, relative_manifest_path, manifest_textfile):
     else:
         print(' - Manifest already exists')
         sys.exit()
+
+
 def make_mediatrace(tracefilename, xmlvariable, inputfilename):
     mediatrace_cmd = [
             'mediainfo',
@@ -529,7 +544,6 @@ def make_mediatrace(tracefilename, xmlvariable, inputfilename):
         fo.write(xmlvariable)
 
 
-
 def check_overwrite(file2check):
     if os.path.isfile(file2check):
         print(' - A manifest already exists at your destination. Overwrite? Y/N?')
@@ -539,6 +553,8 @@ def check_overwrite(file2check):
             if overwrite_destination_manifest not in ('Y', 'y', 'N', 'n'):
                 print(' - Incorrect input. Please enter Y or N')
         return overwrite_destination_manifest
+
+
 def manifest_file_count(manifest2check):
     '''
     Checks how many entries are in a manifest
@@ -568,6 +584,7 @@ def append_csv(csv_file, *args):
     finally:
         f.close()
 
+
 def sort_csv(csv_file, key):
     '''
     Sorts a csv_file by a key. The key being a field heading.
@@ -582,6 +599,7 @@ def sort_csv(csv_file, key):
         for i in newlist:
             writer.writerow(i)
     return sorted_filepath
+
 
 def make_desktop_manifest_dir():
     desktop_manifest_dir = os.path.expanduser("~/Desktop/moveit_manifests")
@@ -602,6 +620,7 @@ def make_desktop_logs_dir():
         os.makedirs(desktop_logs_dir)
     return desktop_logs_dir
 
+
 def get_image_sequence_files(directory):
     # This function accepts a directory as input, and checks returns a list of files in an image sequence.
     os.chdir(directory)
@@ -620,6 +639,7 @@ def get_image_sequence_files(directory):
     else:
         return 'none'
     return images
+
 
 def check_multi_reel(directory):
     # This function accepts a directory as input. It checks if there are
@@ -660,6 +680,7 @@ def get_ffmpeg_friendly_name(images):
             ffmpeg_friendly_name += numberless_filename[counter] + '_'
             counter += 1
     return ffmpeg_friendly_name, container, start_number
+
 
 def parse_image_sequence(images):
     '''
@@ -722,6 +743,7 @@ def create_uuid():
     '''
     new_uuid = str(uuid.uuid4())
     return new_uuid
+
 
 def make_folder_structure(path):
     '''
@@ -819,6 +841,7 @@ def get_acquisition_type(acquisition_type):
         time.sleep(1)        
     return acquisition_type
 
+
 def sort_manifest(manifest_textfile):
     '''
     Sorts an md5 manifest in alphabetical order.
@@ -830,6 +853,7 @@ def sort_manifest(manifest_textfile):
             manifest_list = sorted(manifest_lines, key=lambda x: (x[34:]))
             for i in manifest_list:
                 ba.write(i)
+
 
 def concat_textfile(video_files, concat_file):
     '''
@@ -880,6 +904,7 @@ def get_temp_concat(root_name):
     else:
         video_concat_textfile = temp_dir + "/%s.txt" % video_concat_filename
     return video_concat_textfile
+
 
 def get_script_version(scriptname):
     '''
@@ -932,6 +957,7 @@ def validate_uuid4(uuid_string):
         # is not a valid hex code for a UUID.
         return False
 
+
 def get_source_uuid():
     '''
     Asks user for uuid. A valid uuid must be provided.
@@ -959,6 +985,7 @@ def ask_question(question):
         proceed = ask_yes_no('Are you really sure?')
     return answer
 
+
 def get_object_entry():
     '''
     Asks user for an Object Entry number. A valid Object Entry (OE####) must be provided.
@@ -982,6 +1009,7 @@ def get_object_entry():
         else:
             return object_entry
 
+
 def get_accession_number():
     '''
     Asks user for an accession number. A valid number (OE####) must be provided.
@@ -1003,6 +1031,7 @@ def get_accession_number():
         else:
             return accession_number
 
+
 def get_filmo_number():
     '''
     Asks user for a Filmographic URN. Due to the variety 
@@ -1012,6 +1041,7 @@ def get_filmo_number():
         '\n\n**** Please enter the Filmographic URN of the representation- if there is more than one work that is represented, seperate them with an ampersand, eg af1234&aa675\n\n'
     )
     return get_filmo_number.upper()
+
 
 def get_contenttitletext(cpl):
     '''
@@ -1036,6 +1066,7 @@ def find_cpl(source):
                     if 'CPL' in cpl_namespace:
                         return os.path.join(root, filename)
 
+
 def ask_yes_no(question):
     '''
     Returns Y or N. The question variable is just a string.
@@ -1051,6 +1082,7 @@ def ask_yes_no(question):
         elif answer in ('N,' 'n'):
             return 'N'
 
+
 def manifest_replace(manifest, to_be_replaced, replaced_with):
     '''
     Replace strings in a checksum manifest (or any textfile)
@@ -1063,6 +1095,7 @@ def manifest_replace(manifest, to_be_replaced, replaced_with):
         for lines in original_lines:
             new_lines = lines.replace(to_be_replaced, replaced_with)
             ba.write(new_lines)
+
 
 def manifest_update(manifest, path):
     '''
@@ -1090,6 +1123,7 @@ def manifest_update(manifest, path):
         for i in manifest_list:
             fo.write((unicodedata.normalize('NFC', i) + '\n'))
 
+
 def sha512_update(manifest, path):
     '''
     Adds a new entry to your sha512 manifest and sort.
@@ -1116,6 +1150,8 @@ def sha512_update(manifest, path):
     with open(manifest, "w", encoding='utf-8') as fo:
         for i in manifest_list:
             fo.write((unicodedata.normalize('NFC', i) + '\n'))
+
+
 def check_for_uuid(args):
     '''
     Tries to check if a filepath contains a UUID.
@@ -1136,6 +1172,7 @@ def check_for_uuid(args):
                 return uuid_check
             else:
                 return source_uuid
+
 
 def check_for_uuid_generic(source):
     '''
@@ -1178,6 +1215,7 @@ def check_for_sip(args):
             if os.path.isdir(os.path.join(args[0], dircheck)):
                 return os.path.join(args[0], dircheck)
 
+
 def check_for_sip_generic(source):
     '''
     This checks if the input folder contains the actual payload, eg:
@@ -1191,6 +1229,7 @@ def check_for_sip_generic(source):
             dircheck = filenames.replace('_manifest.md5', '')
             if os.path.isdir(os.path.join(source, dircheck)):
                 return os.path.join(source, dircheck)
+
 
 def checksum_replace(manifest, logname, algorithm):
     '''
@@ -1215,6 +1254,7 @@ def checksum_replace(manifest, logname, algorithm):
         for lines in updated_manifest:
             fo.write(lines)
 
+
 def img_seq_pixfmt(start_number, path):
     '''
     Determine the pixel format of an image sequence
@@ -1231,6 +1271,7 @@ def img_seq_pixfmt(start_number, path):
     ]
     pix_fmt = subprocess.check_output(ffprobe_cmd).rstrip().decode(sys.stdout.encoding)
     return pix_fmt
+
 
 def get_ffmpeg_fmt(path, file_type):
     '''
@@ -1253,6 +1294,7 @@ def get_ffmpeg_fmt(path, file_type):
     ]
     pix_fmt = subprocess.check_output(ffprobe_cmd).rstrip().decode(sys.stdout.encoding).replace("\n", '|').replace("\r", '')
     return pix_fmt
+
 
 def get_number_of_tracks(path):
     '''
@@ -1307,6 +1349,7 @@ def merge_logs(log_name_source, sipcreator_log, sipcreator_manifest):
             fo.write(remaining_lines)
     checksum_replace(sipcreator_manifest, sipcreator_log, 'md5')
 
+
 def merge_logs_append(log_name_source, sipcreator_log, sipcreator_manifest):
     '''
     merges the contents of one log with another.
@@ -1324,6 +1367,8 @@ def merge_logs_append(log_name_source, sipcreator_log, sipcreator_manifest):
         for remaining_lines in concat_lines:
             fo.write(remaining_lines)
     checksum_replace(sipcreator_manifest, sipcreator_log, 'md5')
+
+
 def logname_check(basename, logs_dir):
     '''
     Currently we have a few different logname patterns in our packages.
@@ -1361,7 +1406,7 @@ def log_results(manifest, log, parent_dir):
     logs_dir = os.path.join(sip_dir, 'logs')
     logname = logname_check(basename, logs_dir)
     logfile = os.path.join(logs_dir, logname)
-    ififuncs.generate_log(
+    generate_log(
         log,
         'EVENT = Logs consolidation - Log from %s merged into %s' % (log, logfile)
     )
@@ -1375,11 +1420,12 @@ def log_results(manifest, log, parent_dir):
         manifest_lines = manifesto.readlines()
         for lines in manifest_lines:
             if os.path.basename(logname) in lines:
-                lines = lines[:31].replace(lines[:31], ififuncs.hashlib_md5(logfile)) + lines[32:]
+                lines = lines[:31].replace(lines[:31], hashlib_md5(logfile)) + lines[32:]
             updated_manifest.append(lines)
     with open(manifest, 'w') as fo:
         for lines in updated_manifest:
             fo.write(lines)
+
 
 def find_parent(sipcreator_log,oe_uuid_dict):
     '''
@@ -1399,6 +1445,7 @@ def find_parent(sipcreator_log,oe_uuid_dict):
                             return '%s has a parent: %s ' % (os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(sipcreator_log)))), source)
         if line_check == '':
             return '%s not a child of another package' % os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(sipcreator_log))))
+
 
 def find_concat_user(sipcreator_log):
     '''
@@ -1429,6 +1476,7 @@ def group_ids(source):
             if validate_uuid4(dirnames[0]) is not False:
                 uuid_oe_dict[os.path.basename(root)] = dirnames[0]
     return uuid_oe_dict
+
 
 def convert_ms2frames(fps, ms):
     # taken from https://github.com/atvKumar/Scene_Cut_Detection/blob/93622d250dc38907ee7d3ee8d925c4bfb76129b6/timecode_utils.py'
@@ -1480,6 +1528,7 @@ def get_video_files(source):
         file_list = [source]
     return file_list
 
+
 def extract_metadata(csv_file):
     '''
     Read the csv and store the data in a list of dictionaries.
@@ -1490,6 +1539,7 @@ def extract_metadata(csv_file):
     for rows in input_file:
         object_dictionaries.append(rows)
     return object_dictionaries, headers
+
 
 def check_dependencies(dependencies):
     '''
@@ -1610,6 +1660,7 @@ def get_digital_object_descriptor(source_folder):
         dig_object_descriptor = 'MPEG-2 Transport Stream'
     return dig_object_descriptor
 
+
 def check_for_fcp(filename):
     '''
     Final Cut Pro 7 Capture files have some significant missing metadata that
@@ -1648,6 +1699,7 @@ def check_for_fcp(filename):
             if height == '576':
                 if width == '720':
                     return True
+
 
 def check_for_blackmagic(filename):
     '''
@@ -1690,6 +1742,8 @@ def check_for_blackmagic(filename):
             if height_clap == '576':
                 if width_clap == '702':
                     return True
+
+
 def read_non_comment_lines(infile):
     '''
     This was pulled from makeffv1, and it looks like the key line has actually been commented out.
@@ -1721,6 +1775,7 @@ def diff_framemd5s(fmd5, fmd5ffv1):
                         checksum_mismatches.append(1)
     return checksum_mismatches
 
+
 def get_mediainfo_version():
     '''
     Returns the version of mediainfo.
@@ -1734,6 +1789,7 @@ def get_mediainfo_version():
     except subprocess.CalledProcessError as grepexc:
         mediainfo_version = grepexc.output.rstrip().splitlines()[1]
     return mediainfo_version
+
 
 def get_rawcooked_version():
     '''
@@ -1749,6 +1805,7 @@ def get_rawcooked_version():
         rawcooked_version = grepexc.output.rstrip().splitlines()[1]
     return rawcooked_version
 
+
 def get_ffprobe_dict(source):
     '''
     Returns a dictionary via the ffprobe JSON output
@@ -1757,6 +1814,7 @@ def get_ffprobe_dict(source):
     ffprobe_json = subprocess.check_output(cmd)
     ffprobe_dict = json.loads(ffprobe_json)
     return ffprobe_dict
+
 
 def get_colour_metadata(ffprobe_dict):
     '''
@@ -1794,6 +1852,7 @@ def get_colour_metadata(ffprobe_dict):
             continue
     return ffmpeg_colour_list
 
+
 def get_metadata(xpath_path, root, pbcore_namespace):
     '''
     Extracts values from PBCore2 XML MediaInfo outputs.
@@ -1830,6 +1889,7 @@ def get_metadata(xpath_path, root, pbcore_namespace):
     else:
         value = value[0].text
     return value
+
 
 def choose_cpl(cpl_list):
     # Some DCPs have multiple CPLs!
@@ -1992,6 +2052,7 @@ def get_technical_metadata(path, new_log_textfile):
                         'EVENT = Format identification - eventType=format identification, eventDetail=Format identification via PRONOM signatures using Siegfried, eventOutcome=%s, agentName=%s' % (inputtracexml, siegfried_version)
                     )
                     
+
 def check_if_manifest(manifest):
     '''
     Basic check to see if a file is an md5 manifest
@@ -2002,6 +2063,7 @@ def check_if_manifest(manifest):
                 # sloppy code to prevent manifests made with manifest_normalise.py from breaking scripts
                 if not manifest.endswith('_modified_manifest.md5'):
                     return True
+
 
 def count_stuff(source):
     '''
@@ -2022,6 +2084,7 @@ def count_stuff(source):
             source_count = 1
     return source_count, file_list
 
+
 def check_existence(dependency_list):
     '''
     Process a list of subprocess strings and check if they're installed
@@ -2034,4 +2097,5 @@ def check_existence(dependency_list):
     if missing is True:
         print('Exiting')
         sys.exit()
+
 
