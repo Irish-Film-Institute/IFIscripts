@@ -150,7 +150,7 @@ def main():
                             with open(log, 'r', encoding='utf-8') as log_object:
                                 log_lines = log_object.readlines()
                                 for lines in log_lines:
-                                    if 'eventIdentifierType=object entry,' in lines:
+                                    if 'eventIdentifierType=object entry number,' in lines:
                                         source_oe = lines.split('=')[-1].replace('\n', '')
                                     if 'eventIdentifierType=accession number,' in lines:
                                         accession_number_id = lines.split('=')[-1].replace('\n', '')
