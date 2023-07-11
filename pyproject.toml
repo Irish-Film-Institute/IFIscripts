@@ -1,0 +1,83 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ifiscripts"
+version = "2023.07.11.5"
+authors = [
+  {name="Kieran O'Leary", email="kieran.o.leary@gmail.com"}
+]
+maintainers = [
+  {name="Yazhou He", email="yhe@irishfilm.ie"}
+]
+description = "Scripts for processing moving image material in the Irish Film Institute/Irish Film Archive"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+    'lxml',
+    'bagit',
+    'dicttoxml',
+    'future',
+    'clairmeta'
+]
+
+[project.scripts]
+accession_register = 'scripts.accession_register:main'
+aipcreator = 'scripts.aipcreator:main'
+as11fixity = 'scripts.as11fixity:main'
+batchaipcreator = 'scripts.batchaipcreator:main'
+batchdiff_framemd5 = 'scripts.batchdiff_framemd5:main'
+batchmakeshell = 'scripts.batchmakeshell:main'
+batchsipcreator = 'scripts.batchsipcreator:main'
+bitc = 'scripts.bitc:main'
+concat = 'scripts.concat:main'
+copyit = 'scripts.copyit:main'
+dcpaccess = 'scripts.dcpaccess:main'
+dcpfixity = 'scripts.dcpfixity:main'
+deletefiles = 'scripts.deletefiles:main'
+dfxml = 'scripts.dfxml:main'
+durationcheck = 'scripts.durationcheck:main'
+ffv1mkvvalidate = 'scripts.ffv1mkvvalidate:main'
+framemd5 = 'scripts.framemd5:main'
+ififuncs = 'scripts.ififuncs:main'
+loopline_repackage = 'scripts.loopline_repackage:main'
+make_mediaconch = 'scripts.make_mediaconch:main'
+makedfxml = 'scripts.makedfxml:main'
+makedip = 'scripts.makedip:main'
+makeffv1 = 'scripts.makeffv1:main'
+makepbcore = 'scripts.makepbcore:main'
+makeuuid = 'scripts.makeuuid:main'
+makezip = 'scripts.makezip:main'
+manifest = 'scripts.manifest:main'
+masscopy = 'scripts.masscopy:main'
+massqc = 'scripts.massqc:main'
+mergepbcore = 'scripts.mergepbcore:main'
+multicopy = 'scripts.multicopy:main'
+normalise = 'scripts.normalise:main'
+Objects = 'scripts.Objects:main'
+order = 'scripts.order:main'
+package_update = 'scripts.package_update:main'
+packagecheck = 'scripts.packagecheck:main'
+prores = 'scripts.prores:main'
+seq2ffv1 = 'scripts.seq2ffv1:main'
+sipcreator = 'scripts.sipcreator:main'
+strongbox_fixity = 'scripts.strongbox_fixity:main'
+subfolders = 'scripts.subfolders:main'
+testfiles = 'scripts.testfiles:main'
+validate = 'scripts.validate:main'
+walk_to_dfxml = 'scripts.walk_to_dfxml:main'
+
+# [tool.setuptools.packages.find]
+# where = ['']
+[tool.setuptools.package-data]
+"*" = ['film_scan_aip_documentation.txt', '26_XYZ-22_Rec709.cube']
+
+[project.urls]
+"Homepage" = "https://github.com/Irish-Film-Institute/IFIscripts"
+"Bug Tracker" = "https://github.com/Irish-Film-Institute/IFIscripts/issues"
