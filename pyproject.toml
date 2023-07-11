@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ifiscripts"
-version = "2023.07.11.12"
+version = "2023.07.11.14"
 authors = [
   {name="Kieran O'Leary", email="kieran.o.leary@gmail.com"}
 ]
@@ -32,54 +32,56 @@ include-package-data = true
 # [tool.setuptools.package-data]
 # '*' = ['film_scan_aip_documentation.txt', '26_XYZ-22_Rec709.cube']
 
-[tool.setuptools.package.find]
+[tool.setuptools.packages.find]
 where = ['', 'scripts']
 
-[project.scripts]
-accession_register = 'accession_register:main'
-aipcreator = 'aipcreator:main'
-as11fixity = 'as11fixity:main'
-batchaipcreator = 'batchaipcreator:main'
-batchdiff_framemd5 = 'batchdiff_framemd5:main'
-batchmakeshell = 'batchmakeshell:main'
-batchsipcreator = 'batchsipcreator:main'
-bitc = 'bitc:main'
-concat = 'concat:main'
-copyit = 'copyit:main'
-dcpaccess = 'dcpaccess:main'
-dcpfixity = 'dcpfixity:main'
-deletefiles = 'deletefiles:main'
-dfxml = 'dfxml:main'
-durationcheck = 'durationcheck:main'
-ffv1mkvvalidate = 'ffv1mkvvalidate:main'
-framemd5 = 'framemd5:main'
-ififuncs = 'ififuncs:main'
-loopline_repackage = 'loopline_repackage:main'
-make_mediaconch = 'make_mediaconch:main'
-makedfxml = 'makedfxml:main'
-makedip = 'makedip:main'
-makeffv1 = 'makeffv1:main'
-makepbcore = 'makepbcore:main'
-makeuuid = 'makeuuid:main'
-makezip = 'makezip:main'
-manifest = 'manifest:main'
-masscopy = 'masscopy:main'
-massqc = 'massqc:main'
-mergepbcore = 'mergepbcore:main'
-multicopy = 'multicopy:main'
-normalise = 'normalise:main'
-Objects = 'Objects:main'
-order = 'order:main'
-package_update = 'package_update:main'
-packagecheck = 'packagecheck:main'
-prores = 'prores:main'
-seq2ffv1 = 'seq2ffv1:main'
-sipcreator = 'sipcreator:main'
-strongbox_fixity = 'strongbox_fixity:main'
-subfolders = 'subfolders:main'
-testfiles = 'testfiles:main'
-validate = 'validate:main'
-walk_to_dfxml = 'walk_to_dfxml:main'
+[options]
+scripts=[
+    'scripts/accession_register.py',
+    'scripts/aipcreator.py',
+    'scripts/as11fixity.py',
+    'scripts/batchaipcreator.py',
+    'scripts/batchdiff_framemd5.py',
+    'scripts/batchmakeshell.py',
+    'scripts/batchsipcreator.py',
+    'scripts/bitc.py',
+    'scripts/concat.py',
+    'scripts/copyit.py',
+    'scripts/dcpaccess.py',
+    'scripts/dcpfixity.py',
+    'scripts/deletefiles.py',
+    'scripts/dfxml.py',
+    'scripts/durationcheck.py',
+    'scripts/ffv1mkvvalidate.py',
+    'scripts/framemd5.py',
+    'scripts/ififuncs.py',
+    'scripts/loopline_repackage.py',
+    'scripts/make_mediaconch.py',
+    'scripts/makedfxml.py',
+    'scripts/makedip.py',
+    'scripts/makeffv1.py',
+    'scripts/makepbcore.py',
+    'scripts/makeuuid.py',
+    'scripts/makezip.py',
+    'scripts/manifest.py',
+    'scripts/masscopy.py',
+    'scripts/massqc.py',
+    'scripts/mergepbcore.py',
+    'scripts/multicopy.py',
+    'scripts/normalise.py',
+    'scripts/Objects.py',
+    'scripts/order.py',
+    'scripts/package_update.py',
+    'scripts/packagecheck.py',
+    'scripts/prores.py',
+    'scripts/seq2ffv1.py',
+    'scripts/sipcreator.py',
+    'scripts/strongbox_fixity.py',
+    'scripts/subfolders.py',
+    'scripts/testfiles.py',
+    'scripts/validate.py',
+    'scripts/walk_to_dfxml.py'
+]
 
 [project.urls]
 "Homepage" = "https://github.com/Irish-Film-Institute/IFIscripts"
