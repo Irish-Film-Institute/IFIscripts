@@ -9,6 +9,8 @@ if sys.version_info < (3, 8):
 setup(
     author='Kieran O\'Leary',
     author_email='kieran.o.leary@gmail.com',
+    maintainer='Yazhou He',
+    maintainer_email='yhe@irishfilm.ie',
     description="Scripts for processing moving image material in the Irish Film Institute/Irish Film Archive",
     long_description=("""\
 Scripts for use in the IFI Irish Film Archive. Scripts have been tested in OSX/Windows 7/10 and Ubuntu 18.04. The aim is to make cross-platform scripts, but please get in touch with any issues. It is best to download all scripts, as some of them share code.
@@ -20,11 +22,11 @@ Note: Documentation template has been copied from mediamicroservices
 NOTE: Objects.py has been copied from https://github.com/simsong/dfxml. walk_to_dfxml.py has also been copied but has been customised in order to add command line arguments for optionally turning off checksum generation. For more context, see https://github.com/simsong/dfxml/pull/28
 """),
     scripts=[
-        'scripts/Objects.py',
-        'scripts/accession.py',
         'scripts/accession_register.py',
+        'scripts/aipcreator.py',
         'scripts/as11fixity.py',
-        'scripts/batchaccession.py',
+        'scripts/batchaipcreator.py',
+        'scripts/batchdiff_framemd5.py',
         'scripts/batchmakeshell.py',
         'scripts/batchsipcreator.py',
         'scripts/bitc.py',
@@ -52,6 +54,7 @@ NOTE: Objects.py has been copied from https://github.com/simsong/dfxml. walk_to_
         'scripts/mergepbcore.py',
         'scripts/multicopy.py',
         'scripts/normalise.py',
+        'scripts/Objects.py',
         'scripts/order.py',
         'scripts/package_update.py',
         'scripts/packagecheck.py',
@@ -75,6 +78,6 @@ NOTE: Objects.py has been copied from https://github.com/simsong/dfxml. walk_to_
     data_files=[('', ['film_scan_aip_documentation.txt', '26_XYZ-22_Rec709.cube'])],
     include_package_data=True,
     name='ifiscripts',
-    version='2023.05.10.1',
+    version='2023.07.03.2',
     python_requires='>=3.8'
 )

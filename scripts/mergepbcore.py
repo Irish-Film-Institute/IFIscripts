@@ -3,7 +3,7 @@
 Just a helper script that collates PBCore CSV files from packages
 '''
 import argparse
-import batchaccession
+import batchaipcreator
 
 def parse_args():
     '''
@@ -22,7 +22,7 @@ def parse_args():
 def main():
     args = parse_args()
     source = args.input
-    collated_pbcore = batchaccession.gather_metadata(source)
+    collated_pbcore = batchaipcreator.gather_metadata(source)
     print('Merged PBCore CSV is stored in %s' % collated_pbcore)
 if __name__ == '__main__':
     main()

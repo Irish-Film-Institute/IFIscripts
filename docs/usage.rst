@@ -34,28 +34,27 @@ batchsipcreator.py
    ``batchsipcreator.py -i  /path/to/directory_name -o /path/to/output_folder -supplement_extension_pattern xml pdf txt -object_extension_pattern mxf stl``
 -  Run ``batchsipcreator.py -h`` for all options.
 
-accession.py
+aipcreator.py
 ~~~~~~~~~~~~
 
--  Accessions a package that has been through the Object Entry
-   procedure.
+-  Turns a SIP that has passed QC procedures into an AIP.
 -  Currently this just works with packages that have been generated
-   using ``sipcreator.py``. SHA512 manifests are created,the OE number
-   is replaced by an accession number, and the sipcreator logfile is
-   updated with the various events that have taken place.
--  Usage for one directory - ``accession.py /path/to/directory_name``
--  Run ``accession.py -h`` for all options.
+   using ``sipcreator.py`` and ``seq2ffv1.py``. SHA512 manifests are 
+   created,the OE number is replaced by an accession number, and the sipcreator
+   logfile is updated with the various events that have taken place.
+-  Usage for one directory - ``aipcreator.py /path/to/directory_name``
+-  Run ``aipcreator.py -h`` for all options.
 
-batchaccession.py
+batchaipcreator.py
 ~~~~~~~~~~~~~~~~~
 
--  Batch process packages by running ``accession.py`` and
+-  Batch process packages by running ``aipcreator.py`` and
    ``makepbcore.py``
 -  The script will only process files with ``sipcreator.py`` style
    packages. ``makeffv1.py`` and ``dvsip.py`` packages will be ignored.
 -  Usage for processing all subdirectories -
-   ``batchaccession.py /path/to/directory_name``
--  Run ``batchaccession.py -h`` for all options.
+   ``batchaipcreator.py /path/to/directory_name``
+-  Run ``batchaipcreator.py -h`` for all options.
 
 order.py
 ~~~~~~~~
@@ -91,8 +90,8 @@ mergepbcore.py
 
 -  Collates PBCore CSV records into a single merged CSV.
 -  The merged csv will be stored in the Desktop ifiscripts_logs folder.
--  This script takes a parent folder containing accessioned packages as input.
--  Usage ``mergepbcore.py /path/to/folder_that_contains_accessioned_packages``
+-  This script takes a parent folder containing AIPs as input.
+-  Usage ``mergepbcore.py /path/to/folder_that_contains_AIPs_as_input``
 -  Run ``mergepbcore.py -h`` for all options.
 
 mergecsv.py
@@ -108,7 +107,7 @@ deletefiles.py
 ~~~~~~~~~~~~~~
 
 -  Deletes files after ``sipcreator.py`` has been run, but before
-   ``accession.py`` has been run.
+   ``aipcreator.py`` has been run.
 -  Manifests are updated, metadata is deleted and the events are all
    logged in the logfile.
 -  This script takes the parent OE folder as input. Use the ``-i``
@@ -122,7 +121,7 @@ package_update.py
 ~~~~~~~~~~~~
 
 -  Rearranges files into a subfolder files after ``sipcreator.py`` has
-   been run, but before ``accession.py`` has been run.
+   been run, but before ``aipcreator.py`` has been run.
 -  Manifests are updated, files are moved, and the events are all logged
    in the logfile.
 -  This is useful in conjunction with ``sipcreator.py`` and
@@ -206,11 +205,11 @@ prores.py
 makedip.py
 ~~~~~~~~~
 
--  Runs bitc.py or prores.py but only for use with accessioned packages.
--  Usage for running bitc.py all accessioned objects in a parent directory -
-   ``makedip.py path/to/lots_of_accessioned_directories -o path/to/output``
+-  Runs bitc.py or prores.py.
+-  Usage for running bitc.py on all objects in a batch of information packages -
+   ``makedip.py path/to/batch_directories -o path/to/output``
 -  The ``-prores`` option will use run ``prores.py`` instead of ``bitc.py``
--  The script will rename the output file so that it contains the accession number
+-  The script will rename the output file so that it contains either the OE number or the accession number.
 -  If it sees that a proxy already exists, then it will skip the video.
 -  Use ``makedip.py -h`` to see all options
 
@@ -329,6 +328,19 @@ validate.py
 -  Usage: ``validate.py /path/to/manifest.md5`` or
    ``validate.py /path/to/_manifest-sha512.txt``
 
+batchdiff_framemd5.py
+~~~~~~~~~~~
+
+-  Creates framemd5 sidecars on a batch of SIPs powered by `framemd5.py`;
+   Compares the hashes in framesmd5 and those in md5 files in PSM directory;
+   Once mismatch was found, it will skip the rest of the hashes and 
+   skip to the next object; It will delete all framemd5 files after 
+   the batch of the comparsions have finished.
+-  Usage: ``batchdiff_framemd5.py -sip /path/to/parent_folder/of/SIPs 
+   -psm /path/to/parent_folder/of/PSMs``
+-  NB: The script will default to only one md5 manifest file per PSM. If 
+   there are repeated manifest in the directory, users may need to add bloack 
+   in the script manually.
 
 Image Sequences
 ---------------
@@ -463,7 +475,7 @@ makefolders.py
    folder. This is specific to a film scanning workflow as there are
    seperate audio and image subfolders. You can specifiy the values on
    the command line or a terminal interview will appear which will
-   prompt you for filmographic reference number, source accession number
+   prompt you for filmographic URN, source accession number
    and title. Use ``makefolders.py -h`` for the full list of options.
 -  Usage: ``makefolders.py -o /path/to/destination``
 
@@ -471,7 +483,7 @@ loopline\_repackage.py
 ~~~~~~~~~~~~~~~~~~~~~~
 
 -  Retrospectively updates older FFV1/DV packages in order to meet our
-   current packaging requirements. This should allow accession.py and
+   current packaging requirements. This should allow aipcreator.py and
    makepbcore.py to run as expected. This will process a group of
    packages and each loop will result in the increment by one of the
    starting OE number. Use with caution.
@@ -482,14 +494,16 @@ loopline\_repackage.py
 batchmakeshell.py
 ~~~~~~~~~~~~~~~~~
 
--  Creates accession shells for the AIPs under a batch. This is used for 
+-  Creates shells for the AIPs under a batch. This is used for 
    the accessioning closing steps. The script will recognise all the 
    folders named with "aaa[0-9]{4}" digital accession number
    format. Then created their shell folders named "aaa[0-9]{4}_shell"
    and clone all the subcontent except the content inside the 
    'objects' folder into them. The shells will be created into the
    targeted output path.
--  Usage: ``batchmakeshell.py $input -o $output``
+-  Usage: ``batchmakeshell.py path/to/batch_directories -o /path/to/destination``
+-  This script has extra options, including making shells for AS-11 UK DPP and
+   DCP. Use ``batchmakeshell.py -h`` to see all options.
     
 
 Misc

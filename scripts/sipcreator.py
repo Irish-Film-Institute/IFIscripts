@@ -11,13 +11,13 @@ import sys
 import shutil
 import datetime
 import time
+import atexit
 import copyit
 import ififuncs
 import package_update
-import accession
+import aipcreator
 import manifest
 import makezip
-import accession
 from masscopy import analyze_log
 try:
     from clairmeta.utils.xml import prettyprint_xml
@@ -26,6 +26,23 @@ try:
 except ImportError:
     print('Clairmeta is not installed. DCP options will not function!')
 
+@atexit.register
+def clear_manifest_dir():
+    '''
+    This function prevent "moveit_manifests" folder has imcompleted 
+    manifest file inside and mess the incoming process.
+    It will move existed manifest file into the "moveit_manifests/old_manifests"
+    '''
+    desktop_manifest_dir = os.path.expanduser("~/Desktop/moveit_manifests")
+    old_manifest_dir = os.path.join(desktop_manifest_dir, 'old_manifests')
+    for i in os.listdir(desktop_manifest_dir):
+        o = os.path.join(old_manifest_dir, i)
+        i = os.path.join(desktop_manifest_dir, i)
+        if i.endswith('.md5'):
+            print('**** Found existing manifest: ' + i)
+            if i.endswith('objects_manifest.md5'):
+                shutil.move(i, o)
+                print('**** Moved object_manifest.md5 to old_manifest folder in case of content overlap. \n**** Check if other manifests are in use in other scripts before move them manually.')
 
 def make_folder_path(path, args, object_entry):
     '''
@@ -221,8 +238,8 @@ def parse_args(args_):
         help='Uses makezip.py to store the objects in an uncompressed ZIP'
     )
     parser.add_argument(
-        '-accession', action='store_true',
-        help='Launches accession.py immediately after sipcreator.py finishes. This is only useful if the SIP has already passed QC and will definitely be accessioned and ingested.'
+        '-aipcreator', action='store_true',
+        help='Launches aipcreator.py immediately after sipcreator.py finishes. This is only useful if the SIP has already passed QC and will definitely be AIPed and ingested.'
     )
     parser.add_argument(
         '-filmo_csv',
@@ -322,7 +339,7 @@ def determine_uuid(args, sip_path):
         if ififuncs.validate_uuid4(args.u) is None:
             uuid = args.u
             uuid_event = (
-                'EVENT = eventType=Identifier assignement,'
+                'EVENT = eventType=Identifier assignment,'
                 ' eventIdentifierType=UUID, value=%s, module=uuid.uuid4'
             ) % uuid
         else:
@@ -331,12 +348,12 @@ def determine_uuid(args, sip_path):
     else:
         uuid = os.path.basename(sip_path)
         uuid_event = (
-            'EVENT = eventType=Identifier assignement,'
+            'EVENT = eventType=Identifier assignment,'
             ' eventIdentifierType=UUID, value=%s, module=uuid.uuid4'
         ) % uuid
     return uuid, uuid_event
 
-def process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_textfile, metadata_dir, clairmeta_version):
+def process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_textfile, txt_name_source, metadata_dir, clairmeta_version):
     '''
     Runs DCP specific functions.
     '''
@@ -362,6 +379,10 @@ def process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_te
     xml_str = dicttoxml.dicttoxml(dcp_dict, custom_root='ClairmetaProbe', ids=False, attr_type=False)
     xml_pretty = prettyprint_xml(xml_str)
     status, report = dcp.check()
+    # print clairmeta result to ifiscripts_log/$oe_clairmeta_outcome_$datetime.txt
+    with open(txt_name_source, 'a') as file:
+        file.write(report.pretty_str())
+    print('\n\nClairmeta outcome has exported to' + txt_name_source)
     ififuncs.generate_log(
         new_log_textfile,
         'EVENT = eventType=validation, eventOutcome=%s, eventDetail=%s, agentName=Clairmeta version %s' % (
@@ -377,8 +398,6 @@ def process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_te
         fo.write(xml_pretty)
     ififuncs.checksum_replace(new_manifest_textfile, new_log_textfile, 'md5')
     ififuncs.manifest_update(new_manifest_textfile, clairmeta_xml)
-    print(status)
-    print(report)
 
 def make_oe_register():
     '''
@@ -456,16 +475,26 @@ def main(args_):
     if not args.sc:
         ififuncs.generate_log(
             new_log_textfile,
-            'EVENT = eventType=Identifier assignement,'
-            ' eventIdentifierType=object entry, value=%s'
+            'EVENT = eventType=Identifier assignment,'
+            ' eventIdentifierType=object entry number, value=%s'
             % object_entry
         )
+        ififuncs.generate_log(
+            new_log_textfile,
+            'EVENT = eventType=Information package creation'
+        )
+        '''
+        ififuncs.generate_log(
+            new_log_textfile,
+            'EVENT = eventType=Information package creation, eventOutcomeDetailNote=Submission information package'
+        )
+        '''
     metadata_dir = os.path.join(sip_path, 'metadata')
     supplemental_dir = os.path.join(metadata_dir, 'supplemental')
     logs_dir = os.path.join(sip_path, 'logs')
-    if args.accession:
+    if args.aipcreator:
         accession_number = ififuncs.get_accession_number()
-        reference_number = ififuncs.get_reference_number()
+        filmo_number = ififuncs.get_filmo_number()
         parent = ififuncs.ask_question('What is the parent record? eg MV 1234. Enter n/a if this is a born digital acquisition with no parent.')
         donor = ififuncs.ask_question('Who is the source of acquisition, as appears on the donor agreement? This will not affect Reproductions.')
         reproduction_creator = ififuncs.ask_question('Who is the reproduction creator? This will not affect acquisitions. Enter n/a if not applicable')
@@ -554,7 +583,7 @@ def main(args_):
         package_update.main(supplement_cmd)
     if args.sc:
         print('Generating Digital Forensics XML')
-        dfxml = accession.make_dfxml(args, sip_path, uuid)
+        dfxml = aipcreator.make_dfxml(args, sip_path, uuid)
         ififuncs.generate_log(
             new_log_textfile,
             'EVENT = Metadata extraction - eventDetail=File system metadata extraction using Digital Forensics XML, eventOutcome=%s, agentName=makedfxml' % (dfxml)
@@ -574,23 +603,28 @@ def main(args_):
     finish = datetime.datetime.now()
     print('\n- %s ran this script at %s and it finished at %s' % (user, start, finish))
     if args.d:
-        process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_textfile, metadata_dir, clairmeta_version)
-    if args.accession:
-        register = accession.make_register()
+        # print clairmeta result to ifiscripts_log/$oe_clairmeta_outcome_$datetime.txt
+        desktop_logs_dir = ififuncs.make_desktop_logs_dir()
+        txt_name_filename = object_entry + "_clairmeta_outcome" + time.strftime("_%Y_%m_%dT%H_%M_%S")
+        txt_name_source = "%s/%s.txt" % (desktop_logs_dir, txt_name_filename)
+        ififuncs.generate_txt(txt_name_source, 'Target Directory: %s' % inputs)
+        process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_textfile, txt_name_source, metadata_dir, clairmeta_version)
+    if args.aipcreator:
+        register = aipcreator.make_register()
         filmographic_dict = ififuncs.extract_metadata(args.filmo_csv)[0]
         for filmographic_record in filmographic_dict:
-            if filmographic_record['Reference Number'].lower() == reference_number.lower():
-                if filmographic_record['Title'] == '':
-                    title = filmographic_record['TitleSeries'] + '; ' + filmographic_record['EpisodeNo']
+            if filmographic_record['Filmographic URN'].lower() == filmo_number.lower():
+                if filmographic_record['Title/Name'] == '':
+                    title = filmographic_record['Series Title'] + '; ' + filmographic_record['Episode No']
                 else:
-                    title = filmographic_record['Title']
+                    title = filmographic_record['Title/Name']
         oe_register = make_oe_register()
-        ififuncs.append_csv(oe_register, (object_entry.upper()[:2] + '-' + object_entry[2:], donation_date, '1','',title,donor,acquisition_type[1], accession_number, 'Representation of %s|Reproduction of %s' % (reference_number, parent), ''))
+        ififuncs.append_csv(oe_register, (object_entry.upper()[:2] + '-' + object_entry[2:], donation_date, '1','',title,donor,acquisition_type[1], accession_number, 'Representation of %s|Reproduction of %s' % (filmo_number, parent), ''))
         accession_cmd = [
             os.path.dirname(sip_path), '-user', user,
             '-force',
-            '-number', accession_number,
-            '-reference', reference_number,
+            '-accession_number', accession_number,
+            '-filmo_number', filmo_number,
             '-register', register,
             '-filmo_csv', args.filmo_csv,
             '-pbcore'
@@ -603,7 +637,7 @@ def main(args_):
         accession_cmd.extend(['-donation_date', donation_date])
         accession_cmd.extend(['-reproduction_creator', reproduction_creator])
         print(accession_cmd)
-        accession.main(accession_cmd)
+        aipcreator.main(accession_cmd)
     return new_log_textfile, new_manifest_textfile
 
 

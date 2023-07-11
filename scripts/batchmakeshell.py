@@ -8,7 +8,7 @@ import shutil
 
 def set_options():
     parser = argparse.ArgumentParser(
-        description='IFI Irish Film Institute accession shell creator.'
+        description='IFI Irish Film Institute AIPs shell creator.'
                     ' Written by Yazhou He.'
     )
     parser.add_argument(
