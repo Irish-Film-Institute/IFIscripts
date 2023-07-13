@@ -15,6 +15,7 @@ Get rid of this technical debt!
 '''
 import sys
 import os
+import time
 import subprocess
 import argparse
 import lxml
@@ -428,6 +429,7 @@ def main(args_):
     video_codec_profile_list = []
     timecode_list = []
     channels_list = []
+    failed_path = []
     stl = False
     subtitle_check = ififuncs.get_digital_object_descriptor(args.input)
     if 'STL' in subtitle_check:
@@ -559,6 +561,8 @@ def main(args_):
         except Exception as e:
             print("\ninstantDataRate ERROR\n\t-> get_mediainfo(OverallBitRate) not support\n\t-> %s\n\t-> makepbcore.py line: 560\n\t\t-> ififuncs.py line: 200" % e)
         instantTracks = ififuncs.get_number_of_tracks(source)
+        if instantTracks == 'missing_metadata*':
+            failed_path.append(source)
         track_count_list.append(instantTracks)
         if stl is True:
             track_count_list.append('STL sidecar')
@@ -667,8 +671,12 @@ def main(args_):
         instantDate_other = 'n/a'
         instantDate_type = 'n/a'
         pix_fmt = ififuncs.get_ffmpeg_fmt(source, 'video')
+        if pix_fmt == 'missing_metadata*':
+            failed_path.append(source)
         pix_fmt_list.append(pix_fmt)
         audio_fmt = ififuncs.get_ffmpeg_fmt(source, 'audio')
+        if audio_fmt == 'missing_metadata*':
+            failed_path.append(source)
         audio_fmt_list.append(audio_fmt)
         essenceBitDepth_vid = ififuncs.get_mediainfo(
             'duration', '--inform=Video;%BitDepth%', source
@@ -882,6 +890,16 @@ def main(args_):
         ififuncs.sha512_update(sha512_manifest, csv_filename)
         print((' - Updating %s with %s' % (sha512_manifest, csv_filename)))
         print(metadata_error)
+    if failed_path:
+        desktop_logs_dir = ififuncs.make_desktop_logs_dir()
+        txt_name_filename = 'pbcore_corrupted_metadata' + time.strftime("_%Y_%m_%dT%H_%M_%S")
+        txt_name_source = "%s/%s.txt" % (desktop_logs_dir, txt_name_filename)
+        print("***** [missing_metadata*] The source path(s) shown below contain corrupted metadata.\n\tRepeated locations mean the absence of metadata in multiple fields.\n\tCheck the details above or in the %s.txt in Desktop/ifiscripts_log folder." % txt_name_filename)
+        ififuncs.generate_txt(txt_name_source, '[missing_metadata*] The source path(s) shown below contain corrupted metadata.\nRepeated locations mean the absence of metadata in multiple fields.')
+        for i in failed_path:
+            print(i)
+            ififuncs.generate_txt(txt_name_source, i)
+
 if __name__ == '__main__':
     main(sys.argv[1:])
 
