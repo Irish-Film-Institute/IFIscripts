@@ -1292,7 +1292,12 @@ def get_ffmpeg_fmt(path, file_type):
         metadata,
         '-of', 'default=noprint_wrappers=1:nokey=1'
     ]
-    pix_fmt = subprocess.check_output(ffprobe_cmd).rstrip().decode(sys.stdout.encoding).replace("\n", '|').replace("\r", '')
+    try:
+        pix_fmt = subprocess.check_output(ffprobe_cmd).rstrip().decode(sys.stdout.encoding).replace("\n", '|').replace("\r", '')
+    except subprocess.CalledProcessError as grepexc:
+        print(grepexc)
+        print("***** %s\n\tCannot recognise the value of pixel/audio format of this %s file/track.\n\tValue is replaced by 'missing_metadata*'.\n\tCheck after script finishes." % (path, file_type))
+        pix_fmt = 'missing_metadata*'
     return pix_fmt
 
 
@@ -1309,7 +1314,12 @@ def get_number_of_tracks(path):
         'stream=codec_type',
         '-of', 'default=noprint_wrappers=1:nokey=1'
     ]
-    type_list = subprocess.check_output(ffprobe_cmd).rstrip().decode(sys.stdout.encoding).splitlines()
+    try:
+        type_list = subprocess.check_output(ffprobe_cmd).rstrip().decode(sys.stdout.encoding).splitlines()
+    except subprocess.CalledProcessError as grepexc:
+        print(grepexc)
+        print("***** %s\n\tCannot recognise this file/track type is [video] or [audio].\n\tValue is replaced by 'missing_metadata*'.\n\tCheck after script finishes." % path)
+        type_list = ['missing_metadata*']
     types = {}
     final_count = ''
     for i in type_list:
@@ -1917,6 +1927,7 @@ def find_cpl(source):
                 try:
                     xmlname = etree.parse(full_path)
                 except SyntaxError:
+                    print(full_path)
                     print( 'not a valid CPL!')
                     continue
                 except KeyError:
