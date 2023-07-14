@@ -845,7 +845,7 @@ def get_acquisition_type(acquisition_type):
 def sort_manifest(manifest_textfile):
     '''
     Sorts an md5 manifest in alphabetical order.
-    Some scripts like moveit.py will require a manifest to be ordered like this.
+    Some scripts like copyit.py will require a manifest to be ordered like this.
     '''
     with open(manifest_textfile, "r", encoding='utf-8') as fo:
         manifest_lines = fo.readlines()
