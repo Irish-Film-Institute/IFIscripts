@@ -274,7 +274,7 @@ copyit.py
 -  Copies a file or directory, creating a md5 manifest at source and
    destination and comparing the two. Skips hidden files and
    directories.
--  Usage: ``moveit.py source_dir destination_dir``
+-  Usage: ``copyit.py source_dir destination_dir``
 -  Dependencies: OSX requires gcp - ``brew install coreutils``
 
 manifest.py
