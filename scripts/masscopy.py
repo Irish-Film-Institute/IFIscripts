@@ -30,7 +30,7 @@ def parse_args():
     Accepts command line arguments.
     '''
     parser = argparse.ArgumentParser(
-        description='Performs moveit.py in a batch'
+        description='Performs copyit.py in a batch'
         ' Written by Kieran O\'Leary.')
     parser.add_argument(
         'input',
