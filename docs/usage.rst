@@ -457,7 +457,7 @@ Specific Workflows
 masscopy.py
 ~~~~~~~~~~~
 
--  Copies all directories in your input location using moveit.py ONLY if
+-  Copies all directories in your input location using copyit.py ONLY if
    a manifest sidecar already exists.
 -  This is useful if a lot of SIPs produced by makeffv1 are created and
    you want to move them all to another location while harnessing the
