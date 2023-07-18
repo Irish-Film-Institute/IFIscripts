@@ -3,7 +3,7 @@
 '''
 This script is to check losslessness for a batch of sipped image sequence objects
 It will check the losslessness from *IP/$uuid/logs/$uuid_sip_log.log
-It will return the result of 'all lossless' or 'lossy exists' at the end
+It will return the result of 'lossless' or 'lossy' for each information package
 '''
 
 import sys

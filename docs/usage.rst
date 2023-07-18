@@ -450,6 +450,16 @@ ffv1mkvvalidate.py
 -  Usage for batch processing all videos in a directory -
    ``ffv1mkvvalidate.py directory_name``
 
+lossy_check.py
+~~~~~~~~~~~~~~~~~~
+
+-  This script is to check losslessness for a batch of sipped image sequence objects
+-  It will check the losslessness from package/$uuid/logs/$uuid_seq2ffv1_log.log
+-  It will return the result of 'lossless' or 'lossy' for each information package
+-  Usage for batch processing all videos in a directory -
+   ``lossy_check.py -i directory_name``
+
+
 Specific Workflows
 ------------------
 
