@@ -69,6 +69,7 @@ def diff_manifests(manifest, strongbox_list, txt_name_source):
             print('ERROR ***************************************')
             print('ERROR ***************************************The files are not in strongbox!!')
             ififuncs.generate_txt(
+                '',
                 txt_name_source,
                 'Target AIP fixity = FAIL - items are NOT in the strongbox')
             error_type = 1
@@ -76,12 +77,14 @@ def diff_manifests(manifest, strongbox_list, txt_name_source):
         elif len(strongbox_check) == 2 and len(strongbox_except) == 2 and len(strongbox_remain) == 0:
             print('All files in the strongbox manifest are present in your local AIP manifest and the hashes validate')
             ififuncs.generate_txt(
+                '',
                 txt_name_source,
                 'Target AIP fixity = PASS - All files in the strongbox manifest are present in your local AIP manifest and the hashes validate')
         else:
             for i in strongbox_remain:
                 print('%s is in the strongbox but NOT in the local AIP manifest' % i)
                 ififuncs.generate_txt(
+                '',
                 txt_name_source,
                 'Target AIP fixity = FAIL - %s is in the strongbox but NOT in the local AIP manifest' % i)
             error_type = 1
@@ -89,12 +92,14 @@ def diff_manifests(manifest, strongbox_list, txt_name_source):
         if len(aip_check) == 0 and len(intsec) == 0:
             print('All files in the local AIP manifest are present in your strongbox manifest and the hashes validate')
             ififuncs.generate_txt(
+                '',
                 txt_name_source,
                 'Target AIP fixity = PASS - All files in the local AIP manifest are present in your strongbox manifest and the hashes validate')
         else:
             for i in aip_check:
                 print('%s is in the local AIP manifest but NOT in the Strongbox manifest' % i)
                 ififuncs.generate_txt(
+                    '',
                     txt_name_source,
                     'Target AIP fixity = FAIL - %s is in the local AIP manifest but NOT in the Strongbox manifest' % i)
             error_type = 1
@@ -102,6 +107,7 @@ def diff_manifests(manifest, strongbox_list, txt_name_source):
         for i in intsec:
             print('%s is moved to strongbox but IS NOT WRITTEN TO TAPES' % i)
             ififuncs.generate_txt(
+                '',
                 txt_name_source,
                 'Target AIP fixity = FAIL - %s is moved to strongbox but IS NOT WRITTEN TO TAPES (stuck in the delayed action)' % i)
         error_type = 1
@@ -148,12 +154,12 @@ def main(args_):
     desktop_logs_dir = ififuncs.make_desktop_logs_dir()
     txt_name_filename = (os.path.basename(sys.argv[0]).split(".")[0]) + time.strftime("_%Y_%m_%dT%H_%M_%S")
     txt_name_source = "%s/%s.txt" % (desktop_logs_dir, txt_name_filename)
-    ififuncs.generate_txt(txt_name_source, 'Target Directory: %s' % source)
+    ififuncs.generate_txt('',txt_name_source, 'Target Directory: %s' % source)
     for package in package_list:
         full_path = os.path.join(source, package)
         if os.path.isdir(full_path):
             if package[:3] == 'aaa':
-                ififuncs.generate_txt(txt_name_source, 'Target AIP = %s' % os.path.basename(full_path))
+                ififuncs.generate_txt('',txt_name_source, 'Target AIP = %s' % os.path.basename(full_path))
                 strongbox_list = find_checksums(csv_dict, package)
                 manifest = find_manifest(full_path)
                 error_type = diff_manifests(manifest, strongbox_list, txt_name_source) # manifest needs to be declared here
@@ -164,17 +170,18 @@ def main(args_):
                     print i
                 '''
     ififuncs.generate_txt(
+            '',
             txt_name_source,
             '----\nFinal Results:'
         )
     if error_list:
         print("-----\nStrongbox Fixity Summary:\n Below AIP(s) returns exceptions. Check the details above or in the %s.txt in Desktop/ifiscripts_log folder." % txt_name_filename)
-        ififuncs.generate_txt(txt_name_source, 'FIXITY FAILED AIPS = %s' % error_list)
+        ififuncs.generate_txt('',txt_name_source, 'FIXITY FAILED AIPS = %s' % error_list)
         for item in error_list:
             print(" " + item)
     else:
         print("-----\nAll objects in the input directory have passed the fixity check!")
-        ififuncs.generate_txt(txt_name_source, 'ALL AIPS PASS FIXITY')
+        ififuncs.generate_txt('',txt_name_source, 'ALL AIPS PASS FIXITY')
 
 if __name__ == '__main__':
     main(sys.argv[1:])
