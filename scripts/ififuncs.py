@@ -770,32 +770,34 @@ def get_user():
     Asks user who they are. Returns a string with their name
     '''
     user_list = ['Allison McGrail',
-                'Caroline Crowther',
-                'Cody Farren',
-                'Emma Battlebury',
-                'Gavin Martin',
-                'Mark Keleghan',
-                'Matheus Almeida',
-                'Niall Anderson',
-                'Raelene Casey',
-                'Raven Ó Cuacaċ',
-                'Yazhou He']
+                 'Amy Mitchell',
+                 'Caroline Crowther',
+                 'Cody Farren',
+                 'Emma Battlebury',
+                 'Gavin Martin',
+                 'Leanne Bell',
+                 'Mark Keleghan',
+                 'Matheus Almeida',
+                 'Niall Anderson',
+                 'Raelene Casey',
+                 'Raven Ó Cuacaċ',
+                 'Yazhou He']
     user = ''
     if user not in user_list:
         print('\n\n**** Who are you?\nEnter the number before your name (ie. 1)\n\n')
         i = 1
         for user_item in user_list:
-            print(str(i) + '.\t' + user_item)
+            print('\t' + str(i) + '. ' + user_item)
             i = i + 1
-        print('\n\n(User list was last updated on 2023-07-06)\n')
+        print('\n\n(User list was last updated on 2023-07-18)\n')
         i = int(input())
         while i > len(user_list) or i < 1:
             print('\n\n**** Who are you?\Enter the number before your name (ie. 1)\n\n')
             i = 1
             for user_item in user_list:
-                print(str(i) + '.\t' + user_item)
+                print('\t' + str(i) + '. ' + user_item)
                 i = i + 1
-            print('\n\n(User list was last updated on 2023-07-06)\n')
+            print('\n\n(User list was last updated on 2023-07-18)\n')
             i = int(input())
     user = user_list[i-1]
     print('\nUser selected: ' + user)
