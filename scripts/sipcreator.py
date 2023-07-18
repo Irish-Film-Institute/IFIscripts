@@ -607,7 +607,7 @@ def main(args_):
         desktop_logs_dir = ififuncs.make_desktop_logs_dir()
         txt_name_filename = object_entry + "_clairmeta_outcome" + time.strftime("_%Y_%m_%dT%H_%M_%S")
         txt_name_source = "%s/%s.txt" % (desktop_logs_dir, txt_name_filename)
-        ififuncs.generate_txt(txt_name_source, 'Target Directory: %s' % inputs)
+        ififuncs.generate_txt(user, txt_name_source, 'Target Directory: %s' % inputs)
         process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_textfile, txt_name_source, metadata_dir, clairmeta_version)
     if args.aipcreator:
         register = aipcreator.make_register()
