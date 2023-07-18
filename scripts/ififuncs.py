@@ -340,11 +340,12 @@ def generate_txt(user, txt, what2txt):
             fo.write(time.strftime("Text created time: %Y-%m-%d %H:%M:%S \n"))
         if user:
             with open(txt, "a", encoding='utf-8') as fo:
-                fo.write('Script User: ' + user())
+                fo.write('Script User: ' + user + ' \n' 
+                         + what2txt + ' \n')
         else:
             with open(txt, "a", encoding='utf-8') as fo:
-                fo.write('Script User: ' + getpass.getuser() + ' \n'
-                     + what2txt + ' \n')
+                fo.write('Script User: ' + getpass.getuser() + ' \n' 
+                         + what2txt + ' \n')
     else:
         with open(txt, "a", encoding='utf-8') as fo:
             fo.write(what2txt + ' \n')
