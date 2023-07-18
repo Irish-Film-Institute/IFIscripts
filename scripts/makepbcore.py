@@ -895,10 +895,10 @@ def main(args_):
         txt_name_filename = 'pbcore_corrupted_metadata' + time.strftime("_%Y_%m_%dT%H_%M_%S")
         txt_name_source = "%s/%s.txt" % (desktop_logs_dir, txt_name_filename)
         print("***** [missing_metadata*] The source path(s) shown below contain corrupted metadata.\n\tRepeated locations mean the absence of metadata in multiple fields.\n\tCheck the details above or in the %s.txt in Desktop/ifiscripts_log folder." % txt_name_filename)
-        ififuncs.generate_txt(txt_name_source, '[missing_metadata*] The source path(s) shown below contain corrupted metadata.\nRepeated locations mean the absence of metadata in multiple fields.')
+        ififuncs.generate_txt('',txt_name_source, '[missing_metadata*] The source path(s) shown below contain corrupted metadata.\nRepeated locations mean the absence of metadata in multiple fields.')
         for i in failed_path:
             print(i)
-            ififuncs.generate_txt(txt_name_source, i)
+            ififuncs.generate_txt('',txt_name_source, i)
 
 if __name__ == '__main__':
     main(sys.argv[1:])
