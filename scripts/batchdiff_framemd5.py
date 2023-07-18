@@ -90,10 +90,10 @@ def diff_framemd5(framemd5_f, psm_path, txt_name_source):
     
     if framemd5_count == md5_count:
         print('**** SIPs/framemd5 count matches PSMs/md5 count %s\n' % framemd5_count)
-        ififuncs.generate_txt(txt_name_source, 'SIPs/framemd5 count matches PSMs/md5 count %s' % framemd5_count)
+        ififuncs.generate_txt('',txt_name_source, 'SIPs/framemd5 count matches PSMs/md5 count %s' % framemd5_count)
     else:
         print('!!!! SIPs/framemd5 count %s DOES NOT match PSMs/md5 count %s' % (framemd5_count, md5_count))
-        ififuncs.generate_txt(txt_name_source, 'SIPs/framemd5 count %s DOES NOT match PSMs/md5 count %s' % (framemd5_count, md5_count))
+        ififuncs.generate_txt('',txt_name_source, 'SIPs/framemd5 count %s DOES NOT match PSMs/md5 count %s' % (framemd5_count, md5_count))
         # sys.exit()
     
     i = 0
@@ -105,12 +105,12 @@ def diff_framemd5(framemd5_f, psm_path, txt_name_source):
                     if l1 != l2:
                         flag = False
                         print('-----\n!!!! %s DOES NOT match %s\n\tFrom %s:\n\t%s\tFrom %s:\n\t%sMISMATCH FOUND - GOING TO THE NEXT MANIFEST...' % (framemd5_f[i], md5_f[i], framemd5_f[i], l1, md5_f[i], l2))
-                        ififuncs.generate_txt(txt_name_source, '! %s DOES NOT match %s\n\tFrom %s:\n\t%s\tFrom %s:\n\t%s' % (framemd5_f[i], md5_f[i], framemd5_f[i], l1, md5_f[i], l2))
+                        ififuncs.generate_txt('',txt_name_source, '! %s DOES NOT match %s\n\tFrom %s:\n\t%s\tFrom %s:\n\t%s' % (framemd5_f[i], md5_f[i], framemd5_f[i], l1, md5_f[i], l2))
                         # mismatch_list.append()
                         break
         if flag:
             print('-----\n**** All checksums match between %s and %s' % (framemd5_f[i], md5_f[i]))
-            ififuncs.generate_txt(txt_name_source, '* All checksums match between %s and %s' % (framemd5_f[i], md5_f[i]))
+            ififuncs.generate_txt('',txt_name_source, '* All checksums match between %s and %s' % (framemd5_f[i], md5_f[i]))
         i = i + 1
     else:
         print('-----\nFixity check completed')  
@@ -136,8 +136,8 @@ def main():
     desktop_logs_dir = ififuncs.make_desktop_logs_dir()
     txt_name_filename = (os.path.basename(sys.argv[0]).split(".")[0]) + time.strftime("_%Y_%m_%dT%H_%M_%S")
     txt_name_source = "%s/%s.txt" % (desktop_logs_dir, txt_name_filename)
-    ififuncs.generate_txt(txt_name_source, 'SIP Directory: %s' % sip_path)
-    ififuncs.generate_txt(txt_name_source, 'PSM Directory: %s' % psm_path)
+    ififuncs.generate_txt('',txt_name_source, 'SIP Directory: %s' % sip_path)
+    ififuncs.generate_txt('',txt_name_source, 'PSM Directory: %s' % psm_path)
     diff_framemd5(framemd5_f, psm_path, txt_name_source)
     time.sleep(1)
     del_framemd5_f = batchrm_framemd5(sip_path)
