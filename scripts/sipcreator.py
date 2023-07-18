@@ -123,7 +123,7 @@ def consolidate_logs(lognames, path):
 
 def move_files(inputs, sip_path, args, user):
     '''
-    Runs moveit.py on all inputs
+    Runs copyit.py on all inputs
     '''
     log_names = []
     for item in inputs:
