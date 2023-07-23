@@ -459,6 +459,14 @@ lossy_check.py
 -  Usage for batch processing all videos in a directory -
    ``lossy_check.py -i directory_name``
 
+structure_check.py
+~~~~~~~~~~~~~~~~~~
+
+-  This script is to check the structure of a batch of SIPs/AIPs(and AIP shells)
+-  It will show the directory tree of each information package
+-  Users are able to manually record if the structure is right or not 
+-  The script will list a summary at the end
+-  Usage: ``structure_check.py -i directory_name``
 
 Specific Workflows
 ------------------
