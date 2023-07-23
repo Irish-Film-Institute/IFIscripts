@@ -1,10 +1,13 @@
+# building and uploading have to be proceeded from Mac workspace 
+# to make scripts executable on all platforms
+
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "ifiscripts"
-version = "2023.7.14a2"
+version = "2023.7.23"
 authors = [
   {name="Kieran O'Leary", email="kieran.o.leary@gmail.com"}
 ]
@@ -15,7 +18,10 @@ description = "Scripts for processing moving image material in the Irish Film In
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
-    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent"
 ]
@@ -51,6 +57,7 @@ script-files=[
     'scripts/framemd5.py',
     'scripts/ififuncs.py',
     'scripts/loopline_repackage.py',
+    'scripts/lossy_check.py',
     'scripts/make_mediaconch.py',
     'scripts/makedfxml.py',
     'scripts/makedip.py',
@@ -72,6 +79,7 @@ script-files=[
     'scripts/seq2ffv1.py',
     'scripts/sipcreator.py',
     'scripts/strongbox_fixity.py',
+    'scripts/structure_check.py',
     'scripts/subfolders.py',
     'scripts/testfiles.py',
     'scripts/validate.py',
