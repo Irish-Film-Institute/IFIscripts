@@ -6,6 +6,7 @@ import argparse
 import os
 import sys
 import platform
+import shutil
 import batchmakeshell
 
 def parse_args(args_):
@@ -52,7 +53,7 @@ def check_input(type, source):
     # get input of the type
     type_input=''
     for root, dirs, files, in os.walk(source):
-        if root == keyword_a and keyword_b in dirs and platform.system() == 'Darwin':
+        if root.endswith(keyword_a) and keyword_b in dirs and platform.system() == 'Darwin':
             type_input = os.path.join(source, keyword_b)
             print('Found direcotry for %s: %s' % (type, type_input))
             break
@@ -72,8 +73,8 @@ def get_fpaths(numbers, source):
     for number in sorted(numbers):
         get_flag = False
         for root, dirs, files in os.walk(source):
-            print(root, end='\r')
             for file in files:
+                print(file, end='\r')
                 if file.startswith(number):
                     path = os.path.join(root,file)
                     paths.append(path)
@@ -123,16 +124,20 @@ def main(args_):
     destination = args.o
     # copy from path of each file to destination
     print('\n-----\nCopying files to \'%s\'...' % destination)
-    for path in paths:
-        # shutil.copy(path, destination)
-        cmd = [path, '-o', destination, '-copyshell']
-        sys.stdout = open(os.devnull, 'w')
-        try:
-            batchmakeshell.main(cmd)
-            sys.stdout = sys.__stdout__
+    if type == 'shell':
+        for path in paths:
+            cmd = [path, '-o', destination, '-copyshell']
+            sys.stdout = open(os.devnull, 'w')
+            try:
+                batchmakeshell.main(cmd)
+                sys.stdout = sys.__stdout__
+                print('\n\t%s has copied to the destination\n' % path)
+            except:
+                print('*CANNOT copy %s!' % path)
+    else:
+        for path in paths:
+            shutil.copy(path, destination)
             print('\n\t%s has copied to the destination\n' % path)
-        except:
-            print('*CANNOT copy %s!' % path)
     # print accesion number failed getting path
     print('\n-----\nCANNOT get files from below accession number:')
     for fail_aip in fail_list:
