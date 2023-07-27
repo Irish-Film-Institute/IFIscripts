@@ -19,7 +19,7 @@ def parse_args(args_):
     )
     parser.add_argument(
         '-t', '-type',
-        help='type of required AIP part: shell, proxy, mezz', required=True
+        help='type of required DIP: shell, proxy, mezz', required=True
     )
     parser.add_argument(
         '-n', '-number', nargs='+',
@@ -27,7 +27,7 @@ def parse_args(args_):
     )
     parser.add_argument(
         '-i', '-input',
-        help='path of rackstation, or mounted disk including shell/proxy/mezz', required=True
+        help='path of the root of rackstation drive including shell/proxy/mezz', required=True
     )
     parser.add_argument(
         '-o', '-output',
@@ -55,11 +55,11 @@ def check_input(type, source):
     for root, dirs, files, in os.walk(source):
         if root.endswith(keyword_a) and keyword_b in dirs and platform.system() == 'Darwin':
             type_input = os.path.join(source, keyword_b)
-            print('Found direcotry for %s: %s' % (type, type_input))
+            print('Found directory for %s: %s' % (type, type_input))
             break
         elif keyword_b in dirs and platform.system() == 'Windows':
             type_input = os.path.join(source, keyword_b)
-            print('Found direcotry for %s: %s' % (type, type_input))
+            print('Found directory for %s: %s' % (type, type_input))
             break
     if not type_input:
         print('CANNOT found directory for %s! Check input!' % type)
@@ -67,7 +67,7 @@ def check_input(type, source):
     return type_input
 
 def get_fpaths(numbers, source):
-    print('\n-----\nGetting paths of each accession number...')
+    print('\n-----\nGetting path for DIP...')
     paths=[]
     fail_list=[]
     for number in sorted(numbers):
@@ -79,15 +79,15 @@ def get_fpaths(numbers, source):
                     path = os.path.join(root,file)
                     paths.append(path)
                     get_flag = True
-                    print('\tFound File for %s: %s' % (number, path))
+                    print('\tFound DIP for %s: %s' % (number, path))
                     break
         if not get_flag:
-            print('*CANNOT found file for %s!' % number)
+            print('*CANNOT found DIP for %s!' % number)
             fail_list.append(number)
     return paths, fail_list
 
 def get_dpaths(numbers, source):
-    print('\n-----\nGetting paths of each accession number...')
+    print('\n-----\nGetting path for DIP...')
     paths=[]
     fail_list=[]
     for number in sorted(numbers):
@@ -103,10 +103,10 @@ def get_dpaths(numbers, source):
                         path = os.path.join(sub,dir)
                         paths.append(path)
                         get_flag = True
-                        print('\tFound shell for %s: %s' % (number, path))
+                        print('\tFound DIP for %s: %s' % (number, path))
                         break
         if not get_flag:
-            print('*CANNOT found shell for %s!' % number)
+            print('*CANNOT found DIP for %s!' % number)
             fail_list.append(number)
     return paths, fail_list
 
@@ -123,7 +123,7 @@ def main(args_):
         paths, fail_list = get_fpaths(accession_numbers, type_source)
     destination = args.o
     # copy from path of each file to destination
-    print('\n-----\nCopying files to \'%s\'...' % destination)
+    print('\n-----\nCopying DIP to \'%s\'...' % destination)
     if type == 'shell':
         for path in paths:
             cmd = [path, '-o', destination, '-copyshell']
@@ -139,7 +139,7 @@ def main(args_):
             shutil.copy(path, destination)
             print('\n\t%s has copied to the destination\n' % path)
     # print accesion number failed getting path
-    print('\n-----\nCANNOT get files from below accession number:')
+    print('\n-----\nCANNOT get DIP by below accession number:')
     for fail_aip in fail_list:
         print('\t' + fail_aip)
 
