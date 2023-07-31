@@ -55,6 +55,7 @@ script-files=[
     'scripts/durationcheck.py',
     'scripts/ffv1mkvvalidate.py',
     'scripts/framemd5.py',
+    'scripts/getdip.py',
     'scripts/ififuncs.py',
     'scripts/loopline_repackage.py',
     'scripts/lossy_check.py',

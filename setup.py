@@ -39,6 +39,7 @@ NOTE: Objects.py has been copied from https://github.com/simsong/dfxml. walk_to_
         'scripts/durationcheck.py',
         'scripts/ffv1mkvvalidate.py',
         'scripts/framemd5.py',
+        'scripts/getdip.py',
         'scripts/ififuncs.py',
         'scripts/loopline_repackage.py',
         'scripts/lossy_check.py',
