@@ -600,7 +600,7 @@ def sort_csv(csv_file, key):
     values, fieldnames = extract_metadata(csv_file)
     with open(sorted_filepath, 'w') as csvfile:
         newlist = sorted(values, key=operator.itemgetter(key))
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, lineterminator='\n')
         writer.writeheader()
         for i in newlist:
             writer.writerow(i)

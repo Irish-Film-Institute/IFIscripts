@@ -49,6 +49,12 @@ def find_checksums(csv_file, identifier):
     strongbox_list = sorted(manifest_lines, key=lambda x: (x[130:]))
     return strongbox_list
 
+def get_file_create_date(file):
+    timestamp = os.path.getctime(file)
+    timestruct = time.localtime(timestamp)
+    date = time.strftime('%d/%m/%Y', timestruct)
+    return date
+
 def main(args_):
     '''
     Launches functions that will generate a helper accessions register
@@ -59,6 +65,7 @@ def main(args_):
     filmo_csv_dict = ififuncs.extract_metadata(args.filmo_csv)[0]
     for accession in sorted_csv_dict:
         accession_number = accession['accession number']
+        accession['date accessioned'] = get_file_create_date(args.sorted_csv)
         for technical_record in pbcore_csv_dict:
             if technical_record['Accession Number'] == accession_number:
                 accession['acquisition method'] = technical_record['Type Of Deposit']
@@ -79,11 +86,12 @@ def main(args_):
     new_csv = os.path.join(desktop_logs_dir, new_csv_filename)
     with open(new_csv, 'w', encoding='utf-8') as csvfile:
             fieldnames = ififuncs.extract_metadata(args.sorted_csv)[1]
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames, lineterminator='\n')
             writer.writeheader()
             for i in sorted_csv_dict:
                 writer.writerow(i)
-    print('\nYour helper CSV file is located here: %s\n' % new_csv)
+    print('\nYour helper CSV file is located here: %s' % new_csv)
+    print('Comma/\',\' should be the only separator for this CSV. (Un-tick Semicolon/\';\' if it is selected.)')
     return new_csv
 
 
