@@ -66,6 +66,8 @@ def main(args_):
     for accession in sorted_csv_dict:
         accession_number = accession['accession number']
         accession['date accessioned'] = get_file_create_date(args.sorted_csv)
+        if None in accession.keys():
+            del accession[None]
         for technical_record in pbcore_csv_dict:
             if technical_record['Accession Number'] == accession_number:
                 accession['acquisition method'] = technical_record['Type Of Deposit']
