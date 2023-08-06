@@ -3,12 +3,11 @@
 Accept options from command line and make access copy.
 Use makedip.py -h for help
 '''
+
 import argparse
 import os
 import bitc
 import prores
-
-
 
 def set_options():
     '''
@@ -81,6 +80,8 @@ def main():
                     rename_proxy(args.o, dcp_i[0], 'h264', args)
                 else:
                     print('Skipping %s as the proxy already exists ' % dcp_i[0] + os.path.join(args.o, get_packagename(args, dcp_i[0])) + '_h264.mov')
+            elif sum([filename.count('.mxf') for filename in filenames]) > 2:
+                print('Cannot make DIP for DCP multiple reels. Please do it manually.\n Command line: ffmpeg -i $v_mxf -i $a_mxf -c:a copy -c:v libx264 -pix_fmt yuv420p $output\n')
         else:
             for filename in filenames:
                 full_path = os.path.join(root, filename)
