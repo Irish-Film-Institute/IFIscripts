@@ -103,6 +103,10 @@ def set_options(args_):
         '-wide',
         action='store_true',help='Adds 16:9 metadata flag'
     )
+    parser.add_argument(
+        '-dcp',
+        action='store_true',help='2 inputs'
+    )
     parsed_args = parser.parse_args(args_)
     return parsed_args
 
@@ -228,10 +232,13 @@ def main(args_):
     '''
     ififuncs.check_existence(['ffprobe', 'ffmpeg'])
     args = set_options(args_)
-    video_files = get_filenames(args)
-    for filename in video_files:
-        filter_list = build_filter(args, filename)
-        make_h264(filename, args, filter_list)
+    if args.dcp:
+        make_h264(args.input, args, [])
+    else:
+        video_files = get_filenames(args)
+        for filename in video_files:
+            filter_list = build_filter(args, filename)
+            make_h264(filename, args, filter_list)
 
 
 def make_h264(filename, args, filter_list):
@@ -242,22 +249,39 @@ def make_h264(filename, args, filter_list):
         crf_value = args.crf
     else:
         crf_value = '23'
-    if args.o:
-        output = args.o + '/' + os.path.basename(filename) + "_h264.mov"
+    if args.dcp:
+        if args.o:
+            output = args.o + '/' + os.path.basename(filename[0]) + "_h264.mov"
+        else:
+            output = filename[0] + "_h264.mov"
+        ffmpeg_args = ['ffmpeg']
+        for item in filename:
+            ffmpeg_args.extend(['-i', item])
     else:
-        output = filename + "_h264.mov"
-    ffmpeg_args = [
-        'ffmpeg',
-        '-i', filename,
-    ]
+        if args.o:
+            output = args.o + '/' + os.path.basename(filename) + "_h264.mov"
+        else:
+            output = filename + "_h264.mov"
+        ffmpeg_args = [
+            'ffmpeg',
+            '-i', filename,
+        ]
     if args.logo:
         ffmpeg_args.extend(['-i', args.logo])
-    ffmpeg_args += [
-        '-c:a', 'aac',
-        '-c:v', 'libx264',
-        '-pix_fmt', 'yuv420p',
-        '-crf', crf_value
-    ]
+    if args.dcp:
+        ffmpeg_args += [
+            '-c:a', 'copy',
+            '-c:v', 'libx264',
+            '-pix_fmt', 'yuv420p',
+            '-crf', crf_value
+        ]
+    else:
+        ffmpeg_args += [
+            '-c:a', 'aac',
+            '-c:v', 'libx264',
+            '-pix_fmt', 'yuv420p',
+            '-crf', crf_value
+        ]
     if args.wide:
         ffmpeg_args.append('-aspect')
         ffmpeg_args.append('16:9')
