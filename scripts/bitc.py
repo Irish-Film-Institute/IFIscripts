@@ -285,7 +285,7 @@ def make_h264(filename, args, filter_list):
     if args.wide:
         ffmpeg_args.append('-aspect')
         ffmpeg_args.append('16:9')
-    if not args.map:
+    if not args.map and not args.dcp:
         ffmpeg_args.append('-map')
         ffmpeg_args.append('0:a?')
         ffmpeg_args.append('-map')
