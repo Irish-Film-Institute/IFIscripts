@@ -128,6 +128,7 @@ def insert_filmographic(filmographic_csv, filmographic_number, package_filmograp
     package_filmographic = the full path of the filmographic to be instered in /metadata
     '''
     csv_dict = ififuncs.extract_metadata(filmographic_csv)
+    flag = False
     for items in csv_dict:
         for x in items:
             if type(x) in [collections.OrderedDict, dict]:
@@ -137,6 +138,10 @@ def insert_filmographic(filmographic_csv, filmographic_number, package_filmograp
                         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                         writer.writeheader()
                         writer.writerow(x)
+                    flag = True
+    if not flag:
+        print('*****Cannot find input filmographic number from input filmo_csv!')
+
 def main(args_):
     '''
     Launches the various functions that will turn the SIP into an AIP.
