@@ -26,7 +26,7 @@ def parse_args(args_):
 def nameit():
     proceed = 'n'
     while proceed.lower() == 'n':
-        name_list = ['flimo_csv_merged',
+        name_list = ['filmo_csv_merged',
                     'pbcore_merged',
                     'sorted_merged',
                     'helper_register_merged',]
@@ -40,13 +40,33 @@ def nameit():
         try:
             index = int(user_input)-1
             name = name_list[index]
-            print('\nUser selected: ' + name_list[index])
+            print('\nName selected: ' + name_list[index])
         except ValueError:
             name = user_input
-            print('\nUser typed: ' + user_input)
+            print('\nName typed: ' + user_input)
         csv_name = time.strftime("%Y-%m-%dT%H_%M_%S_") + name + '.csv'
         proceed = ififuncs.ask_yes_no('Are you really sure? - The name will be:\n ' + csv_name)
     return csv_name
+
+def sortit(title_list):
+    title = ''
+    if title not in title_list:
+        print('\n\nSelect the index of the title in csv you want to sort by.')
+        i = 1
+        for item in title_list:
+            print('\t' + str(i) + '. ' + item)
+            i = i + 1
+        i = int(input('\n'))
+        while i > len(title_list) or i < 1:
+            print('\n\nSelect the index of the title in csv you want to sort by.')
+            i = 1
+            for item in title_list:
+                print('\t' + str(i) + '. ' + item)
+                i = i + 1
+            i = int(input('\n'))
+    title = title_list[i-1]
+    print('\nTitle selected: ' + title)
+    return title
 
 def main(args_):
     '''
@@ -60,7 +80,8 @@ def main(args_):
     print(*fieldname, sep=' | ')
     for file in csvs:
         data.extend(ififuncs.extract_metadata(file)[0])
-    data.sort(key=itemgetter(fieldname[0]))
+    title = sortit(fieldname)
+    data.sort(key=itemgetter(title))
     desktop_logs_dir = ififuncs.make_desktop_logs_dir()
     csv_name = nameit()
     new_csv = os.path.join(desktop_logs_dir, csv_name)
