@@ -70,6 +70,7 @@ script-files=[
     'scripts/masscopy.py',
     'scripts/massqc.py',
     'scripts/mergepbcore.py',
+    'scripts/merge_csv.py',
     'scripts/multicopy.py',
     'scripts/normalise.py',
     'scripts/Objects.py',
