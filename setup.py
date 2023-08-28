@@ -54,6 +54,7 @@ NOTE: Objects.py has been copied from https://github.com/simsong/dfxml. walk_to_
         'scripts/masscopy.py',
         'scripts/massqc.py',
         'scripts/mergepbcore.py',
+        'scripts/merge_csv.py',
         'scripts/multicopy.py',
         'scripts/normalise.py',
         'scripts/Objects.py',
