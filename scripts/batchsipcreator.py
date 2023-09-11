@@ -41,6 +41,10 @@ def parse_args(args_):
         help='invokes the -lto argument in copyit.py - uses gcp instead of rsync.'
     )
     parser.add_argument(
+        '-sc', action='store_true',
+        help='special collections workflow'
+    )
+    parser.add_argument(
         '-d', '-dcp', action='store_true',
         help='Adds DCP specific processing, like creating objects subfolder with text extracted from <ContentTitleText> in the CPL.'
     )
@@ -133,6 +137,8 @@ def main(args_):
                 sipcreator_cmd.append('-zip')
             if args.l:
                 sipcreator_cmd.append('-l')
+            if args.sc:
+                sipcreator_cmd.append('-sc')
             print(sipcreator_cmd)
             sipcreator_log, _ = sipcreator.main(sipcreator_cmd)
             logs.append(sipcreator_log)
