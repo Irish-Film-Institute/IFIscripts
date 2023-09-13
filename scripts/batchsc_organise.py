@@ -5,7 +5,7 @@ import os
 import shutil
 import re
 
-def rename(packs):
+def rename_sub(packs):
     print('\n\n***Rename folders/files - replace all spaces and special characters to _***')
     triggers = [' ', '#', '%', '&', '\'', '*', '+', '/', ':', '?', '@', '<', '>', '|', '"', '©', '(', ')']
     for pack in packs:
@@ -61,7 +61,10 @@ def rename(packs):
                     now = os.path.join(root,new_file)
                     print('Renamed %s to %s' % (was,now))
         print('---')
-    print('\n\n***Rename package - replace spaces to _ and remove all special characters***')
+
+def rename_pack(packs):
+    print('\n\n***Rename packages - replace spaces to _ and remove all special characters***')
+    triggers = [' ', '#', '%', '&', '\'', '*', '+', '/', ':', '?', '@', '<', '>', '|', '"', '©', '(', ')']
     for pack in packs:
         flag = False
         packname = os.path.basename(pack)
@@ -88,7 +91,7 @@ def rename(packs):
             print('Renamed %s to %s' % (pack,now))
 
 def move_to_root(packs):
-    print('\n\n***Move subfiles and delete subfolders- move all files to the root of the packages and delete subfolders***')
+    print('\n\n***Move subfiles - move all files to the root of the packages***')
     for pack in packs:
         print('Moving for %s' % pack)
         m = 0
@@ -110,15 +113,31 @@ def move_to_root(packs):
                         last_dir = str_dir
                     shutil.move(file_path, new_file_path)
                     print('Moved %s to %s' % (file_path, new_file_path))
-        print('\nDeleting subfolders')
-        for root, dirs, files in os.walk(pack):
-            for dir in dirs:
-                dir_path = os.path.join(root, dir)
-                os.rmdir(dir_path)
-                print('Deleted empty folder %s' % dir_path)
         print('---')
 
-
+def delete_subfolders(packs):
+    print('\n\n***Delete subfolders - Delete all subfolders in each packages***')
+    answer = input('Make sure all subfolders are all empty and all subfiles are moved to the root by the function 3!\nAre you sure you want to proceed?\nAnswer y/n\t->')
+    if answer.lower() == 'y':
+        failed_list=[]
+        for pack in packs:
+            for root, dirs, files in os.walk(pack):
+                for dir in dirs:
+                    dir_path = os.path.join(root, dir)
+                    try:
+                        shutil.rmtree(dir_path)
+                        print('Deleted subfolder %s' % dir_path)
+                    except:
+                        failed_list.append(pack)
+                        print('CANNOT delete subfolder %s' % dir_path)
+        if failed_list:
+            failed_list = set(failed_list)
+            print('---\nFollowing packages have problems deleting subfolders and need to operate manually:')
+            for item in failed_list:
+                print('\n%s' % item)
+    else:
+        sys.exit()
+      
 def main():
     root = sys.argv[1]
     dirs = os.listdir(root)
@@ -135,15 +154,23 @@ def main():
     if answer.lower() == 'y':
         print()
         list=[
-            '1. Rename packages/folders/files - replace spaces and special characters',
-            '2. Move subfiles and delete subfolders - move all files to the root of the packages and delete subfolders'
+            '1. Rename folders/files - replace all spaces and special characters to _',
+            '2. Rename packages - replace spaces to _ and remove all special characters',
+            '3. Move subfiles - move all files to the root of the packages',
+            '4. Delete subfolders - Delete all subfolders in each packages'
         ]
         print(*list, sep = '\n')
-        func = input('Which feature do you need?\t-> ')  
-        if func == '1':
-            rename(packs)
-        elif func == '2':
-            move_to_root(packs)
+        func = '0'
+        while int(func) < 1 or int(func) > 4:
+            func = input('Which feature do you need?\t-> ')  
+            if func == '1':
+                rename_sub(packs)
+            elif func == '2':
+                rename_pack(packs)
+            elif func == '3':
+                move_to_root(packs)
+            elif func == '4':
+                delete_subfolders(packs)
     else:
         print('Check the input directory and run the script again.\nScript ends.')
         sys.exit()
