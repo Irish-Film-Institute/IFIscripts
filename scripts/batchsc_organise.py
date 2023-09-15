@@ -64,7 +64,7 @@ def rename_sub(packs):
 
 def rename_pack(packs):
     print('\n\n***Rename packages - replace spaces to _ and remove all special characters***')
-    triggers = [' ', '#', '%', '&', '\'', '*', '+', '/', ':', '?', '@', '<', '>', '|', '"', '©', '(', ')']
+    triggers = [' ', '#', '%', '&', '\'', '*', '+', '/', ':', '?', '@', '<', '>', '|', '"', '©', '(', ')', '']
     for pack in packs:
         flag = False
         packname = os.path.basename(pack)
