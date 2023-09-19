@@ -64,12 +64,12 @@ def rename_sub(packs):
 
 def rename_pack(packs):
     print('\n\n***Rename packages - replace spaces to _ and remove all special characters***')
-    triggers = [' ', '#', '%', '&', '\'', '*', '+', '/', ':', '?', '@', '<', '>', '|', '"', '©', '(', ')', '']
+    triggers = [',', '#', '%', '&', '\'', '*', '+', '/', ':', '?', '@', '<', '>', '|', '"', '©', '(', ')', '']
     for pack in packs:
         flag = False
         packname = os.path.basename(pack)
         pack_dir = os.path.dirname(pack)
-        for trigger in triggers[1:]:
+        for trigger in triggers:
             if trigger in packname:
                 new_packname = packname.replace(trigger, '')
                 os.rename(os.path.join(pack_dir,packname),os.path.join(pack_dir,new_packname))
@@ -86,6 +86,10 @@ def rename_pack(packs):
             os.rename(os.path.join(pack_dir,packname),os.path.join(pack_dir,new_packname))
             flag = True
             # print('Renamed %s to %s' % (os.path.join(pack_dir,packname),os.path.join(pack_dir,new_packname)))
+        if not packname.islower():
+            new_packname = packname.lower()
+            os.rename(os.path.join(pack_dir,packname),os.path.join(pack_dir,new_packname))
+            flag = True
         if flag:
             now = os.path.join(pack_dir,new_packname)
             print('Renamed %s to %s' % (pack,now))
