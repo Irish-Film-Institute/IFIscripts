@@ -100,7 +100,7 @@ def move_to_root(packs):
         print('Moving for %s' % pack)
         m = 0
         last_dir=''
-        for root, dirs, files in os.walk(pack):
+        for root, _, files in os.walk(pack):
             for file in files:
                 file_path = os.path.join(root,file)
                 str_dir = root.replace(pack, '')
@@ -125,7 +125,7 @@ def delete_subfolders(packs):
     if answer.lower() == 'y':
         failed_list=[]
         for pack in packs:
-            for root, dirs, files in os.walk(pack):
+            for root, dirs, _ in os.walk(pack):
                 for dir in dirs:
                     dir_path = os.path.join(root, dir)
                     try:
@@ -151,19 +151,19 @@ def main():
         pack_path = os.path.join(root,dir)
         print('\t' + pack_path)
         packs.append(pack_path)
-    if packs==[]:
+    if not packs:
         print('No package was found in the directory.\nCheck the input directory and run the script again.\nScript ends.')
         sys.exit()
     answer = input('Are you sure you want to proceed?\nAnswer y/n\t->')
     if answer.lower() == 'y':
         print()
-        list=[
+        menu=[
             '1. Rename folders/files - replace all spaces and special characters to _',
             '2. Rename packages - replace spaces to _ and remove all special characters',
             '3. Move subfiles - move all files to the root of the packages',
             '4. Delete subfolders - Delete all subfolders in each packages'
         ]
-        print(*list, sep = '\n')
+        print(*menu, sep = '\n')
         func = '0'
         while int(func) < 1 or int(func) > 4:
             func = input('Which feature do you need?\t-> ')  

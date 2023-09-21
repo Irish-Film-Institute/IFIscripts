@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import sys
 import os
 import shutil
 
@@ -19,7 +18,7 @@ def move_sip():
                 shutil.move(path, output)
 
 def move_sipped_raw():
-    'Check if the RAW packages have been sipped and move them to sipped RAW folder. Comparison by name similarity check.'
+    'Check if the RAW packages have been sipped and move them to sipped RAW folder. Comparison by name similiarity check.'
     print('\n\n***Move Sipped RAW Packages***')
     d_raw = input('Input directory of RAW packages:\t')
     d_sip = input('Input directory of SIP packages:\t')
@@ -59,15 +58,13 @@ def move_sipped_raw():
                     else:
                         goon = False
                 '''
-                
-           
-    
+
 def main():
-    list=[
+    menu=[
         '1. Check if it\'s a SIP',
         '2. Check if each raw has been sipped'
     ]
-    print(*list, sep = '\n')
+    print(*menu, sep = '\n')
     func = input('Which feature do you need?  ->  ')  
     if func == '1':
         move_sip()

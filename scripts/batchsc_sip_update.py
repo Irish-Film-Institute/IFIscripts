@@ -7,11 +7,11 @@ import ififuncs
 
 def main():
     user = ififuncs.get_user()
-    input = sys.argv[1]
+    source = sys.argv[1]
     # get path for sips
-    sips = os.listdir(input)
+    sips = os.listdir(source)
     for sip in sips:
-        sip_path = os.path.join(input, sip)
+        sip_path = os.path.join(source, sip)
         if os.path.isdir(sip_path):
             print('Found SIP\t%s' % sip_path)
             # get uuid/ for sip
@@ -39,11 +39,7 @@ def main():
                         cmd=['-i']
                         for file_path in files_path:
                             cmd.append(file_path)
-                        cmd.append('-new_folder')
-                        cmd.append(objects)
-                        cmd.append('-user')
-                        cmd.append(user)
-                        cmd.append(uuid)
+                        cmd += ['-new_folder', objects, '-user', user, uuid]
                         print(cmd)
                         package_update.main(cmd)
                     else:
