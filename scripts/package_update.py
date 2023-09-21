@@ -52,12 +52,12 @@ def update_manifest(manifest, old_path, new_path, new_log_textfile):
         for line in checksums:
             if old_path in line:
                 line = line.replace(old_path, new_path)
-                print(('the following path: %s has been updated with %s in the package manifest' % (old_path, new_path)))
+                print(('the following path: %s has been updated with %s in the package manifest %s' % (old_path, new_path, manifest)))
                 ififuncs.generate_log(
                     new_log_textfile,
                     'EVENT = eventType=metadata modification,'
                     ' agentName=package_update.py,'
-                    ' eventDetail=the following path: %s has been updated with %s in the package manifest' % (old_path, new_path)
+                    ' eventDetail=the following path: %s has been updated with %s in the package manifest %s' % (old_path, new_path, manifest)
                 )
                 updated_lines.append(line)
             else:
@@ -80,6 +80,9 @@ def main(args_):
         sip_manifest = os.path.join(
             oe_path, uuid
             ) + '_manifest.md5'
+        sip_manifest_sha512 = os.path.join(
+            oe_path, uuid
+            ) + '_manifest-sha512.txt'
     else:
         # this is assuming that the other workflow will be the 
         # special collections workflow that has the uuid as the parent.
@@ -89,6 +92,9 @@ def main(args_):
         uuid = os.path.basename(sip_path)
         sip_manifest = os.path.join(
             oe_path, uuid + '_manifest.md5'
+            )
+        sip_manifest_sha512 = os.path.join(
+            oe_path, uuid + '_manifest-sha512.txt'
             )
     start = datetime.datetime.now()
     print(args)
@@ -137,6 +143,8 @@ def main(args_):
             log_manifest = os.path.join(os.path.dirname(new_log_textfile), os.path.basename(filenames) + '_manifest.md5')
             ififuncs.manifest_update(sip_manifest, log_manifest)
             ififuncs.sort_manifest(sip_manifest)
+            ififuncs.manifest_update_sha512(sip_manifest_sha512, log_manifest)
+            ififuncs.sort_manifest(sip_manifest_sha512)
         else:
             # add test to see if it actually deleted - what if read only?
             shutil.move(filenames, args.new_folder)
@@ -158,11 +166,18 @@ def main(args_):
                 os.path.join(relative_new_folder, os.path.basename(relative_filename)).replace('\\', '/'),
                 new_log_textfile
             )
+            update_manifest(
+                sip_manifest_sha512,
+                relative_filename,
+                os.path.join(relative_new_folder, os.path.basename(relative_filename)).replace('\\', '/'),
+                new_log_textfile
+            )
     ififuncs.generate_log(
         new_log_textfile,
         'EVENT = package_update.py finished'
     )
     ififuncs.checksum_replace(sip_manifest, new_log_textfile, 'md5')
+    ififuncs.checksum_replace(sip_manifest, new_log_textfile, 'sha512')
     finish = datetime.datetime.now()
     print('\n- %s ran this script at %s and it finished at %s' % (user, start, finish))
 
