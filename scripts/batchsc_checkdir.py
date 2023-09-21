@@ -19,7 +19,7 @@ def move_sip():
                 shutil.move(path, output)
 
 def move_sipped_raw():
-    'Check if the RAW packages have been sipped and move them to sipped RAW folder. Comparison by name similiarity check.'
+    'Check if the RAW packages have been sipped and move them to sipped RAW folder. Comparison by name similarity check.'
     print('\n\n***Move Sipped RAW Packages***')
     d_raw = input('Input directory of RAW packages:\t')
     d_sip = input('Input directory of SIP packages:\t')
