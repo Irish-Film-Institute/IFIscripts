@@ -191,7 +191,6 @@ def main(args_):
         new_uuid_path = os.path.join(accession_path, uuid)
         logs_dir = os.path.join(new_uuid_path, 'logs')
         sipcreator_log = os.path.join(logs_dir, uuid) + '_sip_log.log'
-        
         if args.force:
             proceed = 'Y'
         else:

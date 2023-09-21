@@ -152,6 +152,10 @@ def parse_args(args_):
         '-dryrun', action='store_true',
         help='The script will reveal which identifiers will be assigned but will not actually perform any actions.'
     )
+    parser.add_argument(
+        '-supplement_pattern', nargs='+',
+        help='Enter the filename keyword, seperated by spaces, which determine which files to be added to the supplemental subfolder within the metadata directory. For example -supplement_pattern clairmeta_outcome will take all filenames with the keyword within your input directory and store them in metadata/supplemental. Use this for information that supplements your preservation objects but is not to be included in the objects folder.'
+    )
     parsed_args = parser.parse_args(args_)
     return parsed_args
 
