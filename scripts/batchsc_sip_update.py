@@ -4,14 +4,15 @@ import sys
 import os
 import package_update
 import ififuncs
+import shutil
 
 def main():
     user = ififuncs.get_user()
-    source = sys.argv[1]
+    input = sys.argv[1]
     # get path for sips
-    sips = os.listdir(source)
+    sips = os.listdir(input)
     for sip in sips:
-        sip_path = os.path.join(source, sip)
+        sip_path = os.path.join(input, sip)
         if os.path.isdir(sip_path):
             print('Found SIP\t%s' % sip_path)
             # get uuid/ for sip
@@ -32,14 +33,18 @@ def main():
                                 file_path = os.path.join(root, file)
                                 files_path.append(file_path)
                         # delete subfolders
-                        for dir in dirs:
-                            dirs_path.append(os.path.join(root,dir))
+                        if root.endswith('objects'):
+                            dirs_path = dirs
                     if files_path:
                         print('Found files')
                         cmd=['-i']
                         for file_path in files_path:
                             cmd.append(file_path)
-                        cmd += ['-new_folder', objects, '-user', user, uuid]
+                        cmd.append('-new_folder')
+                        cmd.append(objects)
+                        cmd.append('-user')
+                        cmd.append(user)
+                        cmd.append(uuid)
                         print(cmd)
                         package_update.main(cmd)
                     else:
@@ -47,11 +52,9 @@ def main():
                     if dirs_path:
                         print('Delete subfolders')
                         for dir in dirs_path:
-                            os.rmdir(dir)
+                            shutil.rmtree(dir)
                     else:
                         print('No subfolders need to be deleted.')
-
-                    
             print()
 
 if __name__ == '__main__':
