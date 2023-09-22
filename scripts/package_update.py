@@ -143,7 +143,7 @@ def main(args_):
             log_manifest = os.path.join(os.path.dirname(new_log_textfile), os.path.basename(filenames) + '_manifest.md5')
             ififuncs.manifest_update(sip_manifest, log_manifest)
             ififuncs.sort_manifest(sip_manifest)
-            ififuncs.manifest_update_sha512(sip_manifest_sha512, log_manifest)
+            ififuncs.sha512_update(sip_manifest_sha512, log_manifest)
             ififuncs.sort_manifest(sip_manifest_sha512)
         else:
             # add test to see if it actually deleted - what if read only?

@@ -1130,32 +1130,6 @@ def manifest_update(manifest, path):
         for i in manifest_list:
             fo.write((unicodedata.normalize('NFC', i) + '\n'))
 
-def manifest_update_sha512(manifest, path):
-    '''
-    Adds a new entry to your manifest and sort.
-    '''
-    manifest_generator = ''
-    with open(manifest, 'r', encoding='utf-8') as fo:
-        original_lines = fo.readlines()
-        sha512 = hashlib_sha512(path)
-        path_to_remove = os.path.dirname(os.path.dirname(os.path.dirname(path)))
-        root2 = os.path.abspath(path).replace(path_to_remove, '')
-        try:
-            if root2[0] == '/':
-                root2 = root2[1:]
-            if root2[0] == '\\':
-                root2 = root2[1:]
-        except: IndexError
-        manifest_generator += sha512[:129] + '  ' + root2.replace("\\", "/") + '\n'
-        for i in original_lines:
-            manifest_generator += i
-    manifest_list = manifest_generator.splitlines()
-    # http://stackoverflow.com/a/31306961/2188572
-    manifest_list = sorted(manifest_list, key=lambda x: (x[131:]))
-    with open(manifest, "w", encoding='utf-8') as fo:
-        for i in manifest_list:
-            fo.write((unicodedata.normalize('NFC', i) + '\n'))
-
 
 def sha512_update(manifest, path):
     '''
