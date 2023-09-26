@@ -7,6 +7,7 @@ import argparse
 import sys
 import datetime
 import shutil
+import re
 import ififuncs
 import copyit
 import sipcreator
@@ -22,11 +23,15 @@ def parse_args(args_):
     )
     parser.add_argument(
         '-i', nargs='+',
-        help='full path of files to be moved', required=True
+        help='full path of files to be moved'
     )
     parser.add_argument(
         '-new_folder',
-        help='full path of the new destination folder', required=True
+        help='full path of the new destination folder'
+    )
+    parser.add_argument(
+        '-rename', action='store_true',
+        help='Remove special characters and space to _. Use with [input] only.'
     )
     parser.add_argument(
         'input',
@@ -119,59 +124,105 @@ def main(args_):
         new_log_textfile,
         'EVENT = agentName=%s' % user
     )
-    if not os.path.isdir(args.new_folder):
-        os.makedirs(args.new_folder)
-    if isinstance(args.i[0], (list,)):
-        args.i = args.i[0]
-    for filenames in args.i:
-        if args.copy:
-            copyit.main([filenames, args.new_folder])
-            ififuncs.generate_log(
-                new_log_textfile,
-                'EVENT = eventType=file movement,'
-                ' eventOutcomeDetailNote=%s has been moved into %s'
-                ' agentName=copyit.py'
-                % (filenames, args.new_folder)
-            )
-            # this is hardcoded - pick this apart so that any folder can be added to.
-            # this must be fixed in normalise.py as well.
-            relative_new_path = args.new_folder.replace(sip_path, '')
-            print((relative_new_path, 'relative'))
-            if (relative_new_path[0] == '/') or relative_new_path[0] == '\\':
-                relative_new_path = relative_new_path[1:].replace('\\', '/')
-            sipcreator.consolidate_manifests(sip_path, relative_new_path, new_log_textfile)
-            log_manifest = os.path.join(os.path.dirname(new_log_textfile), os.path.basename(filenames) + '_manifest.md5')
-            ififuncs.manifest_update(sip_manifest, log_manifest)
-            ififuncs.sort_manifest(sip_manifest)
-            ififuncs.sha512_update(sip_manifest_sha512, log_manifest)
-            ififuncs.sort_manifest(sip_manifest_sha512)
-        else:
-            # add test to see if it actually deleted - what if read only?
-            shutil.move(filenames, args.new_folder)
-            ififuncs.generate_log(
-                new_log_textfile,
-                'EVENT = eventType=file movement,'
-                ' eventOutcomeDetailNote=%s has been moved into %s'
-                ' agentName=shutil.move()'
-                % (filenames, args.new_folder)
-            )
-            print(('%s has been moved into %s' % (filenames, args.new_folder)))
-            relative_filename = filenames.replace(os.path.dirname(args.input) + '/', '').replace('\\', '/')
-            relative_filename = filenames.replace(os.path.dirname(args.input) + '\\', '').replace('\\', '/')
-            relative_new_folder = args.new_folder.replace(os.path.dirname(args.input) + '/', '').replace('\\', '/')
-            relative_new_folder = args.new_folder.replace(os.path.dirname(args.input) + '\\', '').replace('\\', '/')
-            update_manifest(
-                sip_manifest,
-                relative_filename,
-                os.path.join(relative_new_folder, os.path.basename(relative_filename)).replace('\\', '/'),
-                new_log_textfile
-            )
-            update_manifest(
-                sip_manifest_sha512,
-                relative_filename,
-                os.path.join(relative_new_folder, os.path.basename(relative_filename)).replace('\\', '/'),
-                new_log_textfile
-            )
+    if args.new_folder:
+        if not os.path.isdir(args.new_folder):
+            os.makedirs(args.new_folder)
+        if isinstance(args.i[0], (list,)):
+            args.i = args.i[0]
+        for filenames in args.i:
+            if args.copy:
+                copyit.main([filenames, args.new_folder])
+                ififuncs.generate_log(
+                    new_log_textfile,
+                    'EVENT = eventType=file movement,'
+                    ' eventOutcomeDetailNote=%s has been moved into %s'
+                    ' agentName=copyit.py'
+                    % (filenames, args.new_folder)
+                )
+                # this is hardcoded - pick this apart so that any folder can be added to.
+                # this must be fixed in normalise.py as well.
+                relative_new_path = args.new_folder.replace(sip_path, '')
+                print((relative_new_path, 'relative'))
+                if (relative_new_path[0] == '/') or relative_new_path[0] == '\\':
+                    relative_new_path = relative_new_path[1:].replace('\\', '/')
+                sipcreator.consolidate_manifests(sip_path, relative_new_path, new_log_textfile)
+                log_manifest = os.path.join(os.path.dirname(new_log_textfile), os.path.basename(filenames) + '_manifest.md5')
+                ififuncs.manifest_update(sip_manifest, log_manifest)
+                ififuncs.sort_manifest(sip_manifest)
+                ififuncs.sha512_update(sip_manifest_sha512, log_manifest)
+                ififuncs.sort_manifest(sip_manifest_sha512)
+            else:
+                # add test to see if it actually deleted - what if read only?
+                shutil.move(filenames, args.new_folder)
+                ififuncs.generate_log(
+                    new_log_textfile,
+                    'EVENT = eventType=file movement,'
+                    ' eventOutcomeDetailNote=%s has been moved into %s'
+                    ' agentName=shutil.move()'
+                    % (filenames, args.new_folder)
+                )
+                print(('%s has been moved into %s' % (filenames, args.new_folder)))
+                relative_filename = filenames.replace(os.path.dirname(args.input) + '/', '').replace('\\', '/')
+                relative_filename = filenames.replace(os.path.dirname(args.input) + '\\', '').replace('\\', '/')
+                relative_new_folder = args.new_folder.replace(os.path.dirname(args.input) + '/', '').replace('\\', '/')
+                relative_new_folder = args.new_folder.replace(os.path.dirname(args.input) + '\\', '').replace('\\', '/')
+                update_manifest(
+                    sip_manifest,
+                    relative_filename,
+                    os.path.join(relative_new_folder, os.path.basename(relative_filename)).replace('\\', '/'),
+                    new_log_textfile
+                )
+                update_manifest(
+                    sip_manifest_sha512,
+                    relative_filename,
+                    os.path.join(relative_new_folder, os.path.basename(relative_filename)).replace('\\', '/'),
+                    new_log_textfile
+                )
+    if args.rename:
+        triggers = [' ', ',', '.', '#', '%', '&', '\'', '*', '+', '/', ':', '?', '@', '<', '>', '|', '"', '©', '(', ')', '']
+        for root, _, files in os.walk(args.input):
+            if 'objects' in root:
+                for filename in files:
+                    file = os.path.join(root, filename)
+                    file_dir = root
+                    flag = False
+                    for trigger in triggers:
+                        if trigger in os.path.splitext(filename)[0]:
+                            new_filename = os.path.splitext(filename)[0].replace(trigger, '_') + os.path.splitext(filename)[1]
+                            os.rename(os.path.join(file_dir,filename),os.path.join(file_dir,new_filename))
+                            flag = True
+                            filename = new_filename
+                    if re.findall('__+', filename):
+                        new_filename = re.sub('__+', '_', filename)
+                        os.rename(os.path.join(file_dir,filename),os.path.join(file_dir,new_filename))
+                        flag = True
+                        filename = new_filename
+                    if flag:
+                        final_filename = os.path.join(file_dir,new_filename)
+                        print('Renamed %s to %s' % (file,final_filename))
+                        ififuncs.generate_log(
+                            new_log_textfile,
+                            'EVENT = eventType=filename change,'
+                            ' eventOutcomeDetailNote=%s has been renamed to %s'
+                            ' agentName=os.rename()'
+                            % (file, final_filename)
+                        )
+                        relative_filename = file.replace(os.path.dirname(args.input) + '/', '').replace('\\', '/')
+                        relative_filename = file.replace(os.path.dirname(args.input) + '\\', '').replace('\\', '/')
+                        relative_new_filename = file.replace(os.path.dirname(args.input) + '/', '').replace('\\', '/')
+                        relative_new_filename = file.replace(os.path.dirname(args.input) + '\\', '').replace('\\', '/')
+                        update_manifest(
+                            sip_manifest,
+                            relative_filename,
+                            relative_new_filename,
+                            new_log_textfile
+                        )
+                        update_manifest(
+                            sip_manifest_sha512,
+                            relative_filename,
+                            relative_new_filename,
+                            new_log_textfile
+                        )
     ififuncs.generate_log(
         new_log_textfile,
         'EVENT = package_update.py finished'
