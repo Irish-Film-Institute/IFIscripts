@@ -93,7 +93,10 @@ def run_loop(args):
         user = args.user
     else:
         user = ififuncs.get_user()
-    object_entry = ififuncs.get_object_entry()
+    if args.oe:
+        object_entry = args.oe
+    else:
+        object_entry = ififuncs.get_object_entry()
     log_name_source = os.path.join(
         args.o, '%s_seq2ffv1_log.log' % time.strftime("_%Y_%m_%dT%H_%M_%S")
     )
@@ -207,7 +210,7 @@ def make_ffv1(
     normalisation_tool = ififuncs.get_rawcooked_version()
     rawcooked_logfile = "\'" + rawcooked_logfile + "\'"
     env_dict = ififuncs.set_environment(rawcooked_logfile)
-    rawcooked_cmd = ['rawcooked', '--check-padding', reel, '-c:a', 'copy', '-o', ffv1_path]
+    rawcooked_cmd = ['rawcooked', reel,  '--check-padding', '-c:a', 'copy', '-o', ffv1_path]
     if args.framerate:
         rawcooked_cmd.extend(['-framerate', args.framerate])
     ffv12dpx = (rawcooked_cmd)
@@ -351,6 +354,10 @@ def setup():
     parser.add_argument(
         '-o',
         help='Destination directory'
+    )
+    parser.add_argument(
+        '-oe',
+        help='Enter the Object Entry number for the representation.SIP will be placed in a folder with this name.'
     )
     parser.add_argument(
         '-user',

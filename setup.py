@@ -34,6 +34,7 @@ NOTE: Objects.py has been copied from https://github.com/simsong/dfxml. walk_to_
         'scripts/batchsc_sip_update.py',
         'scripts/batchsipcreator.py',
         'scripts/bitc.py',
+        'scripts/check_register.py',
         'scripts/concat.py',
         'scripts/copyit.py',
         'scripts/dcpaccess.py',
@@ -43,6 +44,7 @@ NOTE: Objects.py has been copied from https://github.com/simsong/dfxml. walk_to_
         'scripts/durationcheck.py',
         'scripts/ffv1mkvvalidate.py',
         'scripts/framemd5.py',
+        'scripts/get_ps_list.py',
         'scripts/getdip.py',
         'scripts/ififuncs.py',
         'scripts/loopline_repackage.py',
@@ -58,6 +60,7 @@ NOTE: Objects.py has been copied from https://github.com/simsong/dfxml. walk_to_
         'scripts/masscopy.py',
         'scripts/massqc.py',
         'scripts/mergepbcore.py',
+        'scripts/merge_csv.py',
         'scripts/multicopy.py',
         'scripts/normalise.py',
         'scripts/Objects.py',
@@ -85,6 +88,6 @@ NOTE: Objects.py has been copied from https://github.com/simsong/dfxml. walk_to_
     data_files=[('', ['film_scan_aip_documentation.txt', '26_XYZ-22_Rec709.cube'])],
     include_package_data=True,
     name='ifiscripts',
-    version='2023.7.23',
+    version='2023.9.25',
     python_requires='>=3.8'
 )
