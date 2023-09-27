@@ -233,7 +233,7 @@ def main(args_):
                                 relative_filename,
                                 relative_new_filename,
                                 new_log_textfile
-                        )
+                            )
     ififuncs.generate_log(
         new_log_textfile,
         'EVENT = package_update.py finished'
