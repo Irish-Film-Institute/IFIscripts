@@ -29,19 +29,21 @@ def parse_args(args_):
         help='full path of the new destination folder', required=True
     )
     parser.add_argument(
-        '-aip',
-        help='update sha512 manifest as well', action='store_true',
-    )
-    parser.add_argument(
         'input',
         help='full path of \'sipcreator\' Object Entry package'
     )
     parser.add_argument(
         '-user',
-        help='Declare who you are. If this is not set, you will be prompted.')
+        help='Declare who you are. If this is not set, you will be prompted.'
+    )
     parser.add_argument(
         '-copy', action='store_true',
-        help='Copies a file into a package instead of moving it. This should be used when adding files that originate outside of the package.')
+        help='Copies a file into a package instead of moving it. This should be used when adding files that originate outside of the package.'
+    )
+    parser.add_argument(
+        '-aip', action='store_true',
+        help='update sha512 manifest as well'
+    )
     parsed_args = parser.parse_args(args_)
     return parsed_args
 
