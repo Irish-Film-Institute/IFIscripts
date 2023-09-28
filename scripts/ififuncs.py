@@ -942,7 +942,7 @@ def get_script_version(scriptname):
             'git', 'log', '-n', '1', '--pretty=format:%H:%aI', scriptname
         ])
     else:
-        script_version = 'Script version unavailable as the ifiscripts repository is not installed in $HOME/ifigit/ifiscripts'
+        script_version = 'Script version unavailable as the ifiscripts is not installed under the current user and the repository is not installed in $HOME/ifigit/ifiscripts'
     os.chdir(current_dir)
     return script_version
 
