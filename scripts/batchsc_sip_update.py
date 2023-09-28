@@ -42,7 +42,7 @@ def main():
                         cmd=['-i']
                         for file_path in files_path:
                             cmd.append(file_path)
-                        cmd += ['-new_folder', objects, '-user', user, uuid]
+                        cmd += ['-new_folder', objects, '-user', user, '-aip', uuid]
                         print(cmd)
                         package_update.main(cmd)
                     else:
