@@ -208,10 +208,10 @@ def setup_drawtext(args, filename):
             timecode_test = timecode_test_raw.replace(':', '\\:').rstrip()
     # This removes the new line character from the framemrate.
     if args.middle:
-        timecode_option = "drawtext=%s:fontcolor=white:fontsize=%s:timecode=%s:rate=%s:boxcolor=0x000000AA:box=1:x=(w-text_w)/2:y=(h-text_h)/2" % (font_path, font_size, timecode_test, framerate)
+        timecode_option = "drawtext=%s:fontcolor=white:fontsize=%s:timecode='%s':rate=%s:boxcolor=0x000000AA:box=1:x=(w-text_w)/2:y=(h-text_h)/2" % (font_path, font_size, timecode_test, framerate)
         watermark_option = "drawtext=%s:fontcolor=white:text='IFI IRISH FILM ARCHIVE':x=(w-text_w)/2:y=h/1.2:fontsize=%s:alpha=0.4"  % (font_path, watermark_size)
     else:
-        timecode_option = "drawtext=%s:fontcolor=white:fontsize=%s:timecode=%s:rate=%s:boxcolor=0x000000AA:box=1:x=(w-text_w)/2:y=h/1.2" % (font_path, font_size, timecode_test, framerate)
+        timecode_option = "drawtext=%s:fontcolor=white:fontsize=%s:timecode='%s':rate=%s:boxcolor=0x000000AA:box=1:x=(w-text_w)/2:y=h/1.2" % (font_path, font_size, timecode_test, framerate)
         watermark_option = "drawtext=%s:fontcolor=white:text='IFI IRISH FILM ARCHIVE':x=(w-text_w)/2:y=(h-text_h)/2:fontsize=%s:alpha=0.4"  % (font_path, watermark_size)
     bitc_watermark = timecode_option + ',' + watermark_option
     if args.timecode:
