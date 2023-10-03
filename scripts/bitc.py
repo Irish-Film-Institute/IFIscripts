@@ -178,7 +178,7 @@ def setup_drawtext(args, filename):
     elif sys.platform.startswith("linux"):
         font_path = "fontfile=/usr/share/fonts/truetype/freefont/FreeSerifBold.ttf"
     elif sys.platform == "win32":
-        font_path = "'fontfile=C\:\\\Windows\\\Fonts\\\\'arial.ttf'"
+        font_path = "'fontfile=C\:\\\Windows\\\Fonts\\\\arial.ttf'"
     # Get starting timecode
     timecode_test_raw = getffprobe(
         'timecode_test_raw',
