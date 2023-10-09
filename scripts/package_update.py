@@ -171,10 +171,10 @@ def main(args_):
                     % (filenames, args.new_folder)
                 )
                 print(('%s has been moved into %s' % (filenames, args.new_folder)))
-                relative_filename = filenames.replace(os.path.dirname(args.input) + '/', '').replace('\\', '/')
-                relative_filename = filenames.replace(os.path.dirname(args.input) + '\\', '').replace('\\', '/')
-                relative_new_folder = args.new_folder.replace(os.path.dirname(args.input) + '/', '').replace('\\', '/')
-                relative_new_folder = args.new_folder.replace(os.path.dirname(args.input) + '\\', '').replace('\\', '/')
+                relative_filename = filenames.replace(source + '/', '').replace('\\', '/')
+                relative_filename = filenames.replace(source + '\\', '').replace('\\', '/')
+                relative_new_folder = args.new_folder.replace(source + '/', '').replace('\\', '/')
+                relative_new_folder = args.new_folder.replace(source + '\\', '').replace('\\', '/')
                 update_manifest(
                     sip_manifest,
                     relative_filename,
@@ -190,7 +190,7 @@ def main(args_):
                     )
     if args.rename:
         triggers = [' ', ',', '.', '#', '%', '&', '\'', '*', '+', '/', ':', '?', '@', '<', '>', '|', '"', '©', '(', ')', '']
-        for root, _, files in os.walk(args.input):
+        for root, _, files in os.walk(oe_path):
             if 'objects' in root:
                 for filename in files:
                     file = os.path.join(root, filename)
@@ -209,6 +209,10 @@ def main(args_):
                         filename = new_filename
                     if flag:
                         final_filename = os.path.join(file_dir,new_filename)
+                        relative_filename = file.replace(source + '/', '').replace('\\', '/')
+                        relative_filename = file.replace(source + '\\', '').replace('\\', '/')
+                        relative_new_filename = final_filename.replace(source + '/', '').replace('\\', '/')
+                        relative_new_filename = final_filename.replace(source + '\\', '').replace('\\', '/')
                         print('Renamed %s to %s' % (file,final_filename))
                         ififuncs.generate_log(
                             new_log_textfile,
@@ -217,10 +221,6 @@ def main(args_):
                             ' agentName=os.rename()'
                             % (file, final_filename)
                         )
-                        relative_filename = file.replace(os.path.dirname(args.input) + '/', '').replace('\\', '/')
-                        relative_filename = file.replace(os.path.dirname(args.input) + '\\', '').replace('\\', '/')
-                        relative_new_filename = file.replace(os.path.dirname(args.input) + '/', '').replace('\\', '/')
-                        relative_new_filename = file.replace(os.path.dirname(args.input) + '\\', '').replace('\\', '/')
                         update_manifest(
                             sip_manifest,
                             relative_filename,
@@ -240,7 +240,7 @@ def main(args_):
     )
     ififuncs.checksum_replace(sip_manifest, new_log_textfile, 'md5')
     if args.aip:
-        ififuncs.checksum_replace(sip_manifest, new_log_textfile, 'sha512')
+        ififuncs.checksum_replace(sip_manifest_sha512, new_log_textfile, 'sha512')
     finish = datetime.datetime.now()
     print('\n- %s ran this script at %s and it finished at %s' % (user, start, finish))
 
