@@ -15,7 +15,7 @@ def parse_args(args_):
     Parse command line arguments.
     '''
     parser = argparse.ArgumentParser(
-        description='Rename files in objects/, updates logfiles and manifests.'
+        description='Rename files in a SIP/AIP, updates logfiles and manifests.'
         ' Written by Yazhou He.'
     )
     parser.add_argument(
@@ -81,7 +81,7 @@ def main(args_):
                     new_log_textfile,
                     'EVENT = agentName=%s' % user
                 )
-                triggers = [' ', ',', '.', '#', '%', '&', '\'', '*', '+', '/', ':', '?', '@', '<', '>', '|', '"', '©', '(', ')', '', '▒']        
+                triggers = [',', '#', '%', '&', '\'', '*', '+', '/', ':', '?', '@', '<', '>', '|', '"', '©', '', '▒']
                 for root, _, files in os.walk(sip_path):
                     result = ''
                     if 'objects' in root:
@@ -136,11 +136,11 @@ def main(args_):
                     ififuncs.checksum_replace(sip_manifest_sha512, new_log_textfile, 'sha512')
                 finish = datetime.datetime.now()
                 if result == 'error':
-                    print('%s has not completed updating manifest' % sip_path)
+                    print('***%s has not completed updating manifest' % sip_path)
                     error_list.append(sip_path)
                 print('\n- %s ran this script at %s and it finished at %s' % (user, start, finish))
         except:
-            print('%s has not completed updating manifest' % sip_path)
+            print('***%s has not completed updating manifest' % sip_path)
             error_list.append(sip_path)
     return error_list
         
