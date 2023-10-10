@@ -7,7 +7,6 @@ import argparse
 import sys
 import datetime
 import shutil
-import re
 import ififuncs
 import copyit
 import sipcreator
@@ -28,10 +27,6 @@ def parse_args(args_):
     parser.add_argument(
         '-new_folder',
         help='full path of the new destination folder'
-    )
-    parser.add_argument(
-        '-rename', action='store_true',
-        help='Remove special characters and space to _. Use with [input] only.'
     )
     parser.add_argument(
         'input',
@@ -60,6 +55,7 @@ def update_manifest(manifest, old_path, new_path, new_log_textfile):
     updated_lines = []
     with open(manifest, 'r') as file_object:
         checksums = file_object.readlines()
+        change = False
         for line in checksums:
             if old_path in line:
                 line = line.replace(old_path, new_path)
@@ -71,11 +67,14 @@ def update_manifest(manifest, old_path, new_path, new_log_textfile):
                     ' eventDetail=the following path: %s has been updated with %s in the package manifest %s' % (old_path, new_path, manifest)
                 )
                 updated_lines.append(line)
+                change = True
             else:
                 updated_lines.append(line)
     with open(manifest, 'w') as updated_manifest:
         for updated_line in updated_lines:
             updated_manifest.write(updated_line)
+    if not change:
+        return 'error'
 
 
 def main(args_):
@@ -188,52 +187,6 @@ def main(args_):
                         os.path.join(relative_new_folder, os.path.basename(relative_filename)).replace('\\', '/'),
                         new_log_textfile
                     )
-    if args.rename:
-        triggers = [' ', ',', '.', '#', '%', '&', '\'', '*', '+', '/', ':', '?', '@', '<', '>', '|', '"', '©', '(', ')', '']
-        for root, _, files in os.walk(oe_path):
-            if 'objects' in root:
-                for filename in files:
-                    file = os.path.join(root, filename)
-                    file_dir = root
-                    flag = False
-                    for trigger in triggers:
-                        if trigger in os.path.splitext(filename)[0]:
-                            new_filename = os.path.splitext(filename)[0].replace(trigger, '_') + os.path.splitext(filename)[1]
-                            os.rename(os.path.join(file_dir,filename),os.path.join(file_dir,new_filename))
-                            flag = True
-                            filename = new_filename
-                    if re.findall('__+', filename):
-                        new_filename = re.sub('__+', '_', filename)
-                        os.rename(os.path.join(file_dir,filename),os.path.join(file_dir,new_filename))
-                        flag = True
-                        filename = new_filename
-                    if flag:
-                        final_filename = os.path.join(file_dir,new_filename)
-                        relative_filename = file.replace(source + '/', '').replace('\\', '/')
-                        relative_filename = file.replace(source + '\\', '').replace('\\', '/')
-                        relative_new_filename = final_filename.replace(source + '/', '').replace('\\', '/')
-                        relative_new_filename = final_filename.replace(source + '\\', '').replace('\\', '/')
-                        print('Renamed %s to %s' % (file,final_filename))
-                        ififuncs.generate_log(
-                            new_log_textfile,
-                            'EVENT = eventType=filename change,'
-                            ' eventOutcomeDetailNote=%s has been renamed to %s'
-                            ' agentName=os.rename()'
-                            % (file, final_filename)
-                        )
-                        update_manifest(
-                            sip_manifest,
-                            relative_filename,
-                            relative_new_filename,
-                            new_log_textfile
-                        )
-                        if args.aip:
-                            update_manifest(
-                                sip_manifest_sha512,
-                                relative_filename,
-                                relative_new_filename,
-                                new_log_textfile
-                            )
     ififuncs.generate_log(
         new_log_textfile,
         'EVENT = package_update.py finished'
