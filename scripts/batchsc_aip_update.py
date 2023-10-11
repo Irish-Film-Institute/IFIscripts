@@ -110,10 +110,10 @@ def main(args_):
                     for item in error_list:
                         print(item)
                     print("---\n\n")
-    if error_list:
-        print("\n\n---\n(Final) Below paths have not completed updating manifest after renaming:")
-        for item in error_list:
-            print(item)
+        if error_list:
+            print("\n\n---\n(Final) Below paths have not completed updating manifest after renaming:")
+            for item in error_list:
+                print(item)
 
 if __name__ == '__main__':
     main(sys.argv[1:])
