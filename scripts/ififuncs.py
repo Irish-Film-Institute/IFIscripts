@@ -1243,6 +1243,7 @@ def checksum_replace(manifest, logname, algorithm):
     Update a value in a checksum manifest.
     Variables just refer to lognames right now, which is the only thing that needs to change at the moment.
     '''
+    change = False
     updated_manifest = []
     if algorithm == 'md5':
         new_checksum = hashlib_md5(logname)
@@ -1252,6 +1253,7 @@ def checksum_replace(manifest, logname, algorithm):
         manifest_lines = manifesto.readlines()
         for lines in manifest_lines:
             if os.path.basename(logname) in lines:
+                change = True
                 if algorithm == 'md5':
                     lines = lines[31:].replace(lines[31:], new_checksum + lines[32:])
                 elif algorithm == 'sha512':
@@ -1260,6 +1262,8 @@ def checksum_replace(manifest, logname, algorithm):
     with open(manifest, 'w', encoding='utf-8') as fo:
         for lines in updated_manifest:
             fo.write(lines)
+    if not change:
+        return change
 
 
 def img_seq_pixfmt(start_number, path):
