@@ -45,8 +45,8 @@ def main(args_):
     if args.movetoobjects:
         # get path for sips
         sips = os.listdir(source)
+        error_list = []
         for sip in sips:
-            error_list = []
             sip_path = os.path.join(source, sip)
             if os.path.isdir(sip_path):
                 print('Found SIP\t%s' % sip_path)
