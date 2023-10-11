@@ -46,6 +46,7 @@ def main(args_):
         # get path for sips
         sips = os.listdir(source)
         for sip in sips:
+            error_list = []
             sip_path = os.path.join(source, sip)
             if os.path.isdir(sip_path):
                 print('Found SIP\t%s' % sip_path)
@@ -78,7 +79,9 @@ def main(args_):
                                 cmd.append(file_path)
                             cmd += ['-new_folder', objects, '-user', user, '-aip', uuid]
                             print(cmd)
-                            package_update.main(cmd)
+                            sip_path = package_update.main(cmd)
+                            if sip_path:
+                                error_list.append(sip_path)
                         else:
                             print('No subfiles need to be moved.')
                         if dirs_path:
@@ -110,10 +113,10 @@ def main(args_):
                     for item in error_list:
                         print(item)
                     print("---\n\n")
-        if error_list:
-            print("\n\n---\n(Final) Below paths have not completed updating manifest after renaming:")
-            for item in error_list:
-                print(item)
+    if error_list:
+        print("\n\n---\n(Final) Below paths have not completed updating manifest:")
+        for item in error_list:
+            print(item)
 
 if __name__ == '__main__':
     main(sys.argv[1:])

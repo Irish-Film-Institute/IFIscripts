@@ -204,6 +204,7 @@ def main(args_):
     print('\n- %s ran this script at %s and it finished at %s' % (user, start, finish))
     if False in ifchange_list:
         print("***%s has not completed updating manifest" % sip_path)
+        return sip_path
 
 
 if __name__ == '__main__':
