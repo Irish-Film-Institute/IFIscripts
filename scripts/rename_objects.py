@@ -59,6 +59,7 @@ def main(args_):
     print(args)
     error_list =[]
     for sip_path in sip_paths:
+        ifchange_list = []
         uuid = os.path.basename(sip_path)
         new_log_textfile = os.path.join(sip_path, 'logs' + '/' + uuid + '_sip_log.log')
         sip_manifest = os.path.join(oe_path, uuid + '_manifest.md5')
@@ -83,7 +84,6 @@ def main(args_):
                 )
                 triggers = [',', '#', '%', '&', '\'', '*', '+', '/', ':', '?', '@', '<', '>', '|', '"', '©', '', '▒']
                 for root, _, files in os.walk(sip_path):
-                    result = ''
                     if 'objects' in root:
                         for filename in files:
                             file = os.path.join(root, filename)
@@ -114,32 +114,35 @@ def main(args_):
                                     ' agentName=os.rename()'
                                     % (file, final_filename)
                                 )
-                                result = package_update.update_manifest(
+                                ifchange_manifest = package_update.update_manifest(
                                     sip_manifest,
                                     relative_filename,
                                     relative_new_filename,
                                     new_log_textfile
                                 )
+                                ifchange_list.append(ifchange_manifest)
                                 if args.aip:
-                                    result = package_update.update_manifest(
+                                    ifchange_manifest_sha512 = package_update.update_manifest(
                                         sip_manifest_sha512,
                                         relative_filename,
                                         relative_new_filename,
                                         new_log_textfile
                                     )
+                                    ifchange_list.append(ifchange_manifest_sha512)
                 ififuncs.generate_log(
                     new_log_textfile,
                     'EVENT = rename_objects.py finished'
                 )
-                ififuncs.checksum_replace(sip_manifest, new_log_textfile, 'md5')
+                ifchange_log_manifest = ififuncs.checksum_replace(sip_manifest, new_log_textfile, 'md5')
+                ifchange_list.append(ifchange_log_manifest)
                 if args.aip:
-                    ififuncs.checksum_replace(sip_manifest_sha512, new_log_textfile, 'sha512')
+                    ifchange_log_manifest_sha512 = ififuncs.checksum_replace(sip_manifest_sha512, new_log_textfile, 'sha512')
+                    ifchange_list.append(ifchange_log_manifest_sha512)
                 finish = datetime.datetime.now()
-                if result == 'error':
-                    print('***%s has not completed updating manifest' % sip_path)
-                    error_list.append(sip_path)
                 print('\n- %s ran this script at %s and it finished at %s' % (user, start, finish))
         except:
+            error_list.append(False)
+        if False in ifchange_list:
             print('***%s has not completed updating manifest' % sip_path)
             error_list.append(sip_path)
     return error_list
