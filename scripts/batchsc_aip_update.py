@@ -13,7 +13,7 @@ def parse_args(args_):
     Parse command line arguments.
     '''
     parser = argparse.ArgumentParser(
-        description='Batch update Special Collections\' AIPs.'
+        description='Batch update Special Collections\' titles.'
         ' Written by Yazhou He.'
     )
     parser.add_argument(
@@ -43,20 +43,21 @@ def main(args_):
         user = ififuncs.get_user()
     source = args.input
     if args.movetoobjects:
-        # get path for sips
-        sips = os.listdir(source)
-        for sip in sips:
-            sip_path = os.path.join(source, sip)
-            if os.path.isdir(sip_path):
-                print('Found SIP\t%s' % sip_path)
-                # get uuid/ for sip
-                for dir in os.listdir(sip_path):
-                    uuid = os.path.join(sip_path,dir)
-                    if os.path.isdir(uuid):
-                        uuid = os.path.join(sip, uuid)
-                        print('Found UUID\t%s' % uuid)
-                        # get objects/ for sip
-                        objects = os.path.join(uuid, 'objects')
+        # get path for titles
+        titles = os.listdir(source)
+        error_list = []
+        for title in titles:
+            aaa_path = os.path.join(source, title)
+            if os.path.isdir(aaa_path):
+                print('Found aip\t%s' % aaa_path)
+                # get uuid/ for aip
+                for dir in os.listdir(aaa_path):
+                    aip_path = os.path.join(aaa_path,dir)
+                    if os.path.isdir(aip_path):
+                        # uuid = os.path.join(title, uuid)
+                        print('Found UUID\t%s' % aip_path)
+                        # get objects/ for aip
+                        objects = os.path.join(aip_path, 'objects')
                         print('Found objects\t%s' % objects)
                         files_path=[]
                         dirs_path=[]
@@ -76,9 +77,11 @@ def main(args_):
                             cmd=['-i']
                             for file_path in files_path:
                                 cmd.append(file_path)
-                            cmd += ['-new_folder', objects, '-user', user, '-aip', uuid]
+                            cmd += ['-new_folder', objects, '-user', user, '-aip', aip_path]
                             print(cmd)
-                            package_update.main(cmd)
+                            error_path = package_update.main(cmd)
+                            if error_path:
+                                error_list.append(error_path)
                         else:
                             print('No subfiles need to be moved.')
                         if dirs_path:
@@ -110,10 +113,10 @@ def main(args_):
                     for item in error_list:
                         print(item)
                     print("---\n\n")
-        if error_list:
-            print("\n\n---\n(Final) Below paths have not completed updating manifest after renaming:")
-            for item in error_list:
-                print(item)
+    if error_list:
+        print("\n\n---\n(Final) Below paths have not completed updating manifest:")
+        for item in error_list:
+            print(item)
 
 if __name__ == '__main__':
     main(sys.argv[1:])
