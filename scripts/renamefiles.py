@@ -84,51 +84,50 @@ def main(args_):
                 )
                 triggers = [',', '#', '%', '&', '\'', '*', '+', '/', ':', '?', '@', '<', '>', '|', '"', '©', '', '▒']
                 for root, _, files in os.walk(sip_path):
-                    if 'objects' in root:
-                        for filename in files:
-                            file = os.path.join(root, filename)
-                            file_dir = root
-                            flag = False
-                            for trigger in triggers:
-                                if trigger in os.path.splitext(filename)[0]:
-                                    new_filename = os.path.splitext(filename)[0].replace(trigger, '_') + os.path.splitext(filename)[1]
-                                    os.rename(os.path.join(file_dir,filename),os.path.join(file_dir,new_filename))
-                                    flag = True
-                                    filename = new_filename
-                            if re.findall('__+', filename):
-                                new_filename = re.sub('__+', '_', filename)
+                    for filename in files:
+                        file = os.path.join(root, filename)
+                        file_dir = root
+                        flag = False
+                        for trigger in triggers:
+                            if trigger in os.path.splitext(filename)[0]:
+                                new_filename = os.path.splitext(filename)[0].replace(trigger, '_') + os.path.splitext(filename)[1]
                                 os.rename(os.path.join(file_dir,filename),os.path.join(file_dir,new_filename))
                                 flag = True
                                 filename = new_filename
-                            if flag:
-                                final_filename = os.path.join(file_dir,new_filename)
-                                relative_filename = file.replace(source + '/', '').replace('\\', '/')
-                                relative_filename = file.replace(source + '\\', '').replace('\\', '/')
-                                relative_new_filename = final_filename.replace(source + '/', '').replace('\\', '/')
-                                relative_new_filename = final_filename.replace(source + '\\', '').replace('\\', '/')
-                                print('Renamed %s to %s' % (file,final_filename))
-                                ififuncs.generate_log(
-                                    new_log_textfile,
-                                    'EVENT = eventType=filename change,'
-                                    ' eventOutcomeDetailNote=%s has been renamed to %s'
-                                    ' agentName=os.rename()'
-                                    % (file, final_filename)
-                                )
-                                ifchange_manifest = package_update.update_manifest(
-                                    sip_manifest,
+                        if re.findall('__+', filename):
+                            new_filename = re.sub('__+', '_', filename)
+                            os.rename(os.path.join(file_dir,filename),os.path.join(file_dir,new_filename))
+                            flag = True
+                            filename = new_filename
+                        if flag:
+                            final_filename = os.path.join(file_dir,new_filename)
+                            relative_filename = file.replace(source + '/', '').replace('\\', '/')
+                            relative_filename = file.replace(source + '\\', '').replace('\\', '/')
+                            relative_new_filename = final_filename.replace(source + '/', '').replace('\\', '/')
+                            relative_new_filename = final_filename.replace(source + '\\', '').replace('\\', '/')
+                            print('Renamed %s to %s' % (file,final_filename))
+                            ififuncs.generate_log(
+                                new_log_textfile,
+                                'EVENT = eventType=filename change,'
+                                ' eventOutcomeDetailNote=%s has been renamed to %s'
+                                ' agentName=os.rename()'
+                                % (file, final_filename)
+                            )
+                            ifchange_manifest = package_update.update_manifest(
+                                sip_manifest,
+                                relative_filename,
+                                relative_new_filename,
+                                new_log_textfile
+                            )
+                            ifchange_list.append(ifchange_manifest)
+                            if args.aip:
+                                ifchange_manifest_sha512 = package_update.update_manifest(
+                                    sip_manifest_sha512,
                                     relative_filename,
                                     relative_new_filename,
                                     new_log_textfile
                                 )
-                                ifchange_list.append(ifchange_manifest)
-                                if args.aip:
-                                    ifchange_manifest_sha512 = package_update.update_manifest(
-                                        sip_manifest_sha512,
-                                        relative_filename,
-                                        relative_new_filename,
-                                        new_log_textfile
-                                    )
-                                    ifchange_list.append(ifchange_manifest_sha512)
+                                ifchange_list.append(ifchange_manifest_sha512)
                 ififuncs.generate_log(
                     new_log_textfile,
                     'EVENT = rename_objects.py finished'

@@ -5,7 +5,7 @@ import os
 import argparse
 import shutil
 import package_update
-import rename_objects
+import renamefiles
 import ififuncs
 
 def parse_args(args_):
@@ -100,7 +100,7 @@ def main(args_):
                 cmd = ['-aip', '-user', user, oe_paths]
                 print('rename_objects.py', cmd)
                 try:
-                    error = rename_objects.main(cmd)
+                    error = renamefiles.main(cmd)
                     if error:
                         error_list += error
                         print("\n\n---\nBelow paths have not completed updating manifest after renaming:")
