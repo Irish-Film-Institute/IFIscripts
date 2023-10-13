@@ -68,7 +68,7 @@ NOTE: Objects.py has been copied from https://github.com/simsong/dfxml. walk_to_
         'scripts/package_update.py',
         'scripts/packagecheck.py',
         'scripts/prores.py',
-        'scripts/rename_objects.py',
+        'scripts/renamefiles.py',
         'scripts/seq2ffv1.py',
         'scripts/sipcreator.py',
         'scripts/strongbox_fixity.py',
