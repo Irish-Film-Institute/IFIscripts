@@ -88,6 +88,6 @@ NOTE: Objects.py has been copied from https://github.com/simsong/dfxml. walk_to_
     data_files=[('', ['film_scan_aip_documentation.txt', '26_XYZ-22_Rec709.cube'])],
     include_package_data=True,
     name='ifiscripts',
-    version='2023.9.25',
+    version='2023.10.14',
     python_requires='>=3.8'
 )
