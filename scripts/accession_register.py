@@ -50,9 +50,9 @@ def find_checksums(csv_file, identifier):
     return strongbox_list
 
 def get_file_create_date(file):
-    timestamp = os.path.getctime(file)
+    timestamp = os.path.getmtime(file)
     timestruct = time.localtime(timestamp)
-    date = time.strftime('%d/%m/%Y', timestruct)
+    date = time.strftime('%Y-%m-%d', timestruct)
     return date
 
 def main(args_):
@@ -72,7 +72,7 @@ def main(args_):
             if technical_record['Accession Number'] == accession_number:
                 accession['acquisition method'] = technical_record['Type Of Deposit']
                 accession['acquired from'] = technical_record['Donor']
-                accession['date acquired'] = technical_record['Date Of Donation']
+                accession['date acquired'] = time.strftime("%Y-%m-%d", time.strptime(technical_record['Date Of Donation'], "%d/%m/%Y"))
                 for filmographic_record in filmo_csv_dict:
                     if filmographic_record['Filmographic URN'] == technical_record['Reference Number']:
                         if filmographic_record['Title/Name'] == '':
