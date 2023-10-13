@@ -93,7 +93,12 @@ def main(args_):
             for i in sorted_csv_dict:
                 writer.writerow(i)
     print('\nYour helper CSV file is located here: %s' % new_csv)
-    print('Comma/\',\' should be the only separator for this CSV. (Un-tick Semicolon/\';\' if it is selected.)')
+    print('ATTENTION:')
+    print('\tComma/\',\' should be the only separator when you open this CSV. (Un-tick Semicolon/\';\' if it is selected.)')
+    print('\tIf the \'date acquired\' is unsure, fill in \'unknown\' in the field and do not leave it blank!')
+    print('\tThe \'date accessioned\' should be the date you fill into DIGITAL ACCESION REGISTER. Change it if it\'s a different day!')
+    print('\t\'acquired from\' should be \'body #number\', add correct #number into the field when you fill into DIGITAL ACCESION REGISTER!')
+    print('\tMinimise the terms - ie, \'Deposit via overarching agreements\' -> \'Deposit\', \'Interop Digital Cinema Package\' -> \'Digital Cinema Package\'')
     return new_csv
 
 
