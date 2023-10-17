@@ -33,6 +33,7 @@ NOTE: Objects.py has been copied from https://github.com/simsong/dfxml. walk_to_
         'scripts/batchsc_organise.py',
         'scripts/batchsc_aip_update.py',
         'scripts/batchsipcreator.py',
+        'scripts/batchvalidate.py',
         'scripts/bitc.py',
         'scripts/check_register.py',
         'scripts/concat.py',
