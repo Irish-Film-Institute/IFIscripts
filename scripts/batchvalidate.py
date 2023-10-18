@@ -11,9 +11,9 @@ def parse_args():
     '''
     Parse command line arguments
     '''
-    parser = argparse.ArgumentParser(description='Recursively launch validate.py')
-    parser.add_argument('input', help='full path to manifest file')
-    parser.add_argument('-sip', help='Script will find the manifest at the root of the SIP/AIP for validation', action='store_true')
+    parser = argparse.ArgumentParser(description='Recursively launch validate.py for md5 manifests')
+    parser.add_argument('input', help='full path to the parent folder including packages')
+    parser.add_argument('-sip', help='only looks for manifests at the root of the SIP/AIP for whole package validation - $uuid_manifest.md5', action='store_true')
     parser.add_argument('-y', help ='invokes -y option in validate.py, answers Y to manifest issues', action='store_true')
     parsed_args = parser.parse_args()
     return parsed_args
