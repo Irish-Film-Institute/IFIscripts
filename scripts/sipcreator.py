@@ -33,16 +33,17 @@ def clear_manifest_dir():
     manifest file inside and mess the incoming process.
     It will move existed manifest file into the "moveit_manifests/old_manifests"
     '''
+    print('\n----------\nsipcreator.py error-proofing mechanism - checking moveit_manifest')
     desktop_manifest_dir = os.path.expanduser("~/Desktop/moveit_manifests")
     old_manifest_dir = os.path.join(desktop_manifest_dir, 'old_manifests')
     for i in os.listdir(desktop_manifest_dir):
         o = os.path.join(old_manifest_dir, i)
         i = os.path.join(desktop_manifest_dir, i)
-        if i.endswith('.md5'):
-            print('**** Found existing manifest: ' + i)
-            if i.endswith('objects_manifest.md5'):
-                shutil.move(i, o)
-                print('**** Moved object_manifest.md5 to old_manifest folder in case of content overlap. \n**** Check if other manifests are in use in other scripts before move them manually.')
+        if i.endswith('objects_manifest.md5'):
+            shutil.move(i, o)
+            print('- Moved object_manifest.md5 to old_manifest folder in case of content overlap.')
+        else:
+            print('Check completed\n----------')
 
 def make_folder_path(path, args, object_entry):
     '''
