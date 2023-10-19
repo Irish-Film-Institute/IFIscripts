@@ -3,44 +3,44 @@
 import os
 import shutil
 
-def move_sip():
-    'Check if the packages include UUID folder in the root.'
-    print('\n\n***Move SIP***')
-    inp = input('Drag/Input the directory including both RAW packages and SIPs to be checked:\t')
-    output = input('Drag/Input the directory the SIPs are to be moved:\t')
+def move_aip():
+    'Check if the packages include UUID folder (meaning AIPs) in the root.'
+    print('\n\n***Move AIP***')
+    inp = input('Drag/Input the directory including both RAW packages and AIPs to be checked:\t')
+    output = input('Drag/Input the directory the AIPs are to be moved:\t')
     roots = os.listdir(inp)
     for root in roots:
         path = os.path.join(inp, root)
         if os.path.isdir(path):
             dirs = os.listdir(path)
             if any(len(dir) == 36 and os.path.isdir(os.path.join(path,dir)) for dir in dirs):
-                print('Message:\t%s is a SIP. Move to SIP folder.' % path)
+                print('Message:\t%s is an AIP. Move to AIP folder.' % path)
                 shutil.move(path, output)
 
 def move_sipped_raw():
-    'Check if the RAW packages have been sipped and move them to sipped RAW folder. Comparison by name similiarity check.'
+    'Check if any RAW packages have pre-existing AIPs and move them to a separate folder. Comparison by name similiarity check.'
     print('\n\n***Move Sipped RAW Packages***')
-    d_raw = input('Input directory of RAW packages:\t')
-    d_sip = input('Input directory of SIP packages:\t')
-    output = input('Input directory for moving sipped RAW packages:\t')
-    sips = os.listdir(d_sip)
+    d_raw = input('Drag/Input directory of RAW packages:\t')
+    d_aip = input('Drag/Input directory of AIP packages:\t')
+    output = input('Drag/Input directory for moving RAW packages that have pre-existing AIPs to:\t')
+    aips = os.listdir(d_aip)
     roots = os.listdir(d_raw)
     for root in roots:
         raw_parts = root.split(" ")
-        for sip in sips:
-            sip_parts = sip.split("_")
+        for aip in aips:
+            aip_parts = aip.split("_")
             i = 0
             goon = True
-            while i < len(raw_parts) and goon and len(raw_parts) == len(sip_parts):
-                if raw_parts[i].lower() == sip_parts[i] and i != len(raw_parts)-1:
+            while i < len(raw_parts) and goon and len(raw_parts) == len(aip_parts):
+                if raw_parts[i].lower() == aip_parts[i] and i != len(raw_parts)-1:
                     goon = True
                     i = i + 1
                 elif i == len(raw_parts)-1 and i > 0:
-                    print('\ntrigger:\t %s in raw and %s in sip, index=%s' % (raw_parts[i], sip_parts[i], i))
-                    ask = input("Alert:\tdoes RAW \'%s\' and SIP \'%s\' have the same title?\n\tanswer y/n -> " % (root, sip))
+                    print('\ntrigger:\t %s in raw and %s in AIP, index=%s' % (raw_parts[i], aip_parts[i], i))
+                    ask = input("Alert:\tdoes RAW \'%s\' and AIP \'%s\' have the same title?\n\tanswer y/n -> " % (root, aip))
                     if ask.lower() == 'y':
                         inp = os.path.join(d_raw, root)
-                        print('Message:\tmove %s to sipped_raw folder.' % inp)
+                        print('Message:\tmove %s to %s.' % inp, output)
                         shutil.move(inp, output)
                         goon = False
                     else:
@@ -48,8 +48,8 @@ def move_sipped_raw():
                 else:
                     goon = False
                 '''
-                elif i > 0 and raw_parts[i].lower() != sip_parts[i]:
-                    ask = input("\nAlert:\tdoes RAW \'%s\' and SIP \'%s\' have the same title?\n\tanswer y/n -> " % (root, sip))
+                elif i > 0 and raw_parts[i].lower() != aip_parts[i]:
+                    ask = input("\nAlert:\tdoes RAW \'%s\' and AIP \'%s\' have the same title?\n\tanswer y/n -> " % (root, aip))
                     if ask.lower() == 'y':
                         inp = os.path.join(d_raw, root)
                         print('Message:\tmove %s to sipped_raw folder.' % inp)
@@ -61,13 +61,13 @@ def move_sipped_raw():
 
 def main():
     menu=[
-        '1. Check if it\'s a SIP',
-        '2. Check if each raw has been sipped'
+        '1. Check if each is an AIP (processed package), and move AIPs to a separate folder.',
+        '2. Check if each RAW (unprocessed package) has a pre-existing AIP. If so, move the RAW to a separate folder.'
     ]
     print(*menu, sep = '\n')
     func = input('Which feature do you need?  ->  ')  
     if func == '1':
-        move_sip()
+        move_aip()
     elif func == '2':
         move_sipped_raw()
     
