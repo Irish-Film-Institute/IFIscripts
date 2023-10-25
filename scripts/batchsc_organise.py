@@ -8,59 +8,61 @@ import re
 def rename_sub(packs):
     print('\n\n***Rename folders/files - replace all spaces and special characters to _***')
     triggers = [' ', '#', '%', '&', '\'', '*', '+', '/', ':', '?', '@', '<', '>', '|', '"', '©', '(', ')']
-    for pack in packs:
-        print('Renaming for %s' % pack)
-        dir_list=[]
-        for root, dirs, files in os.walk(pack):  
-            for dir in dirs:
-                dir_list.append(os.path.join(root, dir))
-        for n in range(len(dir_list)):
-            flag = False
-            dir_item = dir_list[n]
-            dirname = os.path.basename(dir_item)
-            dir_dir = os.path.dirname(dir_item)
-            for trigger in triggers:
-                if trigger in dirname:
-                    new_dirname = dirname.replace(trigger, '_')
+    answer = input('Rename RAW packages will have no record in the log file.\nInstead, process RAW packages then use \'batchsc_aip_update.py -rename\' to keep actions in the log.\nAre you sure you want to proceed?\nAnswer y/n\t->')
+    if answer.lower() == 'y':
+        for pack in packs:
+            print('Renaming for %s' % pack)
+            dir_list=[]
+            for root, dirs, files in os.walk(pack):  
+                for dir in dirs:
+                    dir_list.append(os.path.join(root, dir))
+            for n in range(len(dir_list)):
+                flag = False
+                dir_item = dir_list[n]
+                dirname = os.path.basename(dir_item)
+                dir_dir = os.path.dirname(dir_item)
+                for trigger in triggers:
+                    if trigger in dirname:
+                        new_dirname = dirname.replace(trigger, '_')
+                        os.rename(os.path.join(dir_dir,dirname),os.path.join(dir_dir,new_dirname))
+                        flag = True
+                        # print('Renamed %s to %s' % (os.path.join(dir_dir,dirname),os.path.join(dir_dir,new_dirname)))
+                        # below is different from the loop for files
+                        dir_list=[i.replace(dirname,new_dirname) if dirname in i else i for i in dir_list]
+                        dirname = new_dirname
+                if re.findall('__+', dirname):
+                    new_dirname = re.sub('__+', '_', dirname)
                     os.rename(os.path.join(dir_dir,dirname),os.path.join(dir_dir,new_dirname))
                     flag = True
                     # print('Renamed %s to %s' % (os.path.join(dir_dir,dirname),os.path.join(dir_dir,new_dirname)))
-                    # below is different from the loop for files
                     dir_list=[i.replace(dirname,new_dirname) if dirname in i else i for i in dir_list]
-                    dirname = new_dirname
-            if re.findall('__+', dirname):
-                new_dirname = re.sub('__+', '_', dirname)
-                os.rename(os.path.join(dir_dir,dirname),os.path.join(dir_dir,new_dirname))
-                flag = True
-                # print('Renamed %s to %s' % (os.path.join(dir_dir,dirname),os.path.join(dir_dir,new_dirname)))
-                dir_list=[i.replace(dirname,new_dirname) if dirname in i else i for i in dir_list]
-            if flag:
-                now = os.path.join(dir_dir,new_dirname)
-                print('Renamed %s to %s' % (dir_item,now))
-        print()
-        for root, dirs, files in os.walk(pack):    
-            for file in files:
-                flag = False
-                was = os.path.join(root, file)
-                title = os.path.splitext(file)[0]
-                extension = os.path.splitext(file)[1]
-                for trigger in triggers:
-                    if trigger in title:
-                        new_title = title.replace(trigger, '_')
-                        new_file = new_title + extension
+                if flag:
+                    now = os.path.join(dir_dir,new_dirname)
+                    print('Renamed %s to %s' % (dir_item,now))
+            print()
+            for root, dirs, files in os.walk(pack):    
+                for file in files:
+                    flag = False
+                    was = os.path.join(root, file)
+                    title = os.path.splitext(file)[0]
+                    extension = os.path.splitext(file)[1]
+                    for trigger in triggers:
+                        if trigger in title:
+                            new_title = title.replace(trigger, '_')
+                            new_file = new_title + extension
+                            os.rename(os.path.join(root,file),os.path.join(root,new_file))
+                            flag = True
+                            # below is different from the loop for dirs
+                            file = new_file
+                            title = new_title
+                    if re.findall('__+', file):
+                        new_file = re.sub('__+', '_', file)
                         os.rename(os.path.join(root,file),os.path.join(root,new_file))
                         flag = True
-                        # below is different from the loop for dirs
-                        file = new_file
-                        title = new_title
-                if re.findall('__+', file):
-                    new_file = re.sub('__+', '_', file)
-                    os.rename(os.path.join(root,file),os.path.join(root,new_file))
-                    flag = True
-                if flag:
-                    now = os.path.join(root,new_file)
-                    print('Renamed %s to %s' % (was,now))
-        print('---')
+                    if flag:
+                        now = os.path.join(root,new_file)
+                        print('Renamed %s to %s' % (was,now))
+            print('---')
 
 def rename_pack(packs):
     print('\n\n***Rename packages - replace spaces to _ and remove all special characters***')
@@ -158,10 +160,10 @@ def main():
     if answer.lower() == 'y':
         print()
         menu=[
-            '1. Rename folders/files - replace all spaces and special characters to _',
+            '1. (Use with caution) Rename folders/files - replace all spaces and special characters to _',
             '2. Rename packages - replace spaces to _ and remove all special characters',
             '3. Move subfiles - move all files to the root of the packages',
-            '4. Delete subfolders - Delete all subfolders in each packages'
+            '4. (Use only after 3.) Delete subfolders - Delete all subfolders in each packages'
         ]
         print(*menu, sep = '\n')
         func = '0'
