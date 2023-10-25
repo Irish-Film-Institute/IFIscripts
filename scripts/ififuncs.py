@@ -778,8 +778,6 @@ def get_user():
                  'Mark Keleghan',
                  'Matheus Almeida',
                  'Niall Anderson',
-                 'Raelene Casey',
-                 'Raven Ó Cuacaċ',
                  'Yazhou He']
     user = ''
     if user not in user_list:
