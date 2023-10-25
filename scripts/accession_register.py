@@ -72,7 +72,10 @@ def main(args_):
             if technical_record['Accession Number'] == accession_number:
                 accession['acquisition method'] = technical_record['Type Of Deposit']
                 accession['acquired from'] = technical_record['Donor']
-                accession['date acquired'] = time.strftime("%Y-%m-%d", time.strptime(technical_record['Date Of Donation'], "%d/%m/%Y"))
+                try:
+                    accession['date acquired'] = time.strftime("%Y-%m-%d", time.strptime(technical_record['Date Of Donation'], "%d/%m/%Y"))
+                except ValueError:
+                    accession['date acquired'] = technical_record['Date Of Donation']
                 for filmographic_record in filmo_csv_dict:
                     if filmographic_record['Filmographic URN'] == technical_record['Reference Number']:
                         if filmographic_record['Title/Name'] == '':
