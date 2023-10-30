@@ -39,11 +39,15 @@ def clear_manifest_dir():
     for i in os.listdir(desktop_manifest_dir):
         o = os.path.join(old_manifest_dir, i)
         i = os.path.join(desktop_manifest_dir, i)
+        mtime = os.path.getmtime(i)
+        ntime = time.time()
         if i.endswith('objects_manifest.md5'):
             shutil.move(i, o)
-            print('- Moved object_manifest.md5 to old_manifest folder in case of content overlap.')
-        else:
-            print('Check completed\n----------')
+            print('- Moved %s to old_manifest folder in case of content overlap.' % os.path.basename(i))
+        elif ntime - mtime >  7 * 24 * 3600:
+            shutil.move(i, o)
+            print('- Moved %s to old_manifest folder as made more than 7 days ago.' %  os.path.basename(i))
+    print('Check completed\n----------')
 
 def make_folder_path(path, args, object_entry):
     '''
