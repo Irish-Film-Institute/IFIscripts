@@ -786,7 +786,7 @@ def get_user():
         for user_item in user_list:
             print('\t' + str(i) + '. ' + user_item)
             i = i + 1
-        print('\n\n(User list was last updated on 2023-09-22)\n')
+        print('\n\n(User list was last updated on 2023-11-01)\n')
         i = int(input())
         while i > len(user_list) or i < 1:
             print('\n\n**** Who are you?\Enter the number before your name (ie. 1)\n\n')
@@ -794,7 +794,7 @@ def get_user():
             for user_item in user_list:
                 print('\t' + str(i) + '. ' + user_item)
                 i = i + 1
-            print('\n\n(User list was last updated on 2023-09-22)\n')
+            print('\n\n(User list was last updated on 2023-11-01)\n')
             i = int(input())
     user = user_list[i-1]
     print('\nUser selected: ' + user)
