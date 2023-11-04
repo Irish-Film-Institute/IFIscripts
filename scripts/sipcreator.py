@@ -618,7 +618,8 @@ def main(args_):
         txt_name_source = "%s/%s.txt" % (desktop_logs_dir, txt_name_filename)
         ififuncs.generate_txt(user, txt_name_source, 'Clairmeta version: %s' % clairmeta_version)
         process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_textfile, txt_name_source, metadata_dir, clairmeta_version)
-        shutil.copy(txt_name_source, metadata_dir)
+        clairmeta_cmd = ['-i', txt_name_source, '-user', user, '-new_folder', metadata_dir, os.path.dirname(sip_path), '-copy']
+        package_update.main(clairmeta_cmd)
         print('\n\nClairmeta outcome has been exported to ' + txt_name_source + '\nand copied to ' + metadata_dir)
     if args.aipcreator:
         register = aipcreator.make_register()
