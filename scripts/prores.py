@@ -12,12 +12,18 @@ def set_options(args_):
     '''
     Parse command line options.
     '''
-    parser = argparse.ArgumentParser(description='IFI Pro Res 4:2:2 ffmpeg Encoder.'
+    parser = argparse.ArgumentParser(description='IFI ProRes ffmpeg Encoder.'
+                                     ' Defaultly output as ProRes 422.'
+                                     ' Options include ProRes HQ and ProRes 4444XQ.'
                                      ' Written by Kieran O\'Leary.')
-    parser.add_argument('input')
+    parser.add_argument('input',
+                        help='can be a file or a folder including media files')
     parser.add_argument(
                         '-hq',
                         action='store_true',help='-profile:v 3 aka Prores HQ')
+    parser.add_argument(
+                        '-xq',
+                        action='store_true',help='-profile:v 5 aka Prores 4444XQ')
     parser.add_argument(
                         '-yadif',
                         action='store_true',help='Yet Another DeInterlace Filter')
@@ -119,12 +125,16 @@ def main(args_):
             ffmpeg_args.append('0:a?')
             ffmpeg_args.append('-map')
             ffmpeg_args.append('0:v')
-                
         if args.hq:
             ffmpeg_args.append('-profile:v')
             ffmpeg_args.append('3')
             ffmpeg_args.append('-pix_fmt')
             ffmpeg_args.append('yuv422p10le')
+        if args.xq:
+            ffmpeg_args.append('-profile:v')
+            ffmpeg_args.append('5')
+            ffmpeg_args.append('-pix_fmt')
+            ffmpeg_args.append('yuv444p10le')
         if args.wide:
             ffmpeg_args.append('-aspect')
             ffmpeg_args.append('16:9')
