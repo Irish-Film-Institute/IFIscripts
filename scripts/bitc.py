@@ -134,7 +134,9 @@ def build_filter(args, filename):
     if len(filtergraph) > 0:
         if filtergraph[-1] == ',':
             filtergraph = filtergraph[:-1]
-        filter_list = ['-filter_complex', filtergraph]
+        filter_list = ['-vf', filtergraph]
+        # changed from -filter_complex to -vf for ffmpeg v6.0
+        # filter_list = ['-filter_complex', filtergraph]
         print(filter_list)
     return filter_list
 
