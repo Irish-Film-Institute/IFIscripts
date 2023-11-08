@@ -33,6 +33,8 @@ def set_options(args_):
     '''
     parser = argparse.ArgumentParser(
         description='IFI Irish Film Institute H264 FFMPEG Encoder.'
+                    ' In default, the watermark and timecode will be'
+                    ' added into the video track.'
         ' Written by Kieran O\'Leary.'
     )
     parser.add_argument(
