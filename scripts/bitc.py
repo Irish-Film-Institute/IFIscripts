@@ -178,7 +178,7 @@ def setup_drawtext(args, filename):
     font_size = video_height / 12
     watermark_size = video_height / 14
     if sys.platform == "darwin":
-        font_path = "fontfile=/System/Library/Fonts/AppleSDGothicNeo.ttc"
+        font_path = "fontfile=/System/Library/Fonts/Courier.dfont"
     elif sys.platform.startswith("linux"):
         font_path = "fontfile=/usr/share/fonts/truetype/freefont/FreeSerifBold.ttf"
     elif sys.platform == "win32":
