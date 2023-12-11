@@ -25,6 +25,11 @@ def parse_args(args_):
         help='Digital Cinema Package (DCP) requires files except .mxf (A&V) files in the objects folder kept.'
     )
     parser.add_argument(
+        '-dcdm',
+        action='store_true',
+        help='Before aipping - this is for DCDM SIP materials having a shell backup.'
+    )
+    parser.add_argument(
         '-copyshell',
         action='store_true',
         help='Copy a shell instead of making one. Won\'t add _shell before aaa1234'
@@ -40,6 +45,9 @@ def main(args_):
     args = parse_args(args_)
     input = args.input
     output = args.o
+    dcdm = 'aaa'
+    if args.dcdm:
+        dcdm = 'oe'
     if not os.path.exists(input):
         sys.stdout = sys.__stdout__
         print("Input directory doesn't exist! Exit...")
@@ -50,7 +58,7 @@ def main(args_):
         sys.exit()
     for root, dirs, files in os.walk(input):
         aip = os.path.basename(root)
-        if 'aaa' in aip:
+        if dcdm in aip:
             aip_fpath = root
             print("\nAIP has found: %s" % aip_fpath)
             if args.copyshell:
