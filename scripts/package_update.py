@@ -22,11 +22,11 @@ def parse_args(args_):
     )
     parser.add_argument(
         '-i', nargs='+',
-        help='full path of files to be moved', required=True
+        help='full path of files to be moved'
     )
     parser.add_argument(
         '-new_folder',
-        help='full path of the new destination folder', required=True
+        help='full path of the new destination folder'
     )
     parser.add_argument(
         'input',
@@ -34,10 +34,16 @@ def parse_args(args_):
     )
     parser.add_argument(
         '-user',
-        help='Declare who you are. If this is not set, you will be prompted.')
+        help='Declare who you are. If this is not set, you will be prompted.'
+    )
     parser.add_argument(
         '-copy', action='store_true',
-        help='Copies a file into a package instead of moving it. This should be used when adding files that originate outside of the package.')
+        help='Copies a file into a package instead of moving it. This should be used when adding files that originate outside of the package.'
+    )
+    parser.add_argument(
+        '-aip', action='store_true',
+        help='Update sha512 manifest as well. (Defaultly only update md5 manifest as SIP mode).'
+    )
     parsed_args = parser.parse_args(args_)
     return parsed_args
 
@@ -49,22 +55,26 @@ def update_manifest(manifest, old_path, new_path, new_log_textfile):
     updated_lines = []
     with open(manifest, 'r') as file_object:
         checksums = file_object.readlines()
+        change = False
         for line in checksums:
             if old_path in line:
                 line = line.replace(old_path, new_path)
-                print(('the following path: %s has been updated with %s in the package manifest' % (old_path, new_path)))
+                print(('the following path: %s has been updated with %s in the package manifest %s' % (old_path, new_path, manifest)))
                 ififuncs.generate_log(
                     new_log_textfile,
                     'EVENT = eventType=metadata modification,'
                     ' agentName=package_update.py,'
-                    ' eventDetail=the following path: %s has been updated with %s in the package manifest' % (old_path, new_path)
+                    ' eventDetail=the following path: %s has been updated with %s in the package manifest %s' % (old_path, new_path, manifest)
                 )
                 updated_lines.append(line)
+                change = True
             else:
                 updated_lines.append(line)
     with open(manifest, 'w') as updated_manifest:
         for updated_line in updated_lines:
             updated_manifest.write(updated_line)
+    if not change:
+        return change
 
 
 def main(args_):
@@ -80,6 +90,10 @@ def main(args_):
         sip_manifest = os.path.join(
             oe_path, uuid
             ) + '_manifest.md5'
+        if args.aip:
+            sip_manifest_sha512 = os.path.join(
+                oe_path, uuid
+                ) + '_manifest-sha512.txt'
     else:
         # this is assuming that the other workflow will be the 
         # special collections workflow that has the uuid as the parent.
@@ -90,6 +104,10 @@ def main(args_):
         sip_manifest = os.path.join(
             oe_path, uuid + '_manifest.md5'
             )
+        if args.aip:
+            sip_manifest_sha512 = os.path.join(
+                oe_path, uuid + '_manifest-sha512.txt'
+                )
     start = datetime.datetime.now()
     print(args)
     if args.user:
@@ -117,6 +135,7 @@ def main(args_):
         os.makedirs(args.new_folder)
     if isinstance(args.i[0], (list,)):
         args.i = args.i[0]
+    ifchange_list = []
     for filenames in args.i:
         if args.copy:
             copyit.main([filenames, args.new_folder])
@@ -135,8 +154,13 @@ def main(args_):
                 relative_new_path = relative_new_path[1:].replace('\\', '/')
             sipcreator.consolidate_manifests(sip_path, relative_new_path, new_log_textfile)
             log_manifest = os.path.join(os.path.dirname(new_log_textfile), os.path.basename(filenames) + '_manifest.md5')
-            ififuncs.manifest_update(sip_manifest, log_manifest)
+            ifchange_manifest = ififuncs.manifest_update(sip_manifest, log_manifest)
+            ifchange_list.append(ifchange_manifest)
             ififuncs.sort_manifest(sip_manifest)
+            if args.aip:
+                ifchange_manifest_sha512 = ififuncs.sha512_update(sip_manifest_sha512, log_manifest)
+                ifchange_list.append(ifchange_manifest_sha512)
+                ififuncs.sort_manifest(sip_manifest_sha512)
         else:
             # add test to see if it actually deleted - what if read only?
             shutil.move(filenames, args.new_folder)
@@ -148,23 +172,39 @@ def main(args_):
                 % (filenames, args.new_folder)
             )
             print(('%s has been moved into %s' % (filenames, args.new_folder)))
-            relative_filename = filenames.replace(os.path.dirname(args.input) + '/', '').replace('\\', '/')
-            relative_filename = filenames.replace(os.path.dirname(args.input) + '\\', '').replace('\\', '/')
-            relative_new_folder = args.new_folder.replace(os.path.dirname(args.input) + '/', '').replace('\\', '/')
-            relative_new_folder = args.new_folder.replace(os.path.dirname(args.input) + '\\', '').replace('\\', '/')
-            update_manifest(
+            relative_filename = filenames.replace(source + '/', '').replace('\\', '/')
+            relative_filename = filenames.replace(source + '\\', '').replace('\\', '/')
+            relative_new_folder = args.new_folder.replace(source + '/', '').replace('\\', '/')
+            relative_new_folder = args.new_folder.replace(source + '\\', '').replace('\\', '/')
+            ifchange_manifest = update_manifest(
                 sip_manifest,
                 relative_filename,
                 os.path.join(relative_new_folder, os.path.basename(relative_filename)).replace('\\', '/'),
                 new_log_textfile
             )
+            ifchange_list.append(ifchange_manifest)
+            if args.aip:
+                ifchange_manifest_sha512 = update_manifest(
+                    sip_manifest_sha512,
+                    relative_filename,
+                    os.path.join(relative_new_folder, os.path.basename(relative_filename)).replace('\\', '/'),
+                    new_log_textfile
+                )
+                ifchange_list.append(ifchange_manifest_sha512)
     ififuncs.generate_log(
         new_log_textfile,
         'EVENT = package_update.py finished'
     )
-    ififuncs.checksum_replace(sip_manifest, new_log_textfile, 'md5')
+    ifchange_log_manifest = ififuncs.checksum_replace(sip_manifest, new_log_textfile, 'md5')
+    ifchange_list.append(ifchange_log_manifest)
+    if args.aip:
+        ifchange_log_manifest_sha512 = ififuncs.checksum_replace(sip_manifest_sha512, new_log_textfile, 'sha512')
+        ifchange_list.append(ifchange_log_manifest_sha512)
     finish = datetime.datetime.now()
     print('\n- %s ran this script at %s and it finished at %s' % (user, start, finish))
+    if False in ifchange_list:
+        print("***%s has not completed updating manifest after moving/coping" % sip_path)
+        return sip_path
 
 
 if __name__ == '__main__':

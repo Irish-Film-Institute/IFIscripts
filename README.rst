@@ -10,14 +10,22 @@ Introduction
 Summary
 -------
 
-These scriptsfacilitate collections management workflows within the IFI Irish Film Archive. These scripts have been tested
-in OSX, Windows 7 & 10, Ubuntu 14.04 & 16.04 & 18.04. They are located here on github: https://github.com/Irish-Film-Institute/IFIscripts
-
+These scripts facilitate collections management workflows within the IFI Irish Film Archive. 
+These scripts have been tested in OSX & Mac OS, Windows 7 & 10 & 11, Ubuntu 14.04 & 16.04 & 18.04. 
 They are mostly Python 3.7 compatible but some are still Python 2.7 only.
-Most scripts take either a file or a directory as their input, for
+
+They are located here on github: https://github.com/Irish-Film-Institute/IFIscripts
+
+An installation package version is available on PyPI: https://pypi.org/project/ifiscripts/.
+The scripts included can be found in ``setup.py`` or ``pyproject.toml``.
+To install: run ``pip(3) install ifiscripts`` in the terminal.
+
+Most scripts have ArgumentParser so you can run `$ifiscript.py -h` to check the usage.
+Some scripts without ArgumentParser take either a file or a directory as their input, for
 example ``makeffv1.py filename.mov`` or
-``premis.py path/to/folder_of_stuff``. (It's best to just drag and drop
-the folder or filename into the terminal as this provides the absolute path).
+``premis.py path/to/folder_of_stuff``. 
+For all the arguments requiring a path, it's best to just drag and drop
+the folder or filename into the terminal as this provides the absolute path.
 
 We want the project to be as reuseable as possible in different institutions and contexts. Some scripts, particularly anything to do with ``Object Entry`` or ``Accessioning`` will be quite IFI specific, but other scripts such as ``makeffv1.py``, ``dcpaccess.py`` and many others have been used in a variety of contexts in several different countries.
 

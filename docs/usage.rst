@@ -94,14 +94,14 @@ mergepbcore.py
 -  Usage ``mergepbcore.py /path/to/folder_that_contains_AIPs_as_input``
 -  Run ``mergepbcore.py -h`` for all options.
 
-mergecsv.py
+merge_csv.py
 ~~~~~~~~~~~~~~
 
 -  Collates CSV records into a single merged CSV.
 -  The merged csv will be stored in the Desktop ifiscripts_logs folder. There is no error checking.
--  This script takes a parent folder containing CSV files as input.
--  Usage ``mergecsv.py /path/to/folder_that_contains_csv_files``
--  Run ``mergecsv.py -h`` for all options.
+-  This script takes as many as CSV files with the same titles as needed as input.
+-  Usage ``merge_csv.py /path/to/csv_1 /path/to/csv_2 /path/to/csv_x``
+-  Run ``merge_csv.py -h`` for all options.
 
 deletefiles.py
 ~~~~~~~~~~~~~~
@@ -449,6 +449,24 @@ ffv1mkvvalidate.py
    log in /logs.
 -  Usage for batch processing all videos in a directory -
    ``ffv1mkvvalidate.py directory_name``
+
+lossy_check.py
+~~~~~~~~~~~~~~~~~~
+
+-  This script is to check losslessness for a batch of sipped image sequence objects
+-  It will check the losslessness from package/$uuid/logs/$uuid_seq2ffv1_log.log
+-  It will return the result of 'lossless' or 'lossy' for each information package
+-  Usage for batch processing all videos in a directory -
+   ``lossy_check.py -i directory_name``
+
+structure_check.py
+~~~~~~~~~~~~~~~~~~
+
+-  This script is to check the structure of a batch of SIPs/AIPs(and AIP shells)
+-  It will show the directory tree of each information package
+-  Users are able to manually record if the structure is right or not 
+-  The script will list a summary at the end
+-  Usage: ``structure_check.py -i directory_name``
 
 Specific Workflows
 ------------------

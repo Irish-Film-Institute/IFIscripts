@@ -41,6 +41,10 @@ def parse_args(args_):
         help='invokes the -lto argument in copyit.py - uses gcp instead of rsync.'
     )
     parser.add_argument(
+        '-sc', action='store_true',
+        help='special collections workflow'
+    )
+    parser.add_argument(
         '-d', '-dcp', action='store_true',
         help='Adds DCP specific processing, like creating objects subfolder with text extracted from <ContentTitleText> in the CPL.'
     )
@@ -81,11 +85,15 @@ def main(args_):
     print(args)
     oe_dict = {}
     user = ififuncs.determine_user(args)
-    if args.oe:
-        object_entry = args.oe
+    if not args.sc:
+        if args.oe:
+            object_entry = args.oe
+        else:
+            object_entry = ififuncs.get_object_entry()
+        oe_digits = int(object_entry.replace('oe', ''))
     else:
-        object_entry = ififuncs.get_object_entry()
-    oe_digits = int(object_entry.replace('oe', ''))
+        object_entry = 'not_applicable'
+        oe_digits = ''
     for folder in sorted(os.listdir(source_folder)):
         full_path = os.path.join(source_folder, folder)
         if os.path.isdir(full_path):
@@ -93,18 +101,25 @@ def main(args_):
                 folder_contents = os.listdir(full_path)
             except PermissionError:
                 continue
-            object_entry_complete = 'oe' + str(oe_digits)
+            if not args.sc:
+                object_entry_complete = 'oe' + str(oe_digits)
+            else:
+                object_entry_complete = folder
             inputs = []
             supplements = []
             for files in folder_contents:
-                if os.path.splitext(files)[1][1:].lower() in args.object_extension_pattern:
+                if args.object_extension_pattern:
+                    if os.path.splitext(files)[1][1:].lower() in args.object_extension_pattern:
+                        inputs.append(os.path.join(full_path, files))
+                    if os.path.splitext(files)[1][1:].lower() in args.supplement_extension_pattern:
+                        supplements.append(os.path.join(full_path, files))
+                else:
                     inputs.append(os.path.join(full_path, files))
-                if os.path.splitext(files)[1][1:].lower() in args.supplement_extension_pattern:
-                    supplements.append(os.path.join(full_path, files))
             if inputs:
                 print(' - Object Entry: %s\n - Inputs: %s\n - Supplements: %s\n' % (object_entry_complete, inputs, supplements))
-                oe_dict[object_entry_complete] = [inputs, supplements]
-                oe_digits += 1
+                oe_dict[object_entry_complete] = [inputs, supplements, full_path]
+                if not args.sc:
+                    oe_digits += 1
             else:
                 print('Skipping %s as there are no files in this folder that match the -object_extension_pattern' % full_path)
     if args.dryrun:
@@ -119,14 +134,18 @@ def main(args_):
         )
     if proceed == 'Y':
         for sips in sorted(oe_dict):
-            print(oe_dict[sips])
             sipcreator_cmd = ['-i',]
             for sipcreator_inputs in oe_dict[sips][0]:
                 sipcreator_cmd.append(sipcreator_inputs)
-            sipcreator_cmd += ['-supplement']
-            for sipcreator_supplements in oe_dict[sips][1]:
-                sipcreator_cmd.append(sipcreator_supplements)
-            sipcreator_cmd += ['-user', user, '-oe', sips, '-o', args.o]
+            if oe_dict[sips][1] and not args.sc:
+                sipcreator_cmd += ['-supplement']
+                for sipcreator_supplements in oe_dict[sips][1]:
+                    sipcreator_cmd.append(sipcreator_supplements)
+            if not args.sc:
+                sipcreator_cmd += ['-user', user, '-oe', sips, '-o', args.o]
+            else:
+                output = os.path.join(args.o, sips)
+                sipcreator_cmd += ['-user', user, '-o', output, '-sc']
             if args.rename_uuid:
                 sipcreator_cmd.append('-rename_uuid')
             if args.zip:
@@ -139,6 +158,7 @@ def main(args_):
             for i in logs:
                 if os.path.isfile(i):
                     print(("%-*s   : copyit job was a %s" % (50, os.path.basename(i), analyze_log(i))))
+
 if __name__ == '__main__':
     main(sys.argv[1:])
     

@@ -6,7 +6,7 @@ import sys
 import shutil
 
 
-def set_options():
+def parse_args(args_):
     parser = argparse.ArgumentParser(
         description='IFI Irish Film Institute AIPs shell creator.'
                     ' Written by Yazhou He.'
@@ -25,33 +25,52 @@ def set_options():
         help='Digital Cinema Package (DCP) requires files except .mxf (A&V) files in the objects folder kept.'
     )
     parser.add_argument(
+        '-dcdm',
+        action='store_true',
+        help='Before aipping - this is for DCDM SIP materials having a shell backup.'
+    )
+    parser.add_argument(
+        '-copyshell',
+        action='store_true',
+        help='Copy a shell instead of making one. Won\'t add _shell before aaa1234'
+    )
+    parser.add_argument(
         '-o',
         help='Set output directory.', required=True
     )
-    return parser.parse_args()
+    parsed_args = parser.parse_args(args_)
+    return parsed_args
 
-
-def main():
-    args = set_options()
+def main(args_):
+    args = parse_args(args_)
     input = args.input
     output = args.o
+    dcdm = 'aaa'
+    if args.dcdm:
+        dcdm = 'oe'
     if not os.path.exists(input):
+        sys.stdout = sys.__stdout__
         print("Input directory doesn't exist! Exit...")
         sys.exit()
     if not os.path.exists(output):
+        sys.stdout = sys.__stdout__
         print("Output directory doesn't exist! Exit...")
         sys.exit()
     for root, dirs, files in os.walk(input):
         aip = os.path.basename(root)
-        if 'aaa' in aip:
+        if dcdm in aip:
             aip_fpath = root
             print("\nAIP has found: %s" % aip_fpath)
-            aip_dest = aip + '_shell'
+            if args.copyshell:
+                aip_dest = aip
+            else:
+                aip_dest = aip + '_shell'
             aip_dest_fpath = os.path.join(output, aip_dest)
             try:
                 os.mkdir(aip_dest_fpath)
                 print("\nMaking %s in %s" % (aip_dest, output))
             except:
+                sys.stdout = sys.__stdout__
                 print("%s already exists in the output directory %s" % (aip_dest, output))
                 sys.exit()
             for aroot, adirs, afiles in os.walk(aip_fpath):
@@ -89,4 +108,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])

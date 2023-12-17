@@ -33,16 +33,25 @@ def clear_manifest_dir():
     manifest file inside and mess the incoming process.
     It will move existed manifest file into the "moveit_manifests/old_manifests"
     '''
+    print('\n----------\nsipcreator.py error-proofing mechanism - checking moveit_manifests')
     desktop_manifest_dir = os.path.expanduser("~/Desktop/moveit_manifests")
     old_manifest_dir = os.path.join(desktop_manifest_dir, 'old_manifests')
-    for i in os.listdir(desktop_manifest_dir):
-        o = os.path.join(old_manifest_dir, i)
-        i = os.path.join(desktop_manifest_dir, i)
-        if i.endswith('.md5'):
-            print('**** Found existing manifest: ' + i)
+    if os.path.isdir(desktop_manifest_dir):
+        for i in os.listdir(desktop_manifest_dir):
+            o = os.path.join(old_manifest_dir, i)
+            i = os.path.join(desktop_manifest_dir, i)
+            mtime = os.path.getmtime(i)
+            ntime = time.time()
             if i.endswith('objects_manifest.md5'):
                 shutil.move(i, o)
-                print('**** Moved object_manifest.md5 to old_manifest folder in case of content overlap. \n**** Check if other manifests are in use in other scripts before move them manually.')
+                print('- Moved %s to old_manifest folder in case of content overlap.' % os.path.basename(i))
+            elif ntime - mtime >  7 * 24 * 3600:
+                shutil.move(i, o)
+                print('- Moved %s to old_manifest folder as made more than 7 days ago.' %  os.path.basename(i))
+    else:
+        print('- Cannot find moveit_manifests on desktop. Created on %s' % os.path.expanduser("~/Desktop/"))
+        os.makedirs(desktop_manifest_dir)
+    print('Check completed\n----------')
 
 def make_folder_path(path, args, object_entry):
     '''
@@ -422,6 +431,7 @@ def make_oe_register():
         'Vinegar No'
     ))
     return oe_register
+
 def main(args_):
     '''
     Launch all the functions for creating an IFI SIP.
@@ -608,7 +618,8 @@ def main(args_):
         txt_name_source = "%s/%s.txt" % (desktop_logs_dir, txt_name_filename)
         ififuncs.generate_txt(user, txt_name_source, 'Clairmeta version: %s' % clairmeta_version)
         process_dcp(sip_path, content_title, args, new_manifest_textfile, new_log_textfile, txt_name_source, metadata_dir, clairmeta_version)
-        shutil.copy(txt_name_source, metadata_dir)
+        clairmeta_cmd = ['-i', txt_name_source, '-user', user, '-new_folder', metadata_dir, os.path.dirname(sip_path), '-copy']
+        package_update.main(clairmeta_cmd)
         print('\n\nClairmeta outcome has been exported to ' + txt_name_source + '\nand copied to ' + metadata_dir)
     if args.aipcreator:
         register = aipcreator.make_register()

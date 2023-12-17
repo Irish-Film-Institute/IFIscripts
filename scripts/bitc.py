@@ -33,6 +33,8 @@ def set_options(args_):
     '''
     parser = argparse.ArgumentParser(
         description='IFI Irish Film Institute H264 FFMPEG Encoder.'
+                    ' In default, the watermark and timecode will be'
+                    ' added into the video track.'
         ' Written by Kieran O\'Leary.'
     )
     parser.add_argument(
@@ -132,7 +134,9 @@ def build_filter(args, filename):
     if len(filtergraph) > 0:
         if filtergraph[-1] == ',':
             filtergraph = filtergraph[:-1]
-        filter_list = ['-filter_complex', filtergraph]
+        filter_list = ['-vf', filtergraph]
+        # changed from -filter_complex to -vf for ffmpeg v6.0
+        # filter_list = ['-filter_complex', filtergraph]
         print(filter_list)
     return filter_list
 
@@ -174,11 +178,11 @@ def setup_drawtext(args, filename):
     font_size = video_height / 12
     watermark_size = video_height / 14
     if sys.platform == "darwin":
-        font_path = "fontfile=/Library/Fonts/AppleGothic.ttf"
+        font_path = "fontfile=/System/Library/Fonts/Courier.dfont"
     elif sys.platform.startswith("linux"):
         font_path = "fontfile=/usr/share/fonts/truetype/freefont/FreeSerifBold.ttf"
     elif sys.platform == "win32":
-        font_path = "'fontfile=C\:\\\Windows\\\Fonts\\\\'arial.ttf'"
+        font_path = "'fontfile=C\:\\\Windows\\\Fonts\\\\arial.ttf'"
     # Get starting timecode
     timecode_test_raw = getffprobe(
         'timecode_test_raw',
@@ -198,7 +202,7 @@ def setup_drawtext(args, filename):
         if sys.platform == "darwin" or sys.platform.startswith("linux"):
             timecode_test = '01\\\:00\\\:00\\\:00'
         elif sys.platform == "win32":
-            timecode_test = '01\:00\:00\:00'
+            timecode_test = '\'01\:00\:00\:00\''
     else:
         # If timecode is present, this will escape the colons
         # so that it is compatible with each operating system.

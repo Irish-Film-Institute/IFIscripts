@@ -600,7 +600,7 @@ def sort_csv(csv_file, key):
     values, fieldnames = extract_metadata(csv_file)
     with open(sorted_filepath, 'w') as csvfile:
         newlist = sorted(values, key=operator.itemgetter(key))
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, lineterminator='\n')
         writer.writeheader()
         for i in newlist:
             writer.writerow(i)
@@ -771,7 +771,6 @@ def get_user():
     '''
     user_list = ['Allison McGrail',
                  'Amy Mitchell',
-                 'Caroline Crowther',
                  'Cody Farren',
                  'Emma Battlebury',
                  'Gavin Martin',
@@ -779,8 +778,6 @@ def get_user():
                  'Mark Keleghan',
                  'Matheus Almeida',
                  'Niall Anderson',
-                 'Raelene Casey',
-                 'Raven Ó Cuacaċ',
                  'Yazhou He']
     user = ''
     if user not in user_list:
@@ -789,7 +786,7 @@ def get_user():
         for user_item in user_list:
             print('\t' + str(i) + '. ' + user_item)
             i = i + 1
-        print('\n\n(User list was last updated on 2023-07-18)\n')
+        print('\n\n(User list was last updated on 2023-11-01)\n')
         i = int(input())
         while i > len(user_list) or i < 1:
             print('\n\n**** Who are you?\Enter the number before your name (ie. 1)\n\n')
@@ -797,7 +794,7 @@ def get_user():
             for user_item in user_list:
                 print('\t' + str(i) + '. ' + user_item)
                 i = i + 1
-            print('\n\n(User list was last updated on 2023-07-18)\n')
+            print('\n\n(User list was last updated on 2023-11-01)\n')
             i = int(input())
     user = user_list[i-1]
     print('\nUser selected: ' + user)
@@ -943,7 +940,7 @@ def get_script_version(scriptname):
             'git', 'log', '-n', '1', '--pretty=format:%H:%aI', scriptname
         ])
     else:
-        script_version = 'Script version unavailable as the ifiscripts repository is not installed in $HOME/ifigit/ifiscripts'
+        script_version = 'Script version unavailable as the ifiscripts is not installed under the current user and the repository is not installed in $HOME/ifigit/ifiscripts'
     os.chdir(current_dir)
     return script_version
 
@@ -1244,6 +1241,7 @@ def checksum_replace(manifest, logname, algorithm):
     Update a value in a checksum manifest.
     Variables just refer to lognames right now, which is the only thing that needs to change at the moment.
     '''
+    change = False
     updated_manifest = []
     if algorithm == 'md5':
         new_checksum = hashlib_md5(logname)
@@ -1253,6 +1251,7 @@ def checksum_replace(manifest, logname, algorithm):
         manifest_lines = manifesto.readlines()
         for lines in manifest_lines:
             if os.path.basename(logname) in lines:
+                change = True
                 if algorithm == 'md5':
                     lines = lines[31:].replace(lines[31:], new_checksum + lines[32:])
                 elif algorithm == 'sha512':
@@ -1261,6 +1260,8 @@ def checksum_replace(manifest, logname, algorithm):
     with open(manifest, 'w', encoding='utf-8') as fo:
         for lines in updated_manifest:
             fo.write(lines)
+    if not change:
+        return change
 
 
 def img_seq_pixfmt(start_number, path):
