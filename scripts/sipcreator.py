@@ -135,7 +135,9 @@ def move_files(inputs, sip_path, args, user):
     Runs copyit.py on all inputs
     '''
     log_names = []
-    for item in inputs:
+    item_no = len(inputs)
+    item_index = 1
+    for item in inputs:        
         cmd = [item, os.path.join(sip_path, 'objects')]
         if args.move:
             cmd.append('-move')
@@ -148,13 +150,18 @@ def move_files(inputs, sip_path, args, user):
                 objects_dir = os.path.join(sip_path, 'objects')
                 uuid = os.path.basename(sip_path)
                 old_basename, ext = os.path.splitext(item)
-                new_path = os.path.join(objects_dir, uuid + ext)
+                if item_no > 1:
+                    new_basemame = uuid + '_' + str(item_index) + ext
+                    item_index += 1
+                else:
+                    new_basemame = uuid + ext
+                new_path = os.path.join(objects_dir, new_basemame)
                 os.rename(os.path.join(objects_dir, os.path.basename(item)), new_path)
                 manifest = os.path.join(os.path.dirname(new_path), os.path.basename(item)) + '_manifest.md5'
                 updated_lines = []
                 ififuncs.generate_log(
                     log_name,
-                    'EVENT = Filename change - eventDetail=original filename replaced with uuid, eventOutcomeDetailNote=%s replaced with %s, agentName=%s, agentName=sipcreator.py))' % (os.path.basename(item), uuid + ext, user))
+                    'EVENT = Filename change - eventDetail=original filename replaced with uuid, eventOutcomeDetailNote=%s replaced with %s, agentName=%s, agentName=sipcreator.py))' % (os.path.basename(item), new_basemame, user))
                 with open(manifest, 'r') as file_object:
                     checksums = file_object.readlines()
                     for line in checksums:
