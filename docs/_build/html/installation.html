@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installation &mdash; ifiscripts 2018-08-09 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=33117221"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing" href="contributing.html" />
+    <link rel="prev" title="Introduction" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ifiscripts
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#general">General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#external-dependencies">External Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#specific-instructions-windows">Specific Instructions - Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#specific-instructions-ubuntu">Specific Instructions - Ubuntu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-pip-setup-py">Using pip/setup.py</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="credits.html">Credits</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ifiscripts</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Installation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
+<section id="general">
+<h2>General<a class="headerlink" href="#general" title="Link to this heading"></a></h2>
+<p>This is a python 3.8 project.</p>
+<p>In general, you can install the scripts from Pypi by run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">ifiscripts</span></code> on Windows or <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">ifiscripts</span></code> on Mac OS.</p>
+<p>You can also clone or download the whole repository (<a class="reference external" href="https://github.com/Irish-Film-Institute/IFIscripts">https://github.com/Irish-Film-Institute/IFIscripts</a>) and run the scripts from your cloned path. In the Irish Film Institute, on linux, Mac OS and Windows, we create a folder in the home directory called <code class="docutils literal notranslate"><span class="pre">ifigit</span></code>, then we run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/irish-film-institute/ifiscripts</span></code>. Then we add the <code class="docutils literal notranslate"><span class="pre">ifiscripts</span></code> folder to <code class="docutils literal notranslate"><span class="pre">$PATH</span></code> which allows us to access the scripts from any directory, not just <code class="docutils literal notranslate"><span class="pre">ifigit/ifiscripts</span></code>.</p>
+<p>However some folks just <code class="docutils literal notranslate"><span class="pre">cd</span></code> into the cloned repository and run the scripts from there, for example to run <code class="docutils literal notranslate"><span class="pre">makeffv1.py</span></code> you might run:
+<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">makeffv1.py</span> <span class="pre">path/to.filename.mov</span></code>.</p>
+<p>External dependencies are listed below, but <code class="docutils literal notranslate"><span class="pre">lxml</span></code> is the main python library that must be installed for most scripts.
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">lxml</span></code> should work fine.</p>
+</section>
+<section id="external-dependencies">
+<h2>External Dependencies<a class="headerlink" href="#external-dependencies" title="Link to this heading"></a></h2>
+<p>There are some external <code class="docutils literal notranslate"><span class="pre">subprocess</span></code> dependencies for most of the scripts. The most frequently used ones are:</p>
+<ul class="simple">
+<li><p>ffmpeg</p></li>
+<li><p>ffprobe</p></li>
+<li><p>mediainfo</p></li>
+</ul>
+<p>but the following are also needed for many scripts:</p>
+<ul class="simple">
+<li><p>mkvpropedit (installed via mkvtoolnix)</p></li>
+<li><p>siegfried aka sf</p></li>
+<li><p>exiftool</p></li>
+<li><p>git</p></li>
+<li><p>clairmeta (this requires other dependencies - <a class="reference external" href="https://github.com/Ymagis/ClairMeta">https://github.com/Ymagis/ClairMeta</a>)</p></li>
+<li><p>qcli</p></li>
+<li><p>openssl</p></li>
+<li><p>rsync</p></li>
+<li><p>gcp (installed via gnu-coreutils on OSX)</p></li>
+<li><p>rawcooked</p></li>
+<li><p>7zip aka 7za aka p7zip-full</p></li>
+<li><p>md5deep</p></li>
+<li><p>mediaconch</p></li>
+</ul>
+</section>
+<section id="specific-instructions-windows">
+<h2>Specific Instructions - Windows<a class="headerlink" href="#specific-instructions-windows" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>install 64-bit git-bash using all the default settings <a class="reference external" href="https://git-scm.com/downloads">https://git-scm.com/downloads</a> - make sure it’s the 64-bit version!</p></li>
+<li><p>install 64-bit python3, making sure to tick the option to ADD TO PATH <a class="reference external" href="https://www.python.org/downloads/">https://www.python.org/downloads/</a></p></li>
+<li><p>open cmd and <code class="docutils literal notranslate"><span class="pre">mkdir</span> <span class="pre">ifiscripts</span></code> and <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/kieranjol/ifiscripts</span></code></p></li>
+<li><p>add this ifiscripts path  (eg <code class="docutils literal notranslate"><span class="pre">C:\Users\KAZETCCCC\ifigit\ifiscripts</span></code>)to the environmental path, following these steps: <a class="reference external" href="https://www.computerhope.com/issues/ch000549.htm">https://www.computerhope.com/issues/ch000549.htm</a></p></li>
+<li><p>ffmpeg the default option works well - 64-bit static <a class="reference external" href="https://ffmpeg.zeranoe.com/builds/">https://ffmpeg.zeranoe.com/builds/</a> and place in scripts folder
+* OR install media-autobuild-suite but extract to the C:mas folder due to long path issues</p></li>
+<li><p>mediainfo - get the 64-bit CLI version <a class="reference external" href="https://mediaarea.net/en/MediaInfo/Download/Windows">https://mediaarea.net/en/MediaInfo/Download/Windows</a></p></li>
+<li><p>install lxml with <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">lxml</span></code></p></li>
+<li><p>install siegfried exe (<a class="reference external" href="https://www.itforarchivists.com/siegfried/)file">https://www.itforarchivists.com/siegfried/)file</a> to the ifiscripts folder and run <code class="docutils literal notranslate"><span class="pre">sf</span> <span class="pre">-update</span></code> in cmd</p></li>
+<li><p>download exiftoolinstaller and select the ‘latest build’ option - make sure that the option to add to path is ticked - <a class="reference external" href="https://oliverbetz.de/pages/Artikel/ExifTool-for-Windows">https://oliverbetz.de/pages/Artikel/ExifTool-for-Windows</a></p></li>
+<li><p>install notepad++  - <a class="reference external" href="https://notepad-plus-plus.org/downloads/">https://notepad-plus-plus.org/downloads/</a></p></li>
+<li><p>install libreoffice - <a class="reference external" href="https://www.libreoffice.org/download/download/">https://www.libreoffice.org/download/download/</a></p></li>
+</ul>
+</section>
+<section id="specific-instructions-ubuntu">
+<h2>Specific Instructions - Ubuntu<a class="headerlink" href="#specific-instructions-ubuntu" title="Link to this heading"></a></h2>
+<p>A lot of these can be installed on Ubuntu with a single line:
+<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">update</span> <span class="pre">&amp;&amp;</span> <span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">python3-pip</span> <span class="pre">ffmpeg</span> <span class="pre">mkvtoolnix</span> <span class="pre">exiftool</span> <span class="pre">git</span> <span class="pre">md5deep</span> <span class="pre">p7zip-full</span></code></p>
+<p>In order to add the rest, refer to the installation instructions of the relevant tools.
+For mediaarea tools, it can be easiest to use their own snapshot repository:</p>
+<p><code class="docutils literal notranslate"><span class="pre">wget</span> <span class="pre">https://mediaarea.net/repo/deb/repo-mediaarea-snapshots_1.0-13_all.deb</span> <span class="pre">&amp;&amp;</span> <span class="pre">sudo</span> <span class="pre">dpkg</span> <span class="pre">-i</span> <span class="pre">repo-mediaarea-snapshots_1.0-13_all.deb</span> <span class="pre">&amp;&amp;</span> <span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">update</span> <span class="pre">&amp;&amp;</span> <span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">mediainfo</span> <span class="pre">dvrescue</span> <span class="pre">qcli</span> <span class="pre">rawcooked</span> <span class="pre">mediaconch</span></code></p>
+</section>
+<section id="using-pip-setup-py">
+<h2>Using pip/setup.py<a class="headerlink" href="#using-pip-setup-py" title="Link to this heading"></a></h2>
+<p>the following is currently experimental, but it should work fine:</p>
+<p>You can get a selection of scripts by making sure that <code class="docutils literal notranslate"><span class="pre">pip</span></code> installed, then running:
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">ifiscripts</span></code>
+or <code class="docutils literal notranslate"><span class="pre">cd</span></code> into the <code class="docutils literal notranslate"><span class="pre">ifiscripts</span></code> cloned folder and run
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">.</span></code></p>
+<p>You may need to run the <code class="docutils literal notranslate"><span class="pre">pip</span></code> commands with <code class="docutils literal notranslate"><span class="pre">sudo</span></code>.</p>
+<p>The pip installation methods have the added benefit of installing the python dependencies such as <code class="docutils literal notranslate"><span class="pre">lxml</span></code>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="contributing.html" class="btn btn-neutral float-right" title="Contributing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2018, Kieran O&#39;Leary for the Irish Film Institute.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
