@@ -6,7 +6,9 @@ General
 
 This is a python 3.8 project.
 
-In general, you can just clone or download the whole repository (https://github.com/kieranjol/IFIscripts)  and run the scripts from your cloned path. In the Irish Film Institute, on linux, OSX and Windows, we create a folder in the home directory called ``ifigit``, then we run ``git clone https://github.com/kieranjol/ifiscripts``. Then we add the ``ifiscripts`` folder to ``$PATH`` which allows us to access the scripts from any directory, not just ``ifigit/ifiscripts``. We will be moving to using ``pip`` and ``setup.py`` for installs and updates in the future.
+In general, you can install the scripts from Pypi by run ``python -m pip install ifiscripts`` on Windows or ``python3 -m pip install ifiscripts`` on Mac OS.
+
+You can also clone or download the whole repository (https://github.com/Irish-Film-Institute/IFIscripts) and run the scripts from your cloned path. In the Irish Film Institute, on linux, Mac OS and Windows, we create a folder in the home directory called ``ifigit``, then we run ``git clone https://github.com/irish-film-institute/ifiscripts``. Then we add the ``ifiscripts`` folder to ``$PATH`` which allows us to access the scripts from any directory, not just ``ifigit/ifiscripts``.
 
 However some folks just ``cd`` into the cloned repository and run the scripts from there, for example to run ``makeffv1.py`` you might run:
 ``python makeffv1.py path/to.filename.mov``.
