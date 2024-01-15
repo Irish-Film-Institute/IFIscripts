@@ -512,16 +512,16 @@ loopline\_repackage.py
 batchmakeshell.py
 ~~~~~~~~~~~~~~~~~
 
--  Creates shells for the AIPs under a batch. This is used for 
-   the accessioning closing steps. The script will recognise all the 
-   folders named with "aaa[0-9]{4}" digital accession number
-   format. Then created their shell folders named "aaa[0-9]{4}_shell"
-   and clone all the subcontent except the content inside the 
-   'objects' folder into them. The shells will be created into the
-   targeted output path.
+-  Creates shells for the AIPs under a batch (or SIP shells of large-size 
+   materials for backup use). This is used for the accessioning closing steps. 
+   The script will recognise all the folders named with "aaa[0-9]{4}" digital 
+   accession number format. Then created their shell folders named 
+   "aaa[0-9]{4}_shell" and clone all the subcontent except the content inside the 
+   'objects' folder into them. The shells will be created into the targeted output path.
 -  Usage: ``batchmakeshell.py path/to/batch_directories -o /path/to/destination``
 -  This script has extra options, including making shells for AS-11 UK DPP and
-   DCP. Use ``batchmakeshell.py -h`` to see all options.
+   DCP, and making SIP shells for DCDM and other large-size materials. 
+   Use ``batchmakeshell.py -h`` to see all options.
     
 
 Misc
