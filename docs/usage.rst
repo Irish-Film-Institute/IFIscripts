@@ -557,6 +557,23 @@ fakexdcam.py
 -  Creates a fake XDCAM EX structure for testing purposes
 -  Usage: ``fakexdcam.py /path/to/output_folder``
 
+get_ps_list.py
+~~~~~~~~~~~~~~
+
+-  Create a csv file from mounted 'preservation storage' directory,
+   including accession numbers from package title, object entry number
+   from log file, and accession numbers from log file for all preserved AIPs.
+-  Usage: ``get_ps_list.py -i /path/to/preservation_storage``
+
+check_register.py
+~~~~~~~~~~~~~~~~~
+
+-  Print mismatch accession numbers and object entry numbers.
+-  Compare between csv files from preservation list by `get_ps_list.py`
+   and from (partly) digital accession register or help register, etc.
+-  Usage: ``check_register.py -preservation_storage_csv /path/to/csv_made_by_get_ps_list_py
+   -register_csv /path/to/accession_register``
+
 Experimental-Premis
 -------------------
 
