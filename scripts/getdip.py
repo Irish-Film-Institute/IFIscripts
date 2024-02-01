@@ -8,6 +8,7 @@ import sys
 import platform
 import shutil
 import batchmakeshell
+import csv
 
 def parse_args(args_):
     '''
@@ -23,15 +24,22 @@ def parse_args(args_):
     )
     parser.add_argument(
         '-n', '-number', nargs='+',
-        help='required accession numbers, can be more than one', required=True
+        help='required accession numbers, can be more than one'
+    )
+    parser.add_argument(
+        '-csv', help='csv file including the accession numbers with title row \'accession number\''
     )
     parser.add_argument(
         '-i', '-input',
-        help='path of the root of rackstation drive including shell/proxy/mezz', required=True
+        help='path of the [ROOT] of rackstation drive including shell/proxy/mezz', required=True
     )
     parser.add_argument(
         '-o', '-output',
-        help='full path of output directory', required=True
+        help='full path of output directory'
+    )
+    parser.add_argument(
+        '-justcheck', action='store_true',
+        help='check existance only instead of copying'
     )
     parsed_args = parser.parse_args(args_)
     return parsed_args
@@ -113,8 +121,21 @@ def get_dpaths(numbers, source):
 def main(args_):
     args = parse_args(args_)
     type = args.t
-    accession_numbers = args.n
     source = args.i
+    if args.n:
+        accession_numbers = args.n
+    elif args.csv:
+        csvfile = args.csv
+        accession_numbers = []
+        title_dict = {}
+        with open(csvfile, 'r', encoding='utf-8') as f1:
+            reader = csv.reader(f1)
+            titles = next(reader)
+            for idx, title in enumerate(titles):
+                title_dict[title] = idx
+            index = title_dict['accession number']
+            for row in reader:
+                accession_numbers.append(row[index])
     print(sorted(accession_numbers))
     type_source = check_input(type, source)
     if type == 'shell':
@@ -122,26 +143,30 @@ def main(args_):
     else:
         paths, fail_list = get_fpaths(accession_numbers, type_source)
     destination = args.o
-    # copy from path of each file to destination
-    print('\n-----\nCopying DIP to \'%s\'...' % destination)
-    if type == 'shell':
-        for path in paths:
-            cmd = [path, '-o', destination, '-copyshell']
-            sys.stdout = open(os.devnull, 'w')
-            try:
-                batchmakeshell.main(cmd)
-                sys.stdout = sys.__stdout__
+    if not args.justcheck:
+        # copy from path of each file to destination
+        print('\n-----\nCopying DIP to \'%s\'...' % destination)
+        if type == 'shell':
+            for path in paths:
+                cmd = [path, '-o', destination, '-copyshell']
+                sys.stdout = open(os.devnull, 'w')
+                try:
+                    batchmakeshell.main(cmd)
+                    sys.stdout = sys.__stdout__
+                    print('\n\t%s has copied to the destination\n' % path)
+                except:
+                    print('*CANNOT copy %s!' % path)
+        else:
+            for path in paths:
+                shutil.copy(path, destination)
                 print('\n\t%s has copied to the destination\n' % path)
-            except:
-                print('*CANNOT copy %s!' % path)
-    else:
-        for path in paths:
-            shutil.copy(path, destination)
-            print('\n\t%s has copied to the destination\n' % path)
     # print accesion number failed getting path
-    print('\n-----\nCANNOT get DIP by below accession number:')
-    for fail_aip in fail_list:
-        print('\t' + fail_aip)
+    if fail_list:
+        print('\n-----\nCANNOT get DIP by below accession number:')
+        for fail_aip in fail_list:
+            print('\t' + fail_aip)
+    else:
+        print('\n-----\nAll DIPs have been found (and copied if required).')
 
 if __name__ == '__main__':
     main(sys.argv[1:])
