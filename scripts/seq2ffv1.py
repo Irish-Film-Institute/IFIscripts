@@ -23,6 +23,22 @@ import ififuncs
 import sipcreator
 import makezip
 import deletefiles
+import psutil
+import signal
+
+def clean_start(app, cmd, *opt):
+    pids = psutil.process_iter()
+    for pid in pids:
+        if pid.name() == app:
+            print('%s process is in the back stage. Terminating it...' % app)
+            os.kill(pid.pid, signal.SIGKILL)
+            print('%s process has been terminated. Ready to start running.' % app)
+    print('Ready for a clean start:')
+    print(cmd)
+    if opt:
+        subprocess.call(cmd, env=opt[0])
+    else:
+        subprocess.call(cmd)
 
 def short_test(images):
     '''
@@ -40,10 +56,14 @@ def short_test(images):
         shutil.copy(full_path, temp_dir)
     mkv_uuid = ififuncs.create_uuid()
     mkv_file = os.path.join(tempfile.gettempdir(), mkv_uuid + '.mkv')
-    subprocess.call(['rawcooked', '--check-padding', temp_dir, '-c:a', 'copy', '-o', mkv_file])
+    # subprocess.call(['rawcooked', '--check-padding', temp_dir, '-c:a', 'copy', '-o', mkv_file])
+    cmd = ['rawcooked', '--check-padding', temp_dir, '-c:a', 'copy', '-o', mkv_file]
+    clean_start('rawcooked', cmd)
     converted_manifest = os.path.join(temp_dir, '123.md5')
     ififuncs.hashlib_manifest(temp_dir, converted_manifest, temp_dir)
-    subprocess.call(['rawcooked', mkv_file])
+    # subprocess.call(['rawcooked', mkv_file])
+    cmd_rev = ['rawcooked', mkv_file]
+    clean_start('rawcooked', cmd_rev)
     rawcooked_dir = mkv_file + '.RAWcooked'
     restored_dir = os.path.join(rawcooked_dir, temp_uuid)
     restored_manifest = os.path.join(restored_dir, '456.md5')
@@ -73,7 +93,9 @@ def reversibility_verification(objects, source_manifest, reversibility_dir):
     temp_dir = os.path.join(reversibility_dir, temp_uuid)
     os.makedirs(temp_dir)
     for ffv1_mkv in objects:
-        subprocess.call(['rawcooked', ffv1_mkv, '-o', temp_dir])
+        # subprocess.call(['rawcooked', ffv1_mkv, '-o', temp_dir])
+        cmd = ['rawcooked', ffv1_mkv, '-o', temp_dir]
+        clean_start('rawcooked', cmd)
     converted_manifest = os.path.join(temp_dir, '123.md5')
     ififuncs.hashlib_manifest(temp_dir, converted_manifest, temp_dir)
     judgement = ififuncs.diff_textfiles(converted_manifest, source_manifest)
@@ -213,8 +235,8 @@ def make_ffv1(
     rawcooked_cmd = ['rawcooked', reel,  '--check-padding', '-c:a', 'copy', '-o', ffv1_path]
     if args.framerate:
         rawcooked_cmd.extend(['-framerate', args.framerate])
-    ffv12dpx = (rawcooked_cmd)
-    print(ffv12dpx)
+    # ffv12dpx = (rawcooked_cmd)
+    # print(ffv12dpx)
     if args.zip:
         uuid = ififuncs.create_uuid()
         # ugly hack until i recfactor. this is the zip_path, not ffv1_path
@@ -246,7 +268,8 @@ def make_ffv1(
             'EVENT = normalisation, status=started, eventType=Creation, agentName=%s, eventDetail=Image sequence normalised to FFV1 in a Matroska container'
             % normalisation_tool
         )
-        subprocess.call(ffv12dpx, env=env_dict)
+        # subprocess.call(ffv12dpx, env=env_dict)
+        clean_start('rawcooked', rawcooked_cmd, env_dict)
         ififuncs.generate_log(
             log_name_source,
             'EVENT = normalisation, status=finshed, eventType=Creation, agentName=%s, eventDetail=Image sequence normalised to FFV1 in a Matroska container'
