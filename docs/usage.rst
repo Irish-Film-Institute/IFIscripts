@@ -150,6 +150,13 @@ subfolders.py
 -  Usage to just make subfolders: ``subfolders.py -i path/to/input``
 -  Usage to make subfolders and move files: ``subfolders.py -move -i path/to/input``
 
+accession_register.py
+~~~~~~~~~~~~~~~~~~~~~
+
+-  Generates a helper accession register based on the metadata in other spreadsheets.
+-  Usage: ``accession_register.py -pbcore_csv /path/to/pbcore_csv -sorted_csv /path/to/sorted_csv -filmo_csv /path/to/filmo_csv``
+
+
 Transcodes
 ----------
 
