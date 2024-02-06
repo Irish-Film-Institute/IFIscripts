@@ -16,6 +16,7 @@ import manifest
 import makedfxml
 import validate
 import makepbcore
+import package_update
 
 
 def make_register():
@@ -104,6 +105,10 @@ def parse_args(args_):
         '-reproduction_creator',
         help='Enter the person/organisation that created the reproduction. Only suitable for reprodctions, not donations!'
     )
+    parser.add_argument(
+        '-supplement', nargs='+',
+        help='Enter the full path of files or folders that are to be added to the supplemental subfolder within the metadata folder. Use this for information that supplements your preservation objects but is not to be included in the objects folder.'
+    )
     parsed_args = parser.parse_args(args_)
     return parsed_args
 
@@ -156,6 +161,12 @@ def main(args_):
             user = args.user
         else:
             user = ififuncs.get_user()
+        supplemental_dir = os.path.join(uuid_directory, 'metadata', 'supplemental')
+        if args.supplement:
+            if not os.path.isdir(supplemental_dir):
+                os.makedirs(supplemental_dir)
+            supplement_cmd = ['-i', args.supplement, '-user', user, '-new_folder', supplemental_dir, oe_path, '-copy']
+            package_update.main(supplement_cmd)
         if args.accession_number:
             if args.accession_number[:3] != 'aaa':
                 print('First three characters must be \'aaa\' and last four characters must be four digits')
