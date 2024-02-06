@@ -32,7 +32,8 @@ dependencies = [
     'bagit',
     'dicttoxml',
     'future',
-    'clairmeta'
+    'clairmeta',
+    'psutil'
 ]
 
 [tool.setuptools]
