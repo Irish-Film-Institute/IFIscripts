@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ifiscripts"
-version = "2023.12.13"
+version = "2024.02.06"
 authors = [
   {name="Kieran O'Leary", email="kieran.o.leary@gmail.com"}
 ]
