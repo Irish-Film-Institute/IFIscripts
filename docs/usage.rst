@@ -530,6 +530,20 @@ batchmakeshell.py
    DCP, and making SIP shells for DCDM and other large-size materials. 
    Use ``batchmakeshell.py -h`` to see all options.
     
+getdip.py
+~~~~~~~~~
+
+-  Retrieves DIPs (shells, proxies or mezzanines) from storage by accession numbers.
+   The script checks if the required AIPs are in the storage for a form of DIPs and
+   copied to destination if needed. The accession numbers can be either input manually
+   or imported by a formatted csv including the required accession numbers.
+-  Usage: ``getdip.py -t DIP_type -n accession_numbers -i /root/of/DIP/dir -o 
+   path/to/destination`` for manually typing the accession numbers in and copy the DIPs.
+   ``getdip.py -t DIP_type -csv path/to/accession_numbers/csv -i /root/of/DIP/dir 
+   -justcheck`` for importing access numbers from csv and just checking if the required
+   accession numbers have related DIP in the storage.
+-  Use ``getdip.py -h`` to see all options.
+
 
 Misc
 ----
