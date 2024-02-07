@@ -545,6 +545,54 @@ getdip.py
 -  Use ``getdip.py -h`` to see all options.
 
 
+Special Collections
+~~~~~~~~~~~~~~~~~~~
+
+batchsc\_checkdir.py
+********************
+
+-  Checks if each special collections package in the storage is an AIP (processed package) or 
+   a RAW (unprocessed package) has been processed, and then move either
+   to a separate folder.'
+-  This script doesn't have any arguments. It prints 2 functions for selection.
+-  Usage: ``batchsc_checkdir.py``
+
+
+batchsc\_validate.py
+********************
+-  Runs ``validate.py`` for a batch of special collections unprocessed packages under the same 
+   directory. All validated packages will be moved to required destination.
+-  All packages failed validation remain in the source location. The script will return the
+   directory for the running data for all failed validations after it finishes.
+-  For all the backlogs having logs and md5 manifests, the script will remove the logs and
+   manifests after they passed validation and moved to the destination.
+-  This script doesn't have any arguments. It prints the steps the script will do and ask for
+   the source and the destination at the beginning.
+-  Usage: ``batchsc_validate.py``
+
+
+batchsc\_organise.py
+********************
+-  Use with caution! It will change the files matadata and package structure and there is
+   no log for this.
+-  Function 1 - (Use with caution) Rename folders/files - replace all spaces and special
+   characters to '_'
+-  Function 2 - Rename packages - replace spaces to '_' and remove all special characters
+-  Function 3 - Move subfiles - move all files to the root of the packages
+-  Function 4 - (Use only after 3.) Delete subfolders - Delete all subfolders in each packages
+-  This scripts doesn't have any arguments. It asks for the source and lists all the packages.
+   Then it prints above 4 functions for selection.
+
+
+batchsc\_aip\_update.py
+***********************
+-  Moves all subfiles in the objects folder in the AIPs (processed packages) to the root,
+   or renames (removes special characters) all the subfiles. It does update the log for AIPs
+   when each AIP completes processing. It will returns AIPs cannot update the log at the end.
+-  Usage: ``batchsc_aip_update.py -movetoobjects /path/to/parent/folder``
+   or ``batchsc_aip_update.py -rename /path/to/parent/folder``
+
+
 Misc
 ----
 
