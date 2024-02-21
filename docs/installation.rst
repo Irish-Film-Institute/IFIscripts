@@ -89,3 +89,8 @@ For mediaarea tools, it can be easiest to use their own snapshot repository:
 ``wget https://mediaarea.net/repo/deb/repo-mediaarea-snapshots_1.0-13_all.deb && sudo dpkg -i repo-mediaarea-snapshots_1.0-13_all.deb && sudo apt update && sudo apt install mediainfo dvrescue qcli rawcooked mediaconch``
 
 
+----------
+
+Please find an extra `installation and update guideline 
+<https://ifi1-my.sharepoint.com/:b:/g/personal/yhe_irishfilm_ie/ES5_i9-khIpBlH8GDVhy5eMB846bDQrHpJajFjJeKuJyhQ?e=bNIm8H>`_
+for installing ifiscripts using `pip` on Windows or Mac.
