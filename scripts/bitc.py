@@ -115,7 +115,7 @@ def build_filter(args, filename):
     '''
     h264_options = []
     filter_list = []
-    filtergraph = ''
+    filtergraph = '[0:v]'
     if args.yadif:
         h264_options.append('yadif')
     if args.logo:
@@ -182,7 +182,7 @@ def setup_drawtext(args, filename):
     elif sys.platform.startswith("linux"):
         font_path = "fontfile=/usr/share/fonts/truetype/freefont/FreeSerifBold.ttf"
     elif sys.platform == "win32":
-        font_path = "'fontfile=C\:\\\Windows\\\Fonts\\\\arial.ttf'"
+        font_path = r"fontfile='C\:\\Windows\\Fonts\\arial.ttf'"
     # Get starting timecode
     timecode_test_raw = getffprobe(
         'timecode_test_raw',
@@ -199,24 +199,18 @@ def setup_drawtext(args, filename):
         # The timecode needs to be phrased in a way unique to each O.S.
         # Note the backslashes.
         # This section makes up a timecode if none is present in the file.
-        if sys.platform == "darwin" or sys.platform.startswith("linux"):
-            timecode_test = '01\\\:00\\\:00\\\:00'
-        elif sys.platform == "win32":
-            timecode_test = '\'01\:00\:00\:00\''
+        timecode_test = r'01\:00\:00\:00'
     else:
         # If timecode is present, this will escape the colons
         # so that it is compatible with each operating system.
-        if sys.platform == "darwin" or sys.platform.startswith("linux"):
-            timecode_test = timecode_test_raw.replace(':', '\\\:').rstrip()
-        elif sys.platform == "win32":
-            timecode_test = timecode_test_raw.replace(':', '\\:').rstrip()
+        timecode_test = timecode_test_raw.replace(':', '\:').rstrip()
     # This removes the new line character from the framemrate.
     if args.middle:
-        timecode_option = "drawtext=%s:fontcolor=white:fontsize=%s:timecode=%s:rate=%s:boxcolor=0x000000AA:box=1:x=(w-text_w)/2:y=(h-text_h)/2" % (font_path, font_size, timecode_test, framerate)
-        watermark_option = "drawtext=%s:fontcolor=white:text='IFI IRISH FILM ARCHIVE':x=(w-text_w)/2:y=h/1.2:fontsize=%s:alpha=0.4"  % (font_path, watermark_size)
+        timecode_option = "drawtext=timecode='%s':rate=%s:boxcolor='0x000000AA':box=1:x=(w-text_w)/2:y=(h-text_h)/2:fontcolor=white:fontsize=%s:%s" % (timecode_test, framerate, font_size, font_path)
+        watermark_option = "drawtext=text='IFI IRISH FILM ARCHIVE':x=(w-text_w)/2:y=h/1.2:fontsize=%s:fontcolor=white:alpha=0.4:%s"  % (watermark_size, font_path)
     else:
-        timecode_option = "drawtext=%s:fontcolor=white:fontsize=%s:timecode=%s:rate=%s:boxcolor=0x000000AA:box=1:x=(w-text_w)/2:y=h/1.2" % (font_path, font_size, timecode_test, framerate)
-        watermark_option = "drawtext=%s:fontcolor=white:text='IFI IRISH FILM ARCHIVE':x=(w-text_w)/2:y=(h-text_h)/2:fontsize=%s:alpha=0.4"  % (font_path, watermark_size)
+        timecode_option = "drawtext=timecode='%s':rate=%s:boxcolor='0x000000AA':box=1:x=(w-text_w)/2:y=h/1.2:fontcolor=white:fontsize=%s:%s" % (timecode_test, framerate, font_size, font_path)
+        watermark_option = "drawtext=text='IFI IRISH FILM ARCHIVE':x=(w-text_w)/2:y=(h-text_h)/2:fontsize=%s:fontcolor=white:alpha=0.4:%s"  % (watermark_size, font_path)
     bitc_watermark = timecode_option + ',' + watermark_option
     if args.timecode:
         return timecode_option
