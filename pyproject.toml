@@ -1,0 +1,107 @@
+# building and uploading have to be proceeded from Mac workspace 
+# to make scripts executable on all platforms
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ifiscripts"
+version = "2024.02.06"
+authors = [
+  {name="Kieran O'Leary", email="kieran.o.leary@gmail.com"}
+]
+maintainers = [
+  {name="Yazhou He", email="yhe@irishfilm.ie"}
+]
+description = "Scripts for processing moving image material in the Irish Film Institute/Irish Film Archive"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+license = {text = "MIT License"}
+dependencies = [
+    'lxml',
+    'bagit',
+    'dicttoxml',
+    'future',
+    'clairmeta',
+    'psutil'
+]
+
+[tool.setuptools]
+include-package-data = true
+# [tool.setuptools.package-data]
+# '*' = ['film_scan_aip_documentation.txt', '26_XYZ-22_Rec709.cube']
+script-files=[
+    'scripts/accession_register.py',
+    'scripts/aipcreator.py',
+    'scripts/as11fixity.py',
+    'scripts/batchaipcreator.py',
+    'scripts/batchdiff_framemd5.py',
+    'scripts/batchmakeshell.py',
+    'scripts/batchsc_aip_update.py',
+    'scripts/batchsc_checkdir.py',
+    'scripts/batchsc_organise.py',
+    'scripts/batchsc_validate.py',
+    'scripts/batchsipcreator.py',
+    'scripts/batchvalidate.py',
+    'scripts/bitc.py',
+    'scripts/check_register.py',
+    'scripts/concat.py',
+    'scripts/copyit.py',
+    'scripts/dcpaccess.py',
+    'scripts/dcpfixity.py',
+    'scripts/deletefiles.py',
+    'scripts/dfxml.py',
+    'scripts/durationcheck.py',
+    'scripts/ffv1mkvvalidate.py',
+    'scripts/framemd5.py',
+    'scripts/get_ps_list.py',
+    'scripts/getdip.py',
+    'scripts/ififuncs.py',
+    'scripts/loopline_repackage.py',
+    'scripts/lossy_check.py',
+    'scripts/make_mediaconch.py',
+    'scripts/makedfxml.py',
+    'scripts/makedip.py',
+    'scripts/makeffv1.py',
+    'scripts/makepbcore.py',
+    'scripts/makeuuid.py',
+    'scripts/makezip.py',
+    'scripts/manifest.py',
+    'scripts/masscopy.py',
+    'scripts/massqc.py',
+    'scripts/mergepbcore.py',
+    'scripts/merge_csv.py',
+    'scripts/multicopy.py',
+    'scripts/normalise.py',
+    'scripts/Objects.py',
+    'scripts/order.py',
+    'scripts/package_update.py',
+    'scripts/packagecheck.py',
+    'scripts/prores.py',
+    'scripts/renamefiles.py',
+    'scripts/seq2ffv1.py',
+    'scripts/sipcreator.py',
+    'scripts/strongbox_fixity.py',
+    'scripts/structure_check.py',
+    'scripts/subfolders.py',
+    'scripts/testfiles.py',
+    'scripts/validate.py',
+    'scripts/walk_to_dfxml.py'
+]
+
+[tool.setuptools.packages.find]
+where = ['', 'scripts']
+
+[project.urls]
+"Homepage" = "https://github.com/Irish-Film-Institute/IFIscripts"
+"Bug Tracker" = "https://github.com/Irish-Film-Institute/IFIscripts/issues"

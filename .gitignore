@@ -1,0 +1,4 @@
+__pycache__/
+ifiscripts.egg-info/
+scripts/__pycache__/
+dist/

@@ -10,13 +10,22 @@ Introduction
 Summary
 -------
 
-These are Python 2.7 scripts that facilitate collections management workflows within the IFI Irish Film Archive. These scripts have been tested
-in OSX, Windows 7 & 10, Ubuntu 14.04 & 16.04. They are located here on github: https://github.com/kieranjol/IFIscripts
+These scripts facilitate collections management workflows within the IFI Irish Film Archive. 
+These scripts have been tested in OSX & Mac OS, Windows 7 & 10 & 11, Ubuntu 14.04 & 16.04 & 18.04. 
+They are mostly Python 3.7 compatible but some are still Python 2.7 only.
 
-Most scripts take either a file or a directory as their input, for
+They are located here on github: https://github.com/Irish-Film-Institute/IFIscripts
+
+An installation package version is available on PyPI: https://pypi.org/project/ifiscripts/.
+The scripts included can be found in ``setup.py`` or ``pyproject.toml``.
+To install: run ``pip(3) install ifiscripts`` in the terminal.
+
+Most scripts have ArgumentParser so you can run `$ifiscript.py -h` to check the usage.
+Some scripts without ArgumentParser take either a file or a directory as their input, for
 example ``makeffv1.py filename.mov`` or
-``premis.py path/to/folder_of_stuff``. (It's best to just drag and drop
-the folder or filename into the terminal as this provides the absolute path).
+``premis.py path/to/folder_of_stuff``. 
+For all the arguments requiring a path, it's best to just drag and drop
+the folder or filename into the terminal as this provides the absolute path.
 
 We want the project to be as reuseable as possible in different institutions and contexts. Some scripts, particularly anything to do with ``Object Entry`` or ``Accessioning`` will be quite IFI specific, but other scripts such as ``makeffv1.py``, ``dcpaccess.py`` and many others have been used in a variety of contexts in several different countries.
 
@@ -53,13 +62,13 @@ An example workflow might be:
 
 * If the package contains FFV1 or Matroska files, perhaps ``ffv1mkvvalidate.py`` could run, which uses ``mediaconch`` to verify the compliance of the files, and stores the information in the logfile.
 
-* If the package passes our Quality Control Procedures, then it will be accessioned. ``accession.py`` will generate an accession number, rename the OE number with the accession number, generate a SHA-512 manifest and update the log file to document these new preservation events.
+* If the package passes our Quality Control Procedures, then it will be accessioned. ``aipcreator.py`` will generate an accession number, rename the OE number with the accession number, generate a SHA-512 manifest and update the log file to document these new preservation events.
 
-* A large batch of items can be accessioned using ``batchaccession.py``. If the ``-pbcore`` command line argument is used with the accessioning scripts, technical metadata based on the PBCore standard will be generated in CSV format. This process can be run seperately by using ``makepbcore.py``. CSV was chosen instead of XML as this allows us to immediately import the CSV into our database system so that we have item level records.
+* A large batch of items can be AIPed using ``batchaipcreator.py``. If the ``-pbcore`` command line argument is used with the aipcreator scripts, technical metadata based on the PBCore standard will be generated in CSV format. This process can be run seperately by using ``makepbcore.py``. CSV was chosen instead of XML as this allows us to immediately import the CSV into our database system so that we have item level records.
 
 * Access copies may be needed, so low-res watermarked proxies can be generated with ``bitc.py``, or high res mezzanines with ``prores.py``.
 
-* The accessioned package can then be written to preservation storage, again using the ``copyit.py`` command.
+* The AIP can then be written to preservation storage, again using the ``copyit.py`` command.
 
 So this is just one way of using the scripts from acquisition to preservation storage, but there are many other scripts for specific workflows, which you can investigate further down in the documentation.
 
