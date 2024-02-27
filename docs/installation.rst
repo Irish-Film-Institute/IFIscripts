@@ -10,7 +10,7 @@ In general, you can install the scripts from Pypi (installed along with Python) 
 
 You can also clone or download the whole repository (https://github.com/Irish-Film-Institute/IFIscripts) and run the scripts from your cloned path. 
 
-For our developer, on Mac OS and Windows, we create a folder in the home directory called ``ifigit``, then we run ``git clone https://github.com/Irish-Film-Institute/IFIscripts.git``. Then we add the ``ifiscripts`` folder to ``$PATH`` which allows us to access the scripts from any directory, not just from ``ifigit/ifiscripts``.
+For our developement workflows, on Mac OS and Windows, we create a folder in the home directory called ``ifigit``, then we run ``git clone https://github.com/Irish-Film-Institute/IFIscripts.git``. Then we add the ``ifiscripts`` folder to ``$PATH`` which allows us to access the scripts from any directory, not just from ``ifigit/ifiscripts``.
 
 Alternatively, some folks prefer to locate (``cd``) into the cloned repository and run the scripts from there, for example to run ``makeffv1.py`` 
 ``python makeffv1.py path/to.filename.mov``.
@@ -93,4 +93,4 @@ For mediaarea tools, it can be easiest to use their own snapshot repository:
 
 Please find an extra `installation and update guideline 
 <https://ifi1-my.sharepoint.com/:b:/g/personal/yhe_irishfilm_ie/ES5_i9-khIpBlH8GDVhy5eMB846bDQrHpJajFjJeKuJyhQ?e=bNIm8H>`_
-for installing ifiscripts using `pip` on Windows or Mac.
+for installing ifiscripts using `pip` on Windows or Mac. This instruction starts from installing python and includes basic details.
