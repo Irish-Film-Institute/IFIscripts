@@ -31,7 +31,7 @@ def process_mixed_values(value_list):
     '''
     mixed_values = ''
     # Check if just a single value exists. If so, just return that one value.
-    if len(set(value_list)) is 1:
+    if len(set(value_list)) == 1:
         value = value_list[0]
     else:
         # Return the mixed values with pipe delimiter.
@@ -105,7 +105,7 @@ def get_metadata(xpath_path, root, pbcore_namespace):
             ).text == 'Audio':
                 value_list.append(i.text)
         # Checks if values in the list are the same(1) or different (2)
-        if len(set(value_list)) is 1:
+        if len(set(value_list)) == 1:
             value = value[0].text
         else:
             # Return the mixed values with pipe delimiter.
