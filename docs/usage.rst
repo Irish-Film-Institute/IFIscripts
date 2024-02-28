@@ -335,6 +335,18 @@ validate.py
 -  Usage: ``validate.py /path/to/manifest.md5`` or
    ``validate.py /path/to/_manifest-sha512.txt``
 
+
+as11fixity.py
+~~~~~~~~~~~~~
+
+-  Validates AS-11 UK DPP mxf file(s) by comparing file checksum 
+   from both information package manifest and DPP xml <MediaChecksumValue>.
+-  Prints file & folder count and fixity details for each package. 
+-  Generates a csv report on the desktop for checking details.
+-  This script does NOT have ``as11fixity.py -h`` 
+-  Usage: ``as11fixity.py /path/to/as_11`` or ``as11fixity.py /path/to/parent_folder``
+
+
 batchdiff_framemd5.py
 ~~~~~~~~~~~
 
@@ -655,13 +667,6 @@ premis.py
 -  Requries pyqt4 (GUI) and lxml (xml parsing)
 -  Usage - ``premis.py filename``.
 
-
-as11fixity.py
-~~~~~~~~~~~~~
-
--  Work in progress script by @mahleranja and @ecodonohoe
--  There is a bash script in a different repository that works quite
-   well for this purpose but that is OSX only.
 
 viruscheck.py
 ~~~~~~~~~~~~~
