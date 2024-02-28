@@ -13,16 +13,16 @@ def parse_args():
     Parse command line arguments.
     '''
     parser = argparse.ArgumentParser(
-        description='create framemd5 for a batch of SIP objects. check if all the hashes match to the md5 manifest in the PSM packages.'
+        description='Create framemd5 for a batch of SIP objects. Check if all the hashes match to the md5 manifest in the PSM packages.'
         ' Written by Yazhou He'
     )
     parser.add_argument(
-        '-sip',
-        help='Path to the parent folder containing a batch of SIPs.'
+        '-sip', required=True,
+        help='Path to the parent folder containing a batch of objects in SIP.'
     )
     parser.add_argument(
-        '-psm',
-        help='Path to the parent folder containing a batch of PSMs.'
+        '-psm', required=True,
+        help='Path to the parent folder containing the same batch of objects in PSM.'
     )
     parsed_args = parser.parse_args()
     return parsed_args
