@@ -80,16 +80,9 @@ NOTE: Objects.py has been copied from https://github.com/simsong/dfxml. walk_to_
         'scripts/walk_to_dfxml.py'
     ],
     license='MIT',
-    install_requires=[
-        'lxml',
-        'bagit',
-        'dicttoxml',
-        'future',
-        'clairmeta'
-    ],
     data_files=[('', ['film_scan_aip_documentation.txt', '26_XYZ-22_Rec709.cube'])],
     include_package_data=True,
     name='ifiscripts',
-    version='2024.02.06',
+    version='2024.03.01',
     python_requires='>=3.8'
 )
