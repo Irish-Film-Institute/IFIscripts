@@ -7,12 +7,27 @@ AND DPP XML <MediaChecksumValue>
 
 import sys
 import os
+import argparse
 import csv
 import hashlib
 from datetime import datetime
 from lxml import etree
 import unidecode
 import ififuncs
+
+def parse_args():
+    '''
+    Parse command line arguments.
+    '''
+    parser = argparse.ArgumentParser(
+        description='Validates AS-11 UK DPP mxf file(s) by comparing file checksum from information package manifest and DPP xml <MediaChecksumValue>.'
+    )
+    parser.add_argument(
+        'input', help = 'An AS-11 package or the parent folder of AS-11 packages'
+    )
+    parsed_args = parser.parse_args()
+    return parsed_args
+
 
 def digest_with_progress(filename, chunk_size):
     read_size = 0
@@ -76,7 +91,8 @@ def count_files(starting_dir):
     return dicto
 
 def main():
-    starting_dir = sys.argv[1]
+    args = parse_args()
+    starting_dir = args.input
     dicto = count_files(starting_dir)
     startTime = datetime.now()
     csv_report_filename = os.path.basename(starting_dir) + "_report"
