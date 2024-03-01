@@ -343,8 +343,8 @@ as11fixity.py
    from both information package manifest and DPP xml <MediaChecksumValue>.
 -  Prints file & folder count and fixity details for each package. 
 -  Generates a csv report on the desktop for checking details.
--  This script does NOT have ``as11fixity.py -h`` 
 -  Usage: ``as11fixity.py /path/to/as_11`` or ``as11fixity.py /path/to/parent_folder``
+-  ``as11fixity.py -h`` is also available
 
 
 batchdiff_framemd5.py
