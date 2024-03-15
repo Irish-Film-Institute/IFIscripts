@@ -115,7 +115,7 @@ def build_filter(args, filename):
     '''
     h264_options = []
     filter_list = []
-    filtergraph = '[0:v]'
+    filtergraph = ''
     if args.yadif:
         h264_options.append('yadif')
     if args.logo:
@@ -134,6 +134,7 @@ def build_filter(args, filename):
     if len(filtergraph) > 0:
         if filtergraph[-1] == ',':
             filtergraph = filtergraph[:-1]
+        filtergraph = '[0:v]' + filtergraph
         filter_list = ['-vf', filtergraph]
         # changed from -filter_complex to -vf for ffmpeg v6.0
         # filter_list = ['-filter_complex', filtergraph]
