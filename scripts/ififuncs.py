@@ -855,7 +855,10 @@ def sort_manifest(manifest_textfile):
     with open(manifest_textfile, "r", encoding='utf-8') as fo:
         manifest_lines = fo.readlines()
         with open(manifest_textfile, "w", encoding='utf-8') as ba:
-            manifest_list = sorted(manifest_lines, key=lambda x: (x[34:]))
+            if 'sha512' in manifest_textfile:
+                manifest_list = sorted(manifest_lines, key=lambda x: (x[130:]))
+            else:
+                manifest_list = sorted(manifest_lines, key=lambda x: (x[34:]))
             for i in manifest_list:
                 ba.write(i)
 

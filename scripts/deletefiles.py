@@ -27,6 +27,10 @@ def parse_args(args_):
         help='full path of \'sipcreator\' Object Entry package'
     )
     parser.add_argument(
+        '-aip', action='store_true',
+        help='Update sha512 manifest as well. (Defaultly only update md5 manifest as SIP mode).'
+    )
+    parser.add_argument(
         '-user',
         help='Declare who you are. If this is not set, you will be prompted.')
     parsed_args = parser.parse_args(args_)
@@ -69,6 +73,10 @@ def main(args_):
         sip_manifest = os.path.join(
             oe_path, uuid
             ) + '_manifest.md5'
+        if args.aip:
+            sip_manifest_sha512 = os.path.join(
+                oe_path, uuid
+                ) + '_manifest-sha512.txt'
     else:
         # this is assuming that the other workflow will be the
         # special collections workflow that has the uuid as the parent.
@@ -79,6 +87,10 @@ def main(args_):
         sip_manifest = os.path.join(
             oe_path, uuid + '_manifest.md5'
             )
+        if args.aip:
+            sip_manifest_sha512 = os.path.join(
+                oe_path, uuid + '_manifest-sha512.txt'
+                )
     start = datetime.datetime.now()
     print(args)
     if args.user:
@@ -127,11 +139,16 @@ def main(args_):
                 )
         remove_from_manifest(sip_manifest, os.path.basename(filename), new_log_textfile)
         ififuncs.sort_manifest(sip_manifest)
+        if args.aip:
+            remove_from_manifest(sip_manifest_sha512, os.path.basename(filename), new_log_textfile)
+            ififuncs.sort_manifest(sip_manifest_sha512)
     ififuncs.generate_log(
         new_log_textfile,
         'EVENT = deletefiles.py finished'
     )    
     ififuncs.checksum_replace(sip_manifest, new_log_textfile, 'md5')
+    if args.aip:
+        ififuncs.checksum_replace(sip_manifest_sha512, new_log_textfile, 'sha512')
     finish = datetime.datetime.now()
     print('\n- %s ran this script at %s and it finished at %s' % (user, start, finish))
 
