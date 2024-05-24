@@ -136,6 +136,7 @@ def build_filter(args, filename):
             filtergraph = filtergraph[:-1]
         if args.logo:
             filter_list = ['-filter_complex', filtergraph]
+            filter_list = filter_list + ['-disposition:v:0', 'default']
         else:
             filter_list = ['-vf', filtergraph]
         print(filter_list)
