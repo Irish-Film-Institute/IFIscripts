@@ -119,7 +119,7 @@ def build_filter(args, filename):
     if args.yadif:
         h264_options.append('yadif')
     if args.logo:
-        h264_options.append('overlay=main_w-overlay_w-5:5')
+        h264_options.append('[0:v:0][1:v]overlay=main_w-overlay_w-5:5')
     if args.scale:
         h264_options.append('scale=%s' % args.scale)
         # width_height = args.scale
@@ -134,10 +134,11 @@ def build_filter(args, filename):
     if len(filtergraph) > 0:
         if filtergraph[-1] == ',':
             filtergraph = filtergraph[:-1]
-        filtergraph = '[0:v]' + filtergraph
-        filter_list = ['-vf', filtergraph]
-        # changed from -filter_complex to -vf for ffmpeg v6.0
-        # filter_list = ['-filter_complex', filtergraph]
+        if args.logo:
+            filter_list = ['-filter_complex', filtergraph]
+            filter_list = filter_list + ['-disposition:v:0', 'default']
+        else:
+            filter_list = ['-vf', filtergraph]
         print(filter_list)
     return filter_list
 
