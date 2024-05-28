@@ -174,9 +174,9 @@ def main(args_):
             )
             print(('%s has been moved into %s' % (filenames, args.new_folder)))
             relative_filename = filenames.replace(source + '/', '').replace('\\', '/')
-            relative_filename = filenames.replace(source + '\\', '').replace('\\', '/')
+            relative_filename = relative_filename.replace(source + '\\', '').replace('\\', '/')
             relative_new_folder = args.new_folder.replace(source + '/', '').replace('\\', '/')
-            relative_new_folder = args.new_folder.replace(source + '\\', '').replace('\\', '/')
+            relative_new_folder = relative_new_folder.replace(source + '\\', '').replace('\\', '/')
             ifchange_manifest = update_manifest(
                 sip_manifest,
                 relative_filename,

@@ -102,9 +102,9 @@ def main(args_):
                         if flag:
                             final_filename = os.path.join(file_dir,new_filename)
                             relative_filename = file.replace(source + '/', '').replace('\\', '/')
-                            relative_filename = file.replace(source + '\\', '').replace('\\', '/')
+                            relative_filename = relative_filename.replace(source + '\\', '').replace('\\', '/')
                             relative_new_filename = final_filename.replace(source + '/', '').replace('\\', '/')
-                            relative_new_filename = final_filename.replace(source + '\\', '').replace('\\', '/')
+                            relative_new_filename = relative_new_filename.replace(source + '\\', '').replace('\\', '/')
                             print('Renamed %s to %s' % (file,final_filename))
                             ififuncs.generate_log(
                                 new_log_textfile,
