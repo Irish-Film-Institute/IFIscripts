@@ -73,8 +73,7 @@ def update_manifest(manifest, old_path, new_path, new_log_textfile):
     with open(manifest, 'w') as updated_manifest:
         for updated_line in updated_lines:
             updated_manifest.write(updated_line)
-    if not change:
-        return change
+    return change
 
 
 def main(args_):
@@ -135,7 +134,7 @@ def main(args_):
         os.makedirs(args.new_folder)
     if isinstance(args.i[0], (list,)):
         args.i = args.i[0]
-    ifchange_list = []
+    ifchange_dict = {}
     for filenames in args.i:
         if args.copy:
             copyit.main([filenames, args.new_folder])
@@ -149,17 +148,19 @@ def main(args_):
             # this is hardcoded - pick this apart so that any folder can be added to.
             # this must be fixed in normalise.py as well.
             relative_new_path = args.new_folder.replace(sip_path, '')
-            print((relative_new_path, 'relative'))
             if (relative_new_path[0] == '/') or relative_new_path[0] == '\\':
                 relative_new_path = relative_new_path[1:].replace('\\', '/')
             sipcreator.consolidate_manifests(sip_path, relative_new_path, new_log_textfile)
             log_manifest = os.path.join(os.path.dirname(new_log_textfile), os.path.basename(filenames) + '_manifest.md5')
             ifchange_manifest = ififuncs.manifest_update(sip_manifest, log_manifest)
-            ifchange_list.append(ifchange_manifest)
+            ifchange_dict['md5_copy_log'] = ifchange_manifest
             ififuncs.sort_manifest(sip_manifest)
             if args.aip:
-                ifchange_manifest_sha512 = ififuncs.sha512_update(sip_manifest_sha512, log_manifest)
-                ifchange_list.append(ifchange_manifest_sha512)
+                new_filename = os.path.join(sip_path, relative_new_path, os.path.basename(filenames))
+                ifchange_manifest_sha512_file = ififuncs.sha512_update(sip_manifest_sha512, new_filename)
+                ifchange_dict['sha512_copy_file'] = ifchange_manifest_sha512_file
+                ifchange_manifest_sha512_log = ififuncs.sha512_update(sip_manifest_sha512, log_manifest)
+                ifchange_dict['sha512_copy_log'] = ifchange_manifest_sha512_log
                 ififuncs.sort_manifest(sip_manifest_sha512)
         else:
             # add test to see if it actually deleted - what if read only?
@@ -182,7 +183,7 @@ def main(args_):
                 os.path.join(relative_new_folder, os.path.basename(relative_filename)).replace('\\', '/'),
                 new_log_textfile
             )
-            ifchange_list.append(ifchange_manifest)
+            ifchange_dict['md5+log_move'] = ifchange_manifest
             if args.aip:
                 ifchange_manifest_sha512 = update_manifest(
                     sip_manifest_sha512,
@@ -190,20 +191,22 @@ def main(args_):
                     os.path.join(relative_new_folder, os.path.basename(relative_filename)).replace('\\', '/'),
                     new_log_textfile
                 )
-                ifchange_list.append(ifchange_manifest_sha512)
+                ifchange_dict['sha512+log_move'] = ifchange_manifest_sha512
     ififuncs.generate_log(
         new_log_textfile,
         'EVENT = package_update.py finished'
     )
     ifchange_log_manifest = ififuncs.checksum_replace(sip_manifest, new_log_textfile, 'md5')
-    ifchange_list.append(ifchange_log_manifest)
+    ifchange_dict['md5_log'] = ifchange_log_manifest
     if args.aip:
         ifchange_log_manifest_sha512 = ififuncs.checksum_replace(sip_manifest_sha512, new_log_textfile, 'sha512')
-        ifchange_list.append(ifchange_log_manifest_sha512)
+        ifchange_dict['sha512_log'] = ifchange_log_manifest_sha512
     finish = datetime.datetime.now()
     print('\n- %s ran this script at %s and it finished at %s' % (user, start, finish))
-    if False in ifchange_list:
-        print("***%s has not completed updating manifest after moving/coping" % sip_path)
+    if False in ifchange_dict.values():
+        print(ifchange_dict)
+        key = [x for x, y in ifchange_dict.items() if y == False]
+        print("***%s has not completed updating manifest after moving/coping\nerror code for dev %s" % (sip_path, key))
         return sip_path
 
 
