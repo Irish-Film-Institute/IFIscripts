@@ -26,7 +26,7 @@ def parse_args(args_):
     return parsed_args
 
 def tree1(object):
-    subprocess.run(['tree', object], shell=True)
+    os.system('tree ' + object)
 
 def tree2(object):
     'quote from https://stackoverflow.com/a/9728478'
@@ -38,11 +38,10 @@ def tree2(object):
         for f in files:
             print('{}{}'.format(subindent, f))
 
-def show_dirtree(tree, objects_list):
+def show_dirtree(objects_list):
     fault_list=[]
     for object in objects_list:
         object_flag = False
-        os.system('cls')
         if 'oe' in object:
             object_flag = True
             print('\nSIP\t' + object)
@@ -53,7 +52,12 @@ def show_dirtree(tree, objects_list):
             object_flag = True
             print('\nAIP\t' + object)
         if object_flag == True:
-            tree(object)
+            if shutil.which('tree'):
+                os.system('clear')
+                tree1(object)
+            else:
+                os.system('cls')
+                tree2(object)
             mark = input('\n*Type anything and enter if it is a failure.\n*Press enter if it a pass.\n')
             if mark:
                 fault_list.append(object)
@@ -63,15 +67,12 @@ def main(args_):
     args = parse_args(args_)
     source = args.i
     dir_list = [os.path.join(source, dir) for dir in sorted(os.listdir(source))]
-    if shutil.which('tree'):
-        fault_list = show_dirtree(tree1,dir_list)
-    else:
-        fault_list = show_dirtree(tree2,dir_list)
+    fault_list = show_dirtree(dir_list)
     if fault_list:
         print('\n-----\nHere are the failed information packages you just marked out:')
         print(*fault_list, sep='\n')
     else:
-        print('\n-----\nAll information packages have passed check!')
+        print('\n-----\nAll information packages have passed check!\n')
 
 
 if __name__ == '__main__':
