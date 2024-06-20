@@ -11,7 +11,6 @@ import sys
 import os
 import argparse
 import shutil
-import subprocess#
 
 def parse_args(args_):
     parser = argparse.ArgumentParser(
@@ -38,6 +37,12 @@ def tree2(object):
         for f in files:
             print('{}{}'.format(subindent, f))
 
+def note():
+    print('Check that there are a MD5 checksums manifest and a SHA-512 checksums manifest at the root of an AIP/AIP shell.\n'
+          'Check that there are a MD5 checksums manifest at the root of a SIP.\n'
+          'Check that there are logs, metadata, objects folders in the information package.'
+        )
+    
 def show_dirtree(objects_list):
     fault_list=[]
     for object in objects_list:
@@ -52,11 +57,14 @@ def show_dirtree(objects_list):
             object_flag = True
             print('\nAIP\t' + object)
         if object_flag == True:
-            if shutil.which('tree'):
+            if sys.platform == "win32":
+                os.system('cls')
+            else:
                 os.system('clear')
+            note()
+            if shutil.which('tree'):
                 tree1(object)
             else:
-                os.system('cls')
                 tree2(object)
             mark = input('\n*Type anything and enter if it is a failure.\n*Press enter if it a pass.\n')
             if mark:
