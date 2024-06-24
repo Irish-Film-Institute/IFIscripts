@@ -58,6 +58,7 @@ script-files=[
     'scripts/check_register.py',
     'scripts/concat.py',
     'scripts/copyit.py',
+    'scripts/scsm_helperpbcore.py',
     'scripts/dcpaccess.py',
     'scripts/dcpfixity.py',
     'scripts/deletefiles.py',
