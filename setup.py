@@ -38,6 +38,7 @@ NOTE: Objects.py has been copied from https://github.com/simsong/dfxml. walk_to_
         'scripts/check_register.py',
         'scripts/concat.py',
         'scripts/copyit.py',
+        'scripts/dcdm_helperpbcore.py',
         'scripts/dcpaccess.py',
         'scripts/dcpfixity.py',
         'scripts/deletefiles.py',
