@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ifiscripts"
-version = "2024.03.15"
+version = "2024.06.25"
 authors = [
   {name="Kieran O'Leary", email="kieran.o.leary@gmail.com"}
 ]
@@ -58,7 +58,7 @@ script-files=[
     'scripts/check_register.py',
     'scripts/concat.py',
     'scripts/copyit.py',
-    'scripts/scsm_helperpbcore.py',
+    'scripts/dcdm_helperpbcore.py',
     'scripts/dcpaccess.py',
     'scripts/dcpfixity.py',
     'scripts/deletefiles.py',
