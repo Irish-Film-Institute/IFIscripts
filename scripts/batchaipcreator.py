@@ -207,7 +207,8 @@ def process_oe_csv(oe_csv_extraction, source_path):
             dictionary['donation_date'] = record['Date Received']
             dictionary['normalised_oe_number']  = dictionary['Object Entry'][:2].lower() + dictionary['Object Entry'][3:]
             dictionary['source_path'] = os.path.join(source_path, dictionary['normalised_oe_number'])
-            dictionary['Filmographic URN'] = record['Additional Information'].split('Representation of ')[1].split('|')[0].rstrip()
+            dictionary['Filmographic URN'] = record['Additional Information'].replace('\xa0',' ').split('Representation of ')[1].split('|')[0].rstrip()
+            # replace('\xa0',' ') is to replace non-breaking space from online sheet
             oe_dicts.append(dictionary)
         except IndexError:
             continue
