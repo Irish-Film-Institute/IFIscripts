@@ -119,7 +119,9 @@ def build_filter(args, filename):
     if args.yadif:
         h264_options.append('yadif')
     if args.logo:
-        h264_options.append('[0:v:0][1:v]overlay=main_w-overlay_w-5:5')
+        video_height = get_video_height(filename)
+        logo_percentage = str(round(video_height * 0.15 / 90))
+        h264_options.append('[1]scale=iw*' + logo_percentage + ':-1[wm];[0:v:0][wm]overlay=main_w-overlay_w-5:5')
     if args.scale:
         h264_options.append('scale=%s' % args.scale)
         # width_height = args.scale
@@ -169,14 +171,17 @@ def get_filenames(args):
         print("Your input isn't a file or a directory.")
     return video_files
 
+def get_video_height(filename):
+    # HDV m2t streams report two height values, so the rsplit() just accepts the first.
+    video_height = float(getffprobe('video_height', 'stream=height', filename).rsplit()[0])
+    return video_height
 
 def setup_drawtext(args, filename):
     '''
     Sets up the filtergraphs for either timecode, watermark or both.
     '''
-    # HDV m2t streams report two height values, so the rsplit() just accepts the first.
-    video_height = float(getffprobe('video_height', 'stream=height', filename).rsplit()[0])
     # Calculate appropriate font size
+    video_height = get_video_height(filename)
     font_size = video_height / 12
     watermark_size = video_height / 14
     if sys.platform == "darwin":
@@ -221,7 +226,6 @@ def setup_drawtext(args, filename):
     else:
         return bitc_watermark
 
-
 def main(args_):
     '''
     Launch the various functions that will make a h264/mp4 access copy.
@@ -232,7 +236,6 @@ def main(args_):
     for filename in video_files:
         filter_list = build_filter(args, filename)
         make_h264(filename, args, filter_list)
-
 
 def make_h264(filename, args, filter_list):
     '''
