@@ -198,6 +198,8 @@ def main(args_):
         if args.force:
             proceed = 'Y'
         else:
+            if sys.platform() == 'win32':
+                print('Make sure the read-only is ticked off for the source input!')
             proceed = ififuncs.ask_yes_no(
                 'Do you want to rename %s with %s' % (oe_number, accession_number)
             )
