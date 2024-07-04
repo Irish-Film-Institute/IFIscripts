@@ -151,8 +151,9 @@ def main(args_):
                     ififuncs.sha512_manifest(source, manifest, source_parent_dir)
                 else:
                     hashlib_manifest(source, manifest, source_parent_dir)
-        except OSError:
+        except OSError as e:
             print('You do not have access to this directory. Perhaps it is read only, or the wrong file system\n')
+            print(e)
             sys.exit()
     else:
         generate_log(log_name_source, 'EVENT = Existing source manifest check - Source manifest already exists. Script will exit. ')
