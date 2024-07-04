@@ -420,6 +420,7 @@ def hashlib_manifest(manifest_dir, manifest_textfile, path_to_remove):
         for files in filenames:
             print(' - Generating MD5 for %s - file %d of %d' % (os.path.join(root, files), md5_counter, file_count))
             md5 = hashlib_md5(os.path.join(root, files))
+            print(md5)
             md5_counter += 1
             root2 = os.path.abspath(root).replace(path_to_remove, '')
             try:
@@ -457,6 +458,7 @@ def sha512_manifest(manifest_dir, manifest_textfile, path_to_remove):
         for files in filenames:
             print(' - Generating SHA512 for %s - file %d of %d' % (os.path.join(root, files), md5_counter, file_count))
             sha512 = hashlib_sha512(os.path.join(root, files))
+            print(sha512)
             md5_counter += 1
             root2 = os.path.abspath(root).replace(path_to_remove, '')
             try:
