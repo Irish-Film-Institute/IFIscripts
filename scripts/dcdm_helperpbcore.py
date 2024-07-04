@@ -20,7 +20,7 @@ def make_csv(csv_filename):
     Writes a CSV with IFI database headings.
     '''
     ififuncs.create_csv(csv_filename, [
-        'ImportNo'
+        'ImportNo',
         'Reference Number',
         'Donor',
         'Edited By',
