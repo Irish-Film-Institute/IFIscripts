@@ -59,13 +59,17 @@ def show_dirtree(objects_list):
         if object_flag == True:
             if sys.platform == "win32":
                 os.system('cls')
+                if shutil.which('tree'):
+                    tree1('/F ' + object)
+                else:
+                    tree2(object)
             else:
                 os.system('clear')
+                try:
+                    tree1(object)
+                except:
+                    tree2(object)
             note()
-            if shutil.which('tree'):
-                tree1(object)
-            else:
-                tree2(object)
             mark = input('\n*Type anything and enter if it is a failure.\n*Press enter if it a pass.\n')
             if mark:
                 fault_list.append(object)
