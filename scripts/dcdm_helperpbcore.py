@@ -126,6 +126,42 @@ def main(args_):
         if ififuncs.validate_uuid4(dirs) is None:
             instantiationIdentif = dirs
 
+    Donor = ''
+    Restrictions = ''
+    Depositor_Reference = ''
+    Donor_list = ['Screen Ireland (previously Irish Film Board/IFB)', 'Arts Council']
+    Restrictions_list = ['Screen Ireland (previously Irish Film Board/IFB)', 'Arts Council']
+    Depositor_Reference_list = ['67', '307']
+    print('Please select the donor with the number\n\n'
+          '1\tScreen Ireland (previously Irish Film Board/IFB)\n'
+          '2\tArts Council\n')
+    donor_index = int(input())
+    if donor_index in range(1,3):
+        Donor = Donor_list[donor_index-1]
+        Restrictions = Restrictions_list[donor_index-1]
+        Depositor_Reference = Depositor_Reference_list[donor_index-1]
+    else:
+        print('Number is not in the list provided! System exit...')
+        sys.exit()
+    
+    Type_Of_Deposit = 'Deposit via overarching agreements'
+    Master_Viewing = 'Preservation Object'
+    CollectionTitle = 'Irish Film Board (IFB) aka Screen Ireland'
+
+    Date_Created = ''
+    Date_Last_Modified = ''
+    Habitat =''
+    backup_habitat = ''
+    TTape_Origin = ''
+    Language_Version = ''
+    Condition_Rating = ''
+    Companion_Elements = ''
+    FIO = 'In'
+    instantDate_other = 'n/a'
+    instantDate_type = 'n/a'
+
+    Pix_fmt = 'rgb48le'
+
     Date_Of_Donation = ''
     log_dir = os.path.join(source, instantiationIdentif, 'logs')
     for files in os.listdir(log_dir):
@@ -182,27 +218,7 @@ def main(args_):
     instantFileSize_gigs = round(
         float(instantFileSize_byte)  / 1024 / 1024 / 1024, 3
     )
-
-    Pix_fmt = 'rgb48le'
-    Donor = 'Screen Ireland (previously Irish Film Board/IFB)'
-    Restrictions = 'Screen Ireland (previously Irish Film Board/IFB)'
-    Depositor_Reference = '67'
-    Type_Of_Deposit = 'Deposit via overarching agreements'
-    Master_Viewing = 'Preservation Object'
-    CollectionTitle = 'Irish Film Board (IFB) aka Screen Ireland'
     
-    Date_Created = ''
-    Date_Last_Modified = ''
-    Habitat =''
-    backup_habitat = ''
-    TTape_Origin = ''
-    Language_Version = ''
-    Condition_Rating = ''
-    Companion_Elements = ''
-    FIO = 'In'
-    instantDate_other = 'n/a'
-    instantDate_type = 'n/a'
-
     desktop_logs_dir = ififuncs.make_desktop_logs_dir()
     csv_filename = os.path.join(desktop_logs_dir, Accession_Number + '_%s_DCDM_helperpbcore.csv' % Reference_Number)
     make_csv(csv_filename)
