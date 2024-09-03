@@ -166,6 +166,9 @@ def main(args_):
         essenceAspectRatio = getRatio(Width, Height)
         ColorSpace= track_format.find("track/[@type='Image']/ColorSpace").text
         break
+    essenceTrackSampling = ''
+    essenceTrackEncod_au = ''
+    essenceBitDepth_au = ''
     for track_format in mediainfo_root.findall("./File/track/[@type='Audio']..."):
         essenceTrackSampling = track_format.find("track/[@type='Audio']/SamplingRate_String").text
         essenceTrackEncod_au = track_format.find("track/[@type='Audio']/Format").text
