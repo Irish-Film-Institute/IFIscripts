@@ -132,6 +132,7 @@ def main(args_):
     Donor_list = ['Screen Ireland (previously Irish Film Board/IFB)', 'Arts Council']
     Restrictions_list = ['Screen Ireland (previously Irish Film Board/IFB)', 'Arts Council']
     Depositor_Reference_list = ['67', '307']
+    CollectionTitle_list = ['Irish Film Board (IFB) aka Screen Ireland', 'Arts Council']
     print('Please select the donor with the number\n\n'
           '1\tScreen Ireland (previously Irish Film Board/IFB)\n'
           '2\tArts Council\n')
@@ -140,13 +141,14 @@ def main(args_):
         Donor = Donor_list[donor_index-1]
         Restrictions = Restrictions_list[donor_index-1]
         Depositor_Reference = Depositor_Reference_list[donor_index-1]
+        CollectionTitle = CollectionTitle_list[donor_index-1]
     else:
         print('Number is not in the list provided! System exit...')
         sys.exit()
     
     Type_Of_Deposit = 'Deposit via overarching agreements'
     Master_Viewing = 'Preservation Object'
-    CollectionTitle = 'Irish Film Board (IFB) aka Screen Ireland'
+    
 
     Date_Created = ''
     Date_Last_Modified = ''
