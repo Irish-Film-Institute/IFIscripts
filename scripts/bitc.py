@@ -120,8 +120,14 @@ def build_filter(args, filename):
         h264_options.append('yadif')
     if args.logo:
         video_height = get_video_height(filename)
-        logo_percentage = str(round(video_height * 0.15 / 90))
-        h264_options.append('[1]scale=iw*' + logo_percentage + ':-1[wm];[0:v:0][wm]overlay=main_w-overlay_w-5:5')
+        PixelAspectRatio =  ififuncs.get_mediainfo(
+            'duration', '--inform=Video;%PixelAspectRatio%', filename
+        )
+        logo_percentage = str(round(video_height * 0.15 / 90, 3))
+        if PixelAspectRatio != 1:
+            h264_options.append('[1]scale=iw/' + PixelAspectRatio + ':ih,scale=-1:ih*' + logo_percentage + '[wm];[0:v:0][wm]overlay=main_w-overlay_w-10*' + logo_percentage + ':15*' + logo_percentage)
+        else:
+            h264_options.append('[1]scale=-1:ih*' + logo_percentage + '[wm];[0:v:0][wm]overlay=main_w-overlay_w-10*' + logo_percentage + ':15*' + logo_percentage)
     if args.scale:
         h264_options.append('scale=%s' % args.scale)
         # width_height = args.scale
