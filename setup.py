@@ -9,8 +9,8 @@ if sys.version_info < (3, 8):
 setup(
     author='Kieran O\'Leary',
     author_email='kieran.o.leary@gmail.com',
-    maintainer='Yazhou He',
-    maintainer_email='yhe@irishfilm.ie',
+    # maintainer='Yazhou He',
+    # maintainer_email='yhe@irishfilm.ie',
     description="Scripts for processing moving image material in the Irish Film Institute/Irish Film Archive",
     long_description=("""\
 Scripts for use in the IFI Irish Film Archive. Scripts have been tested in OSX/Windows 7/10 and Ubuntu 18.04. The aim is to make cross-platform scripts, but please get in touch with any issues. It is best to download all scripts, as some of them share code.
@@ -84,6 +84,6 @@ NOTE: Objects.py has been copied from https://github.com/simsong/dfxml. walk_to_
     data_files=[('', ['film_scan_aip_documentation.txt', '26_XYZ-22_Rec709.cube'])],
     include_package_data=True,
     name='ifiscripts',
-    version='2024.07.04',
+    version='2024.10.09',
     python_requires='>=3.8'
 )
