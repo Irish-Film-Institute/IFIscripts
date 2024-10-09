@@ -7,13 +7,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ifiscripts"
-version = "2024.07.04"
+version = "2024.10.09"
 authors = [
   {name="Kieran O'Leary", email="kieran.o.leary@gmail.com"}
 ]
-maintainers = [
-  {name="Yazhou He", email="yhe@irishfilm.ie"}
-]
+# maintainers = [
+#   {name="Yazhou He", email="yhe@irishfilm.ie"}
+# ]
 description = "Scripts for processing moving image material in the Irish Film Institute/Irish Film Archive"
 readme = "README.md"
 requires-python = ">=3.8"
