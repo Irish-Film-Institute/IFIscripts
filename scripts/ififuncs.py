@@ -771,12 +771,13 @@ def get_user():
     '''
     Asks user who they are. Returns a string with their name
     '''
-    user_list = ['Amy Mitchell',
+    user_list = ['Dean Ayotte',
                  'Gavin Martin',
                  'Leanne Bell',
                  'Marina Butt',
                  'Matheus Almeida',
-                 'Niall Anderson']
+                 'Niall Anderson',
+                 'Matthew Toner']
     user = ''
     if user not in user_list:
         print('\n\n**** Who are you?\nEnter the number before your name (ie. 1)\n\n')
