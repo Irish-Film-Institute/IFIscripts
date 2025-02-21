@@ -777,7 +777,8 @@ def get_user():
                  'Marina Butt',
                  'Matheus Almeida',
                  'Niall Anderson',
-                 'Matthew Toner']
+                 'Matthew Toner',
+                 'Library']
     user = ''
     if user not in user_list:
         print('\n\n**** Who are you?\nEnter the number before your name (ie. 1)\n\n')
