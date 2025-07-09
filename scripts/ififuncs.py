@@ -773,11 +773,12 @@ def get_user():
     '''
     user_list = ['Dean Ayotte',
                  'Gavin Martin',
-                 'Leanne Bell',
+                 'Martine Bouw',
                  'Marina Butt',
                  'Matheus Almeida',
                  'Niall Anderson',
                  'Matthew Toner',
+                 'Orla Fitzpatrick',
                  'Library']
     user = ''
     if user not in user_list:
