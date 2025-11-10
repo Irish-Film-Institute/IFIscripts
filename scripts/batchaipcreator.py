@@ -178,15 +178,15 @@ def get_number(args):
     Figure out the first accession number and how to increment per package.
     '''
     if args.start_number:
-        if args.start_number[:3] != 'aaa':
-            print('First three characters must be \'aaa\' and last four characters must be four digits')
+        if args.start_number[:3] != 'aab':
+            print('First three characters must be \'aab\' and last four characters must be four digits')
             accession_number = ififuncs.get_accession_number()
         elif len(args.start_number[3:]) not in range(4, 6):
             accession_number = ififuncs.get_accession_number()
-            print('First three characters must be \'aaa\' and last four characters must be four digits')
+            print('First three characters must be \'aab\' and last four characters must be four digits')
         elif not args.start_number[3:].isdigit():
             accession_number = ififuncs.get_accession_number()
-            print('First three characters must be \'aaa\' and last four characters must be four digits')
+            print('First three characters must be \'aab\' and last four characters must be four digits')
         else:
             accession_number = args.start_number
     else:
