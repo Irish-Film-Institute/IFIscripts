@@ -82,7 +82,7 @@ def initial_check(args, accession_digits, oe_list, filmo_number):
                     # this is just batchaipcreator if no csv is supplied
                     # this is pretty pointless at the moment seeing as this is loopline through oe_list :(
                     if not oe_list:
-                        to_accession[root] = 'aaa' + str(accession_digits).zfill(4)
+                        to_accession[root] = 'aab' + str(accession_digits).zfill(4)
                         accession_digits += 1
                     else:
                         # gets parent info
@@ -91,7 +91,7 @@ def initial_check(args, accession_digits, oe_list, filmo_number):
                                 os.path.join(os.path.dirname(root),
                                              order.main(root))
                             ] = [
-                                'aaa' + str(accession_digits).zfill(4),
+                                'aab' + str(accession_digits).zfill(4),
                                 ref[:2] + str(filmo_digits).zfill(4)
                             ]
                             if root in to_accession:
@@ -102,7 +102,7 @@ def initial_check(args, accession_digits, oe_list, filmo_number):
                                 continue
                             accession_digits += 1
                             # gets reproduction info
-                            to_accession[root] = ['aaa' + str(accession_digits).zfill(4), ref[:2] + str(filmo_digits), 'reproduction']
+                            to_accession[root] = ['aab' + str(accession_digits).zfill(4), ref[:2] + str(filmo_digits), 'reproduction']
                             filmo_digits += 1
                             accession_digits += 1
     for fails in wont_accession:
@@ -268,7 +268,7 @@ def main(args_):
         for oe_record in oe_dicts:
             print(oe_record)
             if os.path.isdir(oe_record['source_path']):
-                to_accession[oe_record['source_path']] = ['aaa' + str(accession_digits).zfill(4), oe_record['Filmographic URN'], oe_record['parent'], oe_record['donation_date']]
+                to_accession[oe_record['source_path']] = ['aab' + str(accession_digits).zfill(4), oe_record['Filmographic URN'], oe_record['parent'], oe_record['donation_date']]
                 accession_digits += 1
         print('\n')
     for success in sorted(to_accession.keys()):
