@@ -191,7 +191,7 @@ def get_accession_number(source):
     '''
     basename = os.path.basename(source)
     if len(basename) == 7:
-        if basename[:3] == 'aaa':
+        if basename[:3] == 'aab':
             return basename
     else:
         print('looks like your AIP has not been created? Exiting!')
