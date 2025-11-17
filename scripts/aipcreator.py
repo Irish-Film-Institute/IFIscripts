@@ -168,15 +168,15 @@ def main(args_):
             supplement_cmd = ['-i', args.supplement, '-user', user, '-new_folder', supplemental_dir, oe_path, '-copy']
             package_update.main(supplement_cmd)
         if args.accession_number:
-            if args.accession_number[:3] != 'aaa':
-                print('First three characters must be \'aaa\' and last four characters must be four digits')
+            if args.accession_number[:3] != 'aab':
+                print('First three characters must be \'aab\' and last four characters must be four digits')
                 accession_number = ififuncs.get_accession_number()
             elif len(args.accession_number[3:]) != 4:
                 accession_number = ififuncs.get_accession_number()
-                print('First three characters must be \'aaa\' and last four characters must be four digits')
+                print('First three characters must be \'aab\' and last four characters must be four digits')
             elif not args.accession_number[3:].isdigit():
                 accession_number = ififuncs.get_accession_number()
-                print('First three characters must be \'aaa\' and last four characters must be four digits')
+                print('First three characters must be \'aab\' and last four characters must be four digits')
             else:
                 accession_number = args.accession_number
         else:
