@@ -45,7 +45,7 @@ def main(args_):
     args = parse_args(args_)
     input = args.input
     output = args.o
-    dcdm = 'aaa'
+    dcdm = 'aab'
     if args.dcdm:
         dcdm = 'oe'
     if not os.path.exists(input):
