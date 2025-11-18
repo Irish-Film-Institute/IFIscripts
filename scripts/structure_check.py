@@ -50,10 +50,10 @@ def show_dirtree(objects_list):
         if 'oe' in object:
             object_flag = True
             print('\nSIP\t' + object)
-        elif 'aaa' in object and object.endswith('_shell'):
+        elif 'aab' in object and object.endswith('_shell'):
             object_flag = True
             print('\nAIP shell\t' + object)
-        elif 'aaa' in object:
+        elif 'aab' in object:
             object_flag = True
             print('\nAIP\t' + object)
         if object_flag == True:
