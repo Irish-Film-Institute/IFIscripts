@@ -86,7 +86,7 @@ def parse_args(args_):
     '''
     parser = argparse.ArgumentParser(
         description='Generate a helper DCDM PBCore based on the required technical metadata for DCDM PBCore.\n'
-        'This script takes the AIP folder (named \'aaaxxxx\') as input. Either a single file or multiple objects will be described.\n'
+        'This script takes the AIP folder (named \'aabxxxx\') as input. Either a single file or multiple objects will be described.\n'
         'This will produce a single helper PBCore CSV record to Desktop/ifiscripts_logs/, and does NOT work for multiple AIPs.'
         ' Written by Yazhou He.'
     )
@@ -111,7 +111,7 @@ def main(args_):
     EditedNew = user
     Created_By = user
     
-    if os.path.isdir(args.input) and os.path.basename(args.input)[:3] == 'aaa':
+    if os.path.isdir(args.input) and os.path.basename(args.input)[:3] == 'aab':
         source = args.input
         Accession_Number = os.path.basename(source)
     else:
